@@ -16,7 +16,8 @@ interface PostsCtx {
   getPost: (id: string) => Post | undefined;
   isUserPost: (id: string) => boolean;
   addPost: (input: PostDraft) => Post;
-  updatePost: (id: string, patch: Partial<Post>) => void;
+  /** patch 禁止携带 id（主键不可变），类型层面强制。 */
+  updatePost: (id: string, patch: Omit<Partial<Post>, 'id'>) => void;
   deletePost: (id: string) => void;
   toggleDraft: (id: string) => void;
 }
@@ -95,7 +96,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
     };
 
     // 以下操作仅作用于用户文章；内置文章为 no-op
-    const updatePost = (id: string, patch: Partial<Post>) => {
+    const updatePost = (id: string, patch: Omit<Partial<Post>, 'id'>) => {
       if (!isUserPost(id)) return;
       setUserPosts((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)));
     };

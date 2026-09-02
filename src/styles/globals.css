@@ -76,11 +76,31 @@ body {
 .article-content li { margin: .3em 0; }
 .article-content blockquote { border-left: 3px solid var(--color-accent); padding: .4em 1em; margin: 1em 0; color: var(--color-text-muted); background: var(--color-surface); border-radius: var(--radius); }
 .article-content code { font-family: var(--font-mono); background: var(--color-surface-alt); padding: .15em .4em; border-radius: 6px; font-size: .9em; }
-.article-content pre { background: #0d1117; color: #e6edf3; padding: 1em; border-radius: var(--radius); overflow: auto; }
+.article-content pre { background: var(--color-surface-alt); color: var(--color-text); padding: 1em; border-radius: var(--radius); overflow: auto; }
+[data-mode='dark'] .article-content pre { background: #0d1117; color: #e6edf3; }
 .article-content pre code { background: transparent; padding: 0; }
 .article-content img { max-width: 100%; border-radius: var(--radius); }
 .article-content table { width: 100%; border-collapse: collapse; margin: 1em 0; }
 .article-content th, .article-content td { border: 1px solid var(--color-border); padding: .5em .7em; text-align: left; }
+
+/* ===== 代码高亮（highlight.js）=====
+   明色语法色来自 github.css（src/utils/markdown.ts 引入）；暗色在下方覆盖。
+   hljs token 色为库主题色（豁免硬编码约束），但容器背景透明、文字基色一律走令牌变量。
+   基类用 .article-content .hljs 提升特异性，保证稳定覆盖 github.css 自带的 .hljs 白底。 */
+.article-content .hljs { background: transparent; color: var(--color-text); font-family: var(--font-mono); }
+[data-mode='dark'] .article-content .hljs-comment, [data-mode='dark'] .article-content .hljs-quote { color: #8b949e; }
+[data-mode='dark'] .article-content .hljs-subst { color: #e6edf3; }
+[data-mode='dark'] .article-content .hljs-keyword, [data-mode='dark'] .article-content .hljs-selector-tag, [data-mode='dark'] .article-content .hljs-doctag { color: #ff7b72; }
+[data-mode='dark'] .article-content .hljs-string, [data-mode='dark'] .article-content .hljs-regexp, [data-mode='dark'] .article-content .hljs-meta .hljs-string { color: #a5d6ff; }
+[data-mode='dark'] .article-content .hljs-number, [data-mode='dark'] .article-content .hljs-literal, [data-mode='dark'] .article-content .hljs-meta, [data-mode='dark'] .article-content .hljs-operator, [data-mode='dark'] .article-content .hljs-selector-class, [data-mode='dark'] .article-content .hljs-selector-id { color: #79c0ff; }
+[data-mode='dark'] .article-content .hljs-title, [data-mode='dark'] .article-content .hljs-title.function_, [data-mode='dark'] .article-content .hljs-section { color: #d2a8ff; }
+[data-mode='dark'] .article-content .hljs-type, [data-mode='dark'] .article-content .hljs-class .hljs-title, [data-mode='dark'] .article-content .hljs-built_in { color: #ffa657; }
+[data-mode='dark'] .article-content .hljs-attr, [data-mode='dark'] .article-content .hljs-attribute, [data-mode='dark'] .article-content .hljs-variable, [data-mode='dark'] .article-content .hljs-template-variable, [data-mode='dark'] .article-content .hljs-selector-attr { color: #79c0ff; }
+[data-mode='dark'] .article-content .hljs-name, [data-mode='dark'] .article-content .hljs-selector-pseudo { color: #7ee787; }
+[data-mode='dark'] .article-content .hljs-symbol, [data-mode='dark'] .article-content .hljs-bullet, [data-mode='dark'] .article-content .hljs-link { color: #f2cc60; }
+[data-mode='dark'] .article-content .hljs-addition, [data-mode='dark'] .article-content .hljs-deletion { background: transparent; }
+[data-mode='dark'] .article-content .hljs-emphasis { font-style: italic; }
+[data-mode='dark'] .article-content .hljs-strong { font-weight: 600; }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 6px; }

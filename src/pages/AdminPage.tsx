@@ -40,6 +40,7 @@ function StatusBadge({ post, builtin }: { post: Post; builtin: boolean }) {
 
 export default function AdminPage() {
   const { allPostsIncludingDrafts, userPosts, isUserPost, deletePost, toggleDraft } = usePosts();
+  const draftCount = allPostsIncludingDrafts.filter((p) => p.draft === true).length;
 
   const handleDelete = (post: Post) => {
     if (window.confirm(`确定删除《${post.title}》吗？`)) deletePost(post.id);
@@ -47,12 +48,14 @@ export default function AdminPage() {
 
   return (
     <div className="space-y-4">
-      {/* 顶部：标题 + 副标题 + 新建入口（编辑器由 T4 实现，当前目标页为占位） */}
+      {/* 顶部：标题 + 副标题 + 新建入口 */}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-heading text-2xl font-bold">文章管理</h1>
           <p className="mt-1 text-sm text-muted">
-            管理文章、草稿与发布状态 · 共 {allPostsIncludingDrafts.length} 篇（用户文章 {userPosts.length} 篇）
+            管理文章、草稿与发布状态 · 共 {allPostsIncludingDrafts.length} 篇
+            {draftCount > 0 ? ` · 含草稿 ${draftCount} 篇` : ''}
+            （用户文章 {userPosts.length} 篇）
           </p>
         </div>
         <Link to="/admin/new" className="rounded-brand bg-primary px-4 py-2 text-sm text-white">
