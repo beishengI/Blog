@@ -114,13 +114,13 @@ export default function Comments({ postId }: { postId: string }) {
       <ul className="mt-6 space-y-4">
         {sorted.map((c) => (
           <li key={c.id} className="rounded-brand border border-border bg-surface p-4">
-            <div className="flex items-baseline justify-between gap-3">
+            <div className="flex items-center justify-between gap-3">
               <span className="font-heading font-bold">{c.nickname}</span>
               <button
                 type="button"
                 onClick={() => handleDelete(c.id)}
                 aria-label="删除评论"
-                className="shrink-0 rounded border border-border px-2 py-0.5 text-xs text-muted hover:border-primary hover:text-primary"
+                className="inline-flex min-h-9 shrink-0 items-center rounded border border-border px-2.5 py-0.5 text-xs text-muted hover:border-primary hover:text-primary"
               >
                 删除
               </button>

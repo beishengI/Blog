@@ -69,8 +69,10 @@ body {
 .content-max { max-width: min(100%, max(var(--content-max), 760px)); }
 .read-max { max-width: min(100%, max(var(--read-max), 640px)); }
 
-/* 文章详情排版（Markdown 渲染） */
-.article-content { line-height: 1.75; font-size: 1.02rem; }
+/* 文章详情排版（Markdown 渲染）
+   overflow-wrap：正文内长 URL / 长英文串在窄屏允许断行，避免撑破正文列横向溢出；
+   对 pre 无效（white-space: pre 抑制软换行），代码块仍由自身 overflow:auto 横向滚动。 */
+.article-content { line-height: 1.75; font-size: 1.02rem; overflow-wrap: break-word; word-wrap: break-word; }
 .article-content h1 { font-family: var(--font-heading); font-size: 2rem; margin: 1.6em 0 .6em; }
 .article-content h2 { font-family: var(--font-heading); font-size: 1.45rem; margin: 1.4em 0 .5em; border-left: 3px solid var(--color-primary); padding-left: .55rem; }
 .article-content h3 { font-family: var(--font-heading); font-size: 1.2rem; margin: 1.2em 0 .4em; }
@@ -84,6 +86,10 @@ body {
 [data-mode='dark'] .article-content pre { background: #0d1117; color: #e6edf3; }
 .article-content pre code { background: transparent; padding: 0; }
 .article-content img { max-width: 100%; border-radius: var(--radius); }
+/* 宽表（如 wiki 的 4-8 列对照表）换行后 min-content 远超窄屏正文列宽，
+   由 utils/markdown.ts 的 table renderer 包一层 .table-scroll 提供横向滚动，
+   避免整页横向溢出；桌面端表格宽度不受影响。 */
+.article-content .table-scroll { max-width: 100%; overflow-x: auto; }
 .article-content table { width: 100%; border-collapse: collapse; margin: 1em 0; }
 .article-content th, .article-content td { border: 1px solid var(--color-border); padding: .5em .7em; text-align: left; }
 

@@ -106,7 +106,7 @@ export default function AdminPage() {
                   {builtin ? (
                     <span
                       aria-disabled
-                      className="cursor-not-allowed rounded-brand border border-border px-3 py-1.5 text-sm text-muted opacity-50"
+                      className="cursor-not-allowed rounded-brand border border-border px-3 py-2 text-sm text-muted opacity-50"
                     >
                       编辑
                     </span>
@@ -114,21 +114,21 @@ export default function AdminPage() {
                     <>
                       <Link
                         to={`/admin/edit/${p.id}`}
-                        className="rounded-brand border border-border px-3 py-1.5 text-sm hover:border-primary hover:text-primary"
+                        className="rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary"
                       >
                         编辑
                       </Link>
                       <button
                         type="button"
                         onClick={() => toggleDraft(p.id)}
-                        className="rounded-brand border border-border px-3 py-1.5 text-sm hover:border-primary hover:text-primary"
+                        className="rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary"
                       >
                         {isPublished(p) ? '转为草稿' : '发布'}
                       </button>
                       <button
                         type="button"
                         onClick={() => handleDelete(p)}
-                        className="rounded-brand border border-border px-3 py-1.5 text-sm text-muted hover:border-primary hover:text-primary"
+                        className="rounded-brand border border-border px-3 py-2 text-sm text-muted hover:border-primary hover:text-primary"
                       >
                         删除
                       </button>

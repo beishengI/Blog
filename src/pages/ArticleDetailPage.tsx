@@ -26,7 +26,7 @@ function ArticleHeader({ post }: { post: Post }) {
   return (
     <>
       <Link to="/posts" className="text-sm text-muted hover:text-primary">← 返回文章</Link>
-      <div className="mt-3 flex items-center gap-2 text-xs text-muted">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted">
         <span className="rounded-full bg-surface-alt px-2 py-0.5 text-primary">{post.category}</span>
         {post.draft === true && (
           <span className="rounded-full border border-border px-2 py-0.5 text-muted">草稿</span>
@@ -74,7 +74,7 @@ function CompanionDetail({ post }: { post: Post }) {
     <article className="w-full">
       <ReadingProgress progress={progress} />
       <Link to="/posts" className="text-sm text-muted hover:text-primary">← 返回</Link>
-      <div className="mt-3 flex items-center gap-2 text-xs text-muted">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted">
         <span className="rounded-full bg-surface-alt px-2 py-0.5 text-primary">{post.category}</span>
         {post.draft === true && (
           <span className="rounded-full border border-border px-2 py-0.5 text-muted">草稿</span>

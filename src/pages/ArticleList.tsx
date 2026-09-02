@@ -8,8 +8,8 @@ import { useSEO } from '../hooks/useSEO';
 const PAGE_SIZE = 9;
 
 const CHIP_CLS =
-  'rounded-full border border-border px-3 py-1 text-sm hover:border-primary hover:text-primary';
-const CHIP_ACTIVE_CLS = 'rounded-full bg-primary px-3 py-1 text-sm text-white';
+  'rounded-full border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary';
+const CHIP_ACTIVE_CLS = 'rounded-full bg-primary px-3 py-2 text-sm text-white';
 
 type FilterKey = 'tag' | 'cat' | 'q';
 
@@ -143,7 +143,7 @@ export default function ArticleList() {
           {activeFilters.map(f => (
             <span
               key={f.key}
-              className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm"
+              className="flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-sm"
             >
               {f.label}
               <button

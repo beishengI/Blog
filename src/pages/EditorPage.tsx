@@ -545,7 +545,7 @@ export default function EditorPage() {
                 aria-label={b.aria}
                 title={b.aria}
                 onClick={b.run}
-                className="rounded-brand border border-border px-2.5 py-1 text-xs hover:border-primary hover:text-primary"
+                className="inline-flex min-h-9 items-center rounded-brand border border-border px-2.5 py-1 text-xs hover:border-primary hover:text-primary"
               >
                 {b.label}
               </button>
@@ -555,7 +555,7 @@ export default function EditorPage() {
               aria-label="上传图片并插入"
               title="上传图片并插入"
               onClick={handleUploadClick}
-              className="rounded-brand border border-border px-2.5 py-1 text-xs hover:border-primary hover:text-primary"
+              className="inline-flex min-h-9 items-center rounded-brand border border-border px-2.5 py-1 text-xs hover:border-primary hover:text-primary"
             >
               上传图片
             </button>

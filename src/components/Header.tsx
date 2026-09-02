@@ -54,11 +54,11 @@ export default function Header() {
             </form>
           )}
           <button onClick={() => setOpenPanel(true)}
-            className="inline-flex items-center gap-1.5 rounded-brand border border-border px-3 py-1.5 text-sm hover:bg-surface hover:text-primary">
+            className="inline-flex items-center gap-1.5 rounded-brand border border-border px-3 py-2 text-sm hover:bg-surface hover:text-primary">
             <Icon name="palette" size={15} /> 定制
           </button>
           <button onClick={() => setMenu(v => !v)}
-            className="rounded-brand border border-border px-3 py-1.5 text-sm md:hidden">菜单</button>
+            className="rounded-brand border border-border px-3 py-2 text-sm md:hidden">菜单</button>
         </div>
       </div>
       {menu && (

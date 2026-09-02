@@ -35,6 +35,11 @@ marked.use({
       const langClass = safeLang ? ` language-${safeLang}` : '';
       return `<pre><code class="hljs${langClass}">${highlighted}</code></pre>`;
     },
+    table(header: string, body: string) {
+      // 宽表包一层 .table-scroll，窄屏横向滚动（样式见 globals.css），避免整页横向溢出
+      const tbody = body ? `<tbody>${body}</tbody>` : '';
+      return `<div class="table-scroll"><table><thead>${header}</thead>${tbody}</table></div>`;
+    },
   },
 });
 

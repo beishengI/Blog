@@ -18,7 +18,7 @@ interface YearGroup {
 
 /** 锚点 chips 样式（与 ArticleList 筛选 chips 风格一致，语义令牌类） */
 const CHIP_CLS =
-  'rounded-full border border-border px-3 py-1 text-sm hover:border-primary hover:text-primary';
+  'rounded-full border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary';
 
 /**
  * 文章归档页：按「年 → 月」两级分组展示全部已发布文章。

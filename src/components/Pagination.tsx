@@ -9,10 +9,10 @@ interface PaginationProps {
 }
 
 const LINK_CLS =
-  'rounded-brand border border-border px-3 py-1.5 text-sm hover:border-primary hover:text-primary';
+  'rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary';
 const DISABLED_CLS =
-  'cursor-not-allowed rounded-brand border border-border px-3 py-1.5 text-sm text-muted opacity-50';
-const CURRENT_CLS = 'rounded-brand bg-primary px-3 py-1.5 text-sm text-white';
+  'cursor-not-allowed rounded-brand border border-border px-3 py-2 text-sm text-muted opacity-50';
+const CURRENT_CLS = 'rounded-brand bg-primary px-3 py-2 text-sm text-white';
 
 /** 页码序列：总页数 ≤7 全显；>7 折叠为省略号（保留首尾与当前页前后各 1 页）。 */
 function buildPages(page: number, totalPages: number): (number | '…')[] {
