@@ -51,6 +51,7 @@ export interface FeatureFlags {
   search: boolean;
   toc: boolean;
   readingTime: boolean;
+  comments: boolean;
 }
 
 export interface BlogConfig {

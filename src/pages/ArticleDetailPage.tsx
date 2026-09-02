@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Post } from '../data/posts';
 import { usePosts } from '../context/PostsContext';
 import ArticleDetail from '../components/ArticleDetail';
+import Comments from '../components/Comments';
 import ReadingProgress from '../components/ReadingProgress';
 import StickyTOC from '../components/StickyTOC';
 import { useConfig } from '../context/ConfigContext';
@@ -50,6 +51,11 @@ function NormalDetail({ post }: { post: Post }) {
         <StickyTOC headings={headings} activeId={activeId} progress={progress} />
       )}
       <ArticleDetail content={post.content} />
+      {config.features.comments !== false && (
+        <div className="mt-10 border-t border-border pt-8">
+          <Comments postId={post.id} />
+        </div>
+      )}
     </article>
   );
 }
@@ -77,6 +83,11 @@ function CompanionDetail({ post }: { post: Post }) {
         <StickyTOC headings={headings} activeId={activeId} progress={progress} />
       )}
       <ArticleDetail content={post.content} />
+      {config.features.comments !== false && (
+        <div className="mt-10 border-t border-border pt-8">
+          <Comments postId={post.id} />
+        </div>
+      )}
     </article>
   );
 

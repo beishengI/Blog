@@ -54,5 +54,5 @@ export const defaultConfig: BlogConfig = {
     { label: '关于', href: '/about' },
     { label: '管理', href: '/admin' },
   ],
-  features: { search: true, toc: true, readingTime: true },
+  features: { search: true, toc: true, readingTime: true, comments: true },
 };

@@ -23,6 +23,7 @@ const FEATURE_LABELS: Record<keyof BlogConfig['features'], string> = {
   search: '搜索框',
   toc: '文章目录吸顶',
   readingTime: '阅读时长',
+  comments: '评论',
 };
 
 const fonts = [
@@ -199,7 +200,7 @@ export default function ThemePanel({ open, onClose }: { open: boolean; onClose: 
 
         <section className="mt-5 space-y-2">
           <h3 className="font-heading text-sm font-semibold text-muted">功能开关</h3>
-          {(['search', 'toc', 'readingTime'] as const).map((k) => (
+          {(['search', 'toc', 'readingTime', 'comments'] as const).map((k) => (
             <label key={k} className="flex items-center gap-2 text-sm text-muted">
               <input type="checkbox" checked={config.features[k]}
                 onChange={e => update({ features: { [k]: e.target.checked } })} />
