@@ -7,8 +7,10 @@ export const POSTS_STORAGE_KEY = 'medai-blog-posts';
 export type PostDraft = Omit<Post, 'id'> & { id?: string };
 
 interface PostsCtx {
-  /** 全量文章 = 用户文章 + 内置文章，按 date 降序（同日期时内置文章在后）。 */
+  /** 对外文章 = 用户文章 + 内置文章（仅已发布，不含草稿），按 date 降序。 */
   allPosts: Post[];
+  /** 含草稿的全量文章（管理台专用），按 date 降序。 */
+  allPostsIncludingDrafts: Post[];
   /** 用户创建/编辑的文章（localStorage 持久化，内部保持插入序）。 */
   userPosts: Post[];
   getPost: (id: string) => Post | undefined;
@@ -72,9 +74,11 @@ export function PostsProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<PostsCtx>(() => {
     // [...userPosts, ...posts] + 稳定排序：date 相同时用户文章在前、内置文章在后
-    const allPosts = [...userPosts, ...posts].sort((a, b) =>
+    const combined = [...userPosts, ...posts].sort((a, b) =>
       a.date < b.date ? 1 : a.date > b.date ? -1 : 0
     );
+    // 草稿公开语义收口：对外列表只含已发布文章；管理台经 allPostsIncludingDrafts 看全量
+    const allPosts = combined.filter(isPublished);
 
     const isUserPost = (id: string) => userPosts.some((p) => p.id === id);
 
@@ -110,8 +114,9 @@ export function PostsProvider({ children }: { children: ReactNode }) {
 
     return {
       allPosts,
+      allPostsIncludingDrafts: combined,
       userPosts,
-      getPost: (id) => allPosts.find((p) => p.id === id),
+      getPost: (id) => combined.find((p) => p.id === id),
       isUserPost,
       addPost,
       updatePost,

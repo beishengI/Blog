@@ -39,7 +39,7 @@ function StatusBadge({ post, builtin }: { post: Post; builtin: boolean }) {
 }
 
 export default function AdminPage() {
-  const { allPosts, userPosts, isUserPost, deletePost, toggleDraft } = usePosts();
+  const { allPostsIncludingDrafts, userPosts, isUserPost, deletePost, toggleDraft } = usePosts();
 
   const handleDelete = (post: Post) => {
     if (window.confirm(`确定删除《${post.title}》吗？`)) deletePost(post.id);
@@ -52,7 +52,7 @@ export default function AdminPage() {
         <div>
           <h1 className="font-heading text-2xl font-bold">文章管理</h1>
           <p className="mt-1 text-sm text-muted">
-            管理文章、草稿与发布状态 · 共 {allPosts.length} 篇（用户文章 {userPosts.length} 篇）
+            管理文章、草稿与发布状态 · 共 {allPostsIncludingDrafts.length} 篇（用户文章 {userPosts.length} 篇）
           </p>
         </div>
         <Link to="/admin/new" className="rounded-brand bg-primary px-4 py-2 text-sm text-white">
@@ -60,7 +60,7 @@ export default function AdminPage() {
         </Link>
       </div>
 
-      {allPosts.length === 0 ? (
+      {allPostsIncludingDrafts.length === 0 ? (
         <div className="rounded-brand border border-border bg-surface p-10 text-center text-muted">
           还没有任何文章 · <Link to="/admin/new" className="text-primary">创建第一篇</Link>
         </div>
@@ -68,7 +68,7 @@ export default function AdminPage() {
         <div className="space-y-3">
           {userPosts.length === 0 && <p className="text-sm text-muted">暂无用户文章，下列为内置示例文章。</p>}
 
-          {allPosts.map((p) => {
+          {allPostsIncludingDrafts.map((p) => {
             const builtin = !isUserPost(p.id);
             return (
               <div
