@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useConfig } from '../context/ConfigContext';
 import { usePosts } from '../context/PostsContext';
+import HotPosts from './HotPosts';
 
 export default function Sidebar() {
   const { config } = useConfig();
@@ -45,6 +46,7 @@ export default function Sidebar() {
           ))}
         </ul>
       </div>
+      <HotPosts />
     </aside>
   );
 }

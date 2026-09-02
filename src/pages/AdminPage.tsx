@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Post } from '../data/posts';
 import { usePosts, isPublished } from '../context/PostsContext';
+import { getViewCount } from '../utils/stats';
 
 /** 标签胶囊：最多展示 3 个，超出折叠为 +N。 */
 function TagChips({ tags }: { tags: string[] }) {
@@ -90,6 +91,7 @@ export default function AdminPage() {
                     <span className="whitespace-nowrap">
                       {p.updatedAt ? `${p.date} · 更新于 ${p.updatedAt}` : p.date}
                     </span>
+                    <span className="whitespace-nowrap">{getViewCount(p.id)} 次阅读</span>
                     <TagChips tags={p.tags} />
                   </div>
                 </div>

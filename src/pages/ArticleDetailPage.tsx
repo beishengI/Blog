@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Post } from '../data/posts';
 import { usePosts } from '../context/PostsContext';
 import ArticleDetail from '../components/ArticleDetail';
@@ -10,6 +10,7 @@ import { useConfig } from '../context/ConfigContext';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useActiveHeading } from '../hooks/useActiveHeading';
 import { parseHeadings } from '../utils/toc';
+import { recordView, getViewCount } from '../utils/stats';
 
 function NotFound() {
   return (
@@ -31,6 +32,7 @@ function ArticleHeader({ post }: { post: Post }) {
         )}
         <span>{post.date}</span>
         {config.features.readingTime && <span>· {post.readingTime} 分钟阅读</span>}
+        <span>· {getViewCount(post.id)} 次阅读</span>
       </div>
       <h1 className="font-heading mt-2 text-3xl font-bold">{post.title}</h1>
     </>
@@ -129,6 +131,12 @@ export default function ArticleDetailPage() {
   const { config } = useConfig();
   const { getPost } = usePosts();
   const post = id ? getPost(id) : undefined;
+
+  // 阅读计数：同一浏览器会话同一文章只计 1 次（StrictMode 双挂载由 sessionStorage 去重兜底）
+  useEffect(() => {
+    if (post) recordView(post.id);
+  }, [post?.id]);
+
   if (!post) return <NotFound />;
   if (config.layout.direction === 'companion') return <CompanionDetail post={post} />;
   return <NormalDetail post={post} />;
