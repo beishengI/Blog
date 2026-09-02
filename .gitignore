@@ -15,3 +15,5 @@ vite.config.js
 vite.config.d.ts
 skills-lock.json
 .superpowers
+.verify
+.zcode

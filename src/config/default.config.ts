@@ -11,7 +11,7 @@ export const defaultConfig: BlogConfig = {
     author: '北省',
     bio: '湖北医药学院 · 智能医学工程 · 关注大模型应用开发（RAG / Agent）与医学影像 AI',
     avatar: '/avatar.jpeg',
-    url: '', // 站点根地址（SEO canonical 用），如 https://example.com；空则不生成 canonical
+    url: 'https://beishengi.github.io/Blog/', // GitHub Pages 根地址（SEO canonical / RSS 链接）
     email: '1611045292@qq.com',
     github: 'beishengI',
     intro: [

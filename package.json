@@ -7,6 +7,8 @@
     "dev": "vite",
     "gen:rss": "node scripts/gen-rss.mjs",
     "build": "npm run gen:rss && tsc -b && vite build",
+    "build:pages": "npm run gen:rss && tsc -b && vite build --base=/Blog/",
+    "deploy:pages": "npm run build:pages && node scripts/deploy-pages.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
