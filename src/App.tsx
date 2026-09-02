@@ -5,6 +5,7 @@ import ArticleList from './pages/ArticleList';
 import ArticleDetailPage from './pages/ArticleDetailPage';
 import About from './pages/About';
 import TagArchive from './pages/TagArchive';
+import ArchivePage from './pages/ArchivePage';
 import Wiki from './pages/Wiki';
 import WikiDetail from './pages/WikiDetail';
 import AdminPage from './pages/AdminPage';
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/posts" element={<ArticleList />} />
         <Route path="/posts/:id" element={<ArticleDetailPage />} />
         <Route path="/tags" element={<TagArchive />} />
+        <Route path="/archive" element={<ArchivePage />} />
         <Route path="/tags/:tag" element={<ArticleList />} />
         <Route path="/wiki" element={<Wiki />} />
         <Route path="/wiki/:slug" element={<WikiDetail />} />

@@ -51,6 +51,7 @@ export const defaultConfig: BlogConfig = {
     { label: '文章', href: '/posts' },
     { label: '知识库', href: '/wiki' },
     { label: '标签', href: '/tags' },
+    { label: '归档', href: '/archive' },
     { label: '关于', href: '/about' },
     { label: '管理', href: '/admin' },
   ],
