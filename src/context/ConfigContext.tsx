@@ -23,10 +23,13 @@ function deepMerge<T>(base: T, patch: any): T {
   return out;
 }
 
-/** 根绝对路径按 Vite base 前缀化:GitHub Pages 子路径(/Blog/)下 /avatar.jpeg 这类 public 资源才可达。 */
+/** 根绝对路径按 Vite base 前缀化:GitHub Pages 子路径(/Blog/)下 /avatar.jpeg 这类 public 资源才可达。
+ *  幂等:已带 base 前缀的值(如定制面板回显后再次提交)不会二次叠加。 */
 function withBase(p: string): string {
   if (!p.startsWith('/') || /^(https?:|data:)/.test(p)) return p;
-  return `${import.meta.env.BASE_URL.replace(/\/+$/, '')}${p}`;
+  const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+  if (base && (p === base || p.startsWith(`${base}/`))) return p;
+  return `${base}${p}`;
 }
 
 /** 将配置写入 :root CSS 变量，实现零核心代码改动的换肤。 */

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 16 · 数据仪表盘：指标磁贴 + 分类进度条 + 紧凑文章表。 */
@@ -19,10 +20,13 @@ export default function DashboardHome({ config }: { config: BlogConfig }) {
 
   return (
     <div className="space-y-[var(--gap)]">
-      <header>
-        <p className="kicker">DASHBOARD</p>
-        <h1 className="font-heading mt-2 text-3xl font-bold md:text-4xl">{config.site.title}</h1>
-        <p className="mt-2 text-muted">{config.site.bio}</p>
+      <header className="flex items-start gap-4">
+        <SiteAvatar size="md" className="hidden sm:block" />
+        <div className="min-w-0">
+          <p className="kicker">DASHBOARD</p>
+          <h1 className="font-heading mt-2 text-3xl font-bold md:text-4xl">{config.site.title}</h1>
+          <p className="mt-2 text-muted">{config.site.bio}</p>
+        </div>
       </header>
 
       <div className="grid-auto-sm">

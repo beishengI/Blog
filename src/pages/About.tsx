@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
 import { useSEO } from '../hooks/useSEO';
 
@@ -22,6 +23,9 @@ export default function About() {
         <div className="min-w-0">
           <h2 className="font-heading text-xl font-semibold">{site.author}</h2>
           <p className="text-sm text-muted">{site.bio}</p>
+          <Link to="/resume" className="mt-2 inline-block text-sm text-primary hover:underline">
+            查看在线简历 →
+          </Link>
         </div>
       </div>
 

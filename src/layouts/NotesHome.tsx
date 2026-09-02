@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 17 · 便签墙：轻微旋转的纸质便签拼贴（旋转幅度极小，不会与邻卡重叠）。 */
@@ -7,10 +8,13 @@ export default function NotesHome({ config }: { config: BlogConfig }) {
   const posts = usePosts().allPosts;
   return (
     <div>
-      <header className="mb-6">
-        <p className="kicker">STICKY NOTES</p>
-        <h1 className="font-heading mt-2 text-4xl font-bold leading-tight md:text-5xl">{config.site.title}</h1>
-        <p className="read-max mt-3 text-muted">{config.site.bio}</p>
+      <header className="mb-6 flex items-start gap-4">
+        <SiteAvatar size="md" className="hidden sm:block" />
+        <div className="min-w-0">
+          <p className="kicker">STICKY NOTES</p>
+          <h1 className="font-heading mt-2 text-4xl font-bold leading-tight md:text-5xl">{config.site.title}</h1>
+          <p className="read-max mt-3 text-muted">{config.site.bio}</p>
+        </div>
       </header>
 
       <div className="grid-auto-notes">

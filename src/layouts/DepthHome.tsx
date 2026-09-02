@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 10 · 深度分层舞台：mesh 渐变背景 + 前景玻璃芯片。 */
@@ -10,18 +11,21 @@ export default function DepthHome({ config }: { config: BlogConfig }) {
 
   return (
     <div className="depth-bg grain relative overflow-hidden rounded-brand flex min-h-[60vh] flex-col justify-center p-8">
-      <div className="relative z-10">
-        <p className="text-sm text-primary">{config.site.author} · 知识空间</p>
-        <h1 className="font-heading mt-2 text-4xl font-bold leading-tight md:text-5xl">{config.site.title}</h1>
-        <p className="mt-3 max-w-xl text-muted">{config.site.bio}</p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <Link to="/posts" className="rounded-brand bg-primary px-4 py-2 text-sm text-white">浏览文章</Link>
-          <Link
-            to="/about"
-            className="rounded-brand border border-border px-4 py-2 text-sm backdrop-blur-md"
-          >
-            关于我
-          </Link>
+      <div className="relative z-10 flex items-start gap-5">
+        <SiteAvatar size="md" className="border border-white/30" />
+        <div className="min-w-0">
+          <p className="text-sm text-primary">{config.site.author} · 知识空间</p>
+          <h1 className="font-heading mt-2 text-4xl font-bold leading-tight md:text-5xl">{config.site.title}</h1>
+          <p className="mt-3 max-w-xl text-muted">{config.site.bio}</p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link to="/posts" className="rounded-brand bg-primary px-4 py-2 text-sm text-white">浏览文章</Link>
+            <Link
+              to="/about"
+              className="rounded-brand border border-border px-4 py-2 text-sm backdrop-blur-md"
+            >
+              关于我
+            </Link>
+          </div>
         </div>
       </div>
 

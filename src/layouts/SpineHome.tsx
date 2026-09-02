@@ -1,5 +1,6 @@
 import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /**
@@ -10,13 +11,18 @@ export default function SpineHome({ config }: { config: BlogConfig }) {
   const posts = usePosts().allPosts;
   return (
     <div>
-      <p className="text-xs tracking-[0.3em] text-primary">
-        VOL.{String(posts.length).padStart(2, '0')} — {config.site.bio}
-      </p>
-      <h1 className="font-heading mt-3 break-words text-4xl font-bold leading-tight md:text-5xl">
-        {config.site.title}
-      </h1>
-      <p className="mt-3 max-w-md text-muted">{config.site.bio}</p>
+      <div className="flex items-start gap-4">
+        <SiteAvatar size="md" className="hidden sm:block" />
+        <div className="min-w-0">
+          <p className="text-xs tracking-[0.3em] text-primary">
+            VOL.{String(posts.length).padStart(2, '0')} — {config.site.bio}
+          </p>
+          <h1 className="font-heading mt-3 break-words text-4xl font-bold leading-tight md:text-5xl">
+            {config.site.title}
+          </h1>
+          <p className="mt-3 max-w-md text-muted">{config.site.bio}</p>
+        </div>
+      </div>
 
       <div className="relative mt-10">
         {/* 脊柱线：小屏靠左，xl 居中 */}
