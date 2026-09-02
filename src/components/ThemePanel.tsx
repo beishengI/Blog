@@ -68,7 +68,7 @@ export default function ThemePanel({ open, onClose }: { open: boolean; onClose: 
       <div className="relative h-full w-[340px] max-w-[90vw] overflow-y-auto border-l border-border bg-bg p-5 shadow-2xl">
         <div className="flex items-center justify-between">
           <h2 className="font-heading text-lg font-semibold">可视化配置</h2>
-          <button onClick={onClose} className="rounded-brand border border-border px-2 py-1 text-sm">关闭</button>
+          <button onClick={onClose} className="rounded-brand min-h-9 border border-border px-3 text-sm">关闭</button>
         </div>
 
         <section className="mt-5">
@@ -81,7 +81,7 @@ export default function ThemePanel({ open, onClose }: { open: boolean; onClose: 
           <div className="mt-2 grid grid-cols-2 gap-2">
             {presets.map((p, i) => (
               <button key={p.id} onClick={() => applyPreset(p)} data-preset={p.id}
-                className="rounded-brand border border-border p-2 text-left text-xs transition-colors hover:border-primary">
+                className="rounded-brand min-h-9 border border-border p-2 text-left text-xs transition-colors hover:border-primary">
                 <span className="flex gap-1">
                   <span className="h-2.5 w-2.5 rounded-full" style={{ background: p.theme.primary }} />
                   <span className="h-2.5 w-2.5 rounded-full" style={{ background: p.theme.accent }} />
@@ -111,7 +111,7 @@ export default function ThemePanel({ open, onClose }: { open: boolean; onClose: 
           <div className="flex gap-2">
             {(['light', 'dark', 'system'] as ThemeMode[]).map(m => (
               <button key={m} onClick={() => update({ theme: { mode: m } })}
-                className={`rounded-brand border px-3 py-1 text-sm ${t.mode === m ? 'border-primary text-primary' : 'border-border text-muted'}`}>{m}</button>
+                className={`rounded-brand min-h-9 border px-3 py-1 text-sm ${t.mode === m ? 'border-primary text-primary' : 'border-border text-muted'}`}>{m}</button>
             ))}
           </div>
           <label className="flex items-center justify-between gap-2 text-sm text-muted">

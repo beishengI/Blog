@@ -151,7 +151,7 @@ export default function ArticleList() {
                 type="button"
                 aria-label={`移除筛选 ${f.label}`}
                 onClick={() => removeFilter(f.key)}
-                className="text-muted hover:text-primary"
+                className="-mr-2 -my-2 flex h-9 w-9 items-center justify-center text-lg leading-none text-muted hover:text-primary"
               >
                 ×
               </button>

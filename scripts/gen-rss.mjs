@@ -30,7 +30,7 @@ async function bundleEntry(entry, tmpName) {
     platform: 'node',
     write: false,
     outfile: tmpPath,
-    logLevel: 'silent',
+    logLevel: 'warning',
   });
   await writeFile(tmpPath, result.outputFiles[0].text, 'utf8');
   const mod = await import(pathToFileURL(tmpPath).href);
@@ -51,8 +51,9 @@ async function main() {
   const tmpFiles = [];
   try {
     const postsBundle = await bundleEntry('src/data/posts.ts', 'rss-posts.mjs');
+    tmpFiles.push(postsBundle.tmpPath);
     const configBundle = await bundleEntry('src/config/default.config.ts', 'rss-config.mjs');
-    tmpFiles.push(postsBundle.tmpPath, configBundle.tmpPath);
+    tmpFiles.push(configBundle.tmpPath);
 
     const posts = postsBundle.mod.posts;
     const site = configBundle.mod.defaultConfig.site;
@@ -64,8 +65,13 @@ async function main() {
     // 仅收录内置已发布文章；草稿(draft === true)与 localStorage 用户文章不进 RSS
     const published = posts
       .filter((p) => p.draft !== true)
-      .slice()
       .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+
+    // lastBuildDate 取条目最新发布时间而非构建时刻：内容不变时产物逐字节一致，避免无意义 diff
+    const pubTimes = published
+      .map((p) => new Date(p.date).getTime())
+      .filter((t) => Number.isFinite(t));
+    const lastBuild = pubTimes.length > 0 ? new Date(Math.max(...pubTimes)) : new Date();
 
     const lines = [];
     lines.push('<?xml version="1.0" encoding="UTF-8"?>');
@@ -75,14 +81,14 @@ async function main() {
     lines.push(`  <link>${esc(SITE_URL)}</link>`);
     lines.push(`  <description>${esc(site.bio)}</description>`);
     lines.push('  <language>zh-CN</language>');
-    lines.push(`  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>`);
+    lines.push(`  <lastBuildDate>${lastBuild.toUTCString()}</lastBuildDate>`);
     lines.push('  <generator>MedAI Blog</generator>');
     for (const post of published) {
       lines.push('  <item>');
       lines.push(`    <guid isPermaLink="false">${esc(post.id)}</guid>`);
       lines.push(`    <link>${esc(`${SITE_URL}/posts/${post.id}`)}</link>`);
       lines.push(`    <title>${esc(post.title)}</title>`);
-      lines.push(`    <description>${esc(post.description ?? post.excerpt)}</description>`);
+      lines.push(`    <description>${esc(post.description ?? post.excerpt ?? '')}</description>`);
       lines.push(`    <pubDate>${new Date(post.date).toUTCString()}</pubDate>`);
       for (const tag of post.tags ?? []) {
         lines.push(`    <category>${esc(tag)}</category>`);
@@ -110,4 +116,4 @@ async function main() {
   }
 }
 
-main();
+await main();

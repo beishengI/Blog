@@ -210,7 +210,7 @@ description 是 Skill 的"门面"，Agent 靠它在 100+ 个 Skill 中选择。*
 
 **Pattern 1：总览 + 引用（高屋建瓴式）**
 
-```
+````
 # PDF Processing
 ## Quick start
 Extract text with pdfplumber:
@@ -223,7 +223,7 @@ with pdfplumber.open("file.pdf") as pdf:
 **Form filling**: See [FORMS.md](FORMS.md)
 **API reference**: See [REFERENCE.md](REFERENCE.md)
 **Examples**: See [EXAMPLES.md](EXAMPLES.md)
-```
+````
 
 **Pattern 2：按领域组织**（用户问销售指标时，只加载 sales.md，不碰 finance/marketing）
 
@@ -371,7 +371,7 @@ Progress:
 
 ### 8.2 最佳实践原文示例（PDF 处理 Skill 的标准骨架）
 
-```markdown
+````markdown
 ---
 name: pdf-processing
 description: Extracts text and tables from PDF files, fills forms, and merges documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
@@ -388,7 +388,7 @@ with pdfplumber.open("file.pdf") as pdf:
 **Form filling**: See [FORMS.md](FORMS.md) for complete guide
 **API reference**: See [REFERENCE.md](REFERENCE.md) for all methods
 **Examples**: See [EXAMPLES.md](EXAMPLES.md) for common patterns
-```
+````
 
 该骨架同时示范了：精准的 description（做什么+何时用+触发词）、简洁指令（默认模型已知 PDF）、渐进式披露（三个按需加载的参考文件）。
 
