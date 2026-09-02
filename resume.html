@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>张栋栋 — AI 应用开发</title>
+<style>
+  /* 设计规格沿用 GodSU resume-typeset + ASu 高密度单栏：Georgia+中文黑体 / 亮蓝分节细线 / 藏蓝强调 / 灰带行 */
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --blue: #2563EB;
+    --blue-rule: #3B82F6;
+    --navy: #1E3A8A;
+    --ink: #111;
+    --gray-band: #F3F4F6;
+  }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    font-size: 11.5px;
+    line-height: 1.82;
+    background: #fff;
+  }
+  .print-hint {
+    font-size: 10px; color: #999; margin-bottom: 6px;
+  }
+  .sheet {
+    width: 210mm; min-height: 297mm; margin: 0 auto;
+    padding: 10mm 10.6mm 6mm;
+    background: #fff;
+  }
+  .sheet + .sheet { page-break-before: always; }
+  b, strong { font-weight: 700; }
+  code {
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: inherit;
+    color: inherit;
+    background: none;
+    padding: 0;
+  }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .header .info { flex: 1; }
+  .avatar {
+    width: 23mm; height: 23mm; border-radius: 50%;
+    object-fit: cover; border: 1px solid #ddd; margin-left: 8px; flex: 0 0 auto;
+  }
+  h1 {
+    font-size: 24px; letter-spacing: 1px; margin-bottom: 2px;
+    font-weight: 700;
+  }
+  .hline { font-size: 11px; margin-bottom: 1px; }
+  .hline .sep { color: #666; margin: 0 5px; }
+  .intent {
+    font-size: 13px; margin: 3px 0 6px;
+  }
+  h2 {
+    font-size: 15px; color: var(--blue); font-weight: 700; margin: 15px 0 0;
+  }
+  .rule { border: 0; border-top: 1.2px solid var(--blue-rule); margin: 1px 0 5px; }
+  .lead {
+    color: var(--navy); font-weight: 700; margin-bottom: 4px; text-align: justify;
+  }
+  .org {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--gray-band); padding: 4px 9px; margin: 10px 0 5px;
+    border-radius: 2px; page-break-inside: avoid;
+  }
+  .org .name { font-weight: 700; font-size: 12.5px; }
+  .org .name .tag { font-weight: 400; color: #444; font-size: 11px; }
+  .org .date { color: #333; font-size: 11px; white-space: nowrap; font-weight: 700; }
+  .tech { margin: 3px 0 5px; color: #666; }
+  ul { list-style: none; }
+  li { padding-left: 15px; position: relative; margin-bottom: 4px; text-align: justify; }
+  li::before { content: "•"; position: absolute; left: 1px; top: 0; font-weight: 700; color: var(--blue); }
+  .cols { display: flex; flex-wrap: wrap; }
+  .cols li { width: 50%; }
+  .honor .lead { margin-top: 4px; }
+  /* 第二页专属：适度拉开下部模块间距 */
+  .pg2 h2 { margin-top: 13px; }
+  .pg2 li { margin-bottom: 3px; }
+  .pg2 .tech { margin-bottom: 5px; }
+  @media print {
+    .sheet { margin: 0; width: auto; }
+    .print-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="print-hint">打印提示：浏览器打印选择 A4、边距默认、缩放 100%，即可导出 PDF（智能分页为 2 页）。</div>
+
+<div class="sheet">
+  <div class="header">
+    <div class="info">
+      <h1>张栋栋</h1>
+      <div class="hline">电话 15381743881 <span class="sep">|</span> 邮箱 1611045292@qq.com <span class="sep">|</span> 湖北·武汉 <span class="sep">|</span> GitHub github.com/beishengI</div>
+      <div class="intent"><b>求职意向：AI 应用开发工程师</b>　（大模型应用 / RAG · Agent / 全栈方向）</div>
+    </div>
+    <img class="avatar" src="avatar.jpeg" alt="证件照">
+  </div>
+
+  <h2>教育背景</h2>
+  <hr class="rule">
+  <div class="org">
+    <span class="name">湖北医药学院 <span class="tag">— 智能医学工程｜本科（2027 届）</span></span>
+    <span class="date">2023.09 – 2027.06</span>
+  </div>
+  <div class="lead">平均学分绩点 3.77（专业第 1 · 已修 65 门，0 不及格），平均分 89.75</div>
+  <p>主修课程：Python 语言程序设计 <b>95.5</b>、机器学习及应用 <b>91.6</b>、Web 开发技术及应用 <b>94.8/96</b>、数据挖掘技术、大数据关键技术与实践、数据库系统原理、计算机网络。</p>
+
+  <h2>技术栈</h2>
+  <hr class="rule">
+  <ul class="cols">
+    <li><b>大模型推理与部署</b>：Qwen3-VL/BGE-M3 在线服务化（OpenAI 兼容 API · SSE 流式 · 请求级性能遥测）、模型量化与推理加速、吞吐/首字时延调优；适配 A800/H800(80GB)/昇腾 910B 异构硬件</li>
+    <li><b>AI Agent / RAG</b>：Dify/RAGFlow 知识库与向量检索、Agent 编排与工具调用链、多轮会话；熟悉 Prompt/Function Calling、LangChain/LlamaIndex 生态</li>
+    <li><b>后端开发</b>：Python（FastAPI 流式输出/异步）、Java（Spring Boot）；Spring Security/JWT/Redis、SQLAlchemy/MySQL、接口限流、RESTful API</li>
+    <li><b>前端 / 全栈</b>：Vue3、TypeScript、Element Plus、Pinia、ECharts；Vite 工程化</li>
+    <li><b>深度学习 / ML</b>：PyTorch、Transformer 与 Mamba 序列建模、医学图像分割、BERTopic、数据挖掘与 NLP 分析</li>
+    <li><b>工程与运维</b>：Linux、Git、Docker/Nginx、Kubernetes（了解）；低代码（JeeLowCode/YinLiYun）；Prompt 工程（持认证）</li>
+  </ul>
+
+  <h2>项目经历</h2>
+  <hr class="rule">
+
+  <div class="org">
+    <span class="name">荆州某国企合同预审辅助智能体 <span class="tag">— Agent 编排 / 规则引擎</span></span>
+    <span class="date">2026（至今）</span>
+  </div>
+  <div class="tech">技术栈：Spring Boot 3 · Vue3 · Dify · DSL 规则引擎 · MySQL/Redis · OpenAI API</div>
+  <ul>
+    <li>面向国企合同「三单比对」（谈判记录/技术协议/合同草案）人工审核量大、漏判风险高的痛点，基于低代码平台从 0 到 1 交付合同预审智能体，覆盖修理修缮、物资买卖、加工定作、技术服务等 <b>6 类</b>合同模板</li>
+    <li>设计「Dify 字段抽取 → 语义对齐 → 后端规则引擎」<b>三层审查架构</b>：规则层由自研 Java DSL 引擎执行（金额比率/精确值/日期/文本相似度等 <b>5 种比对模式</b>），不依赖大模型、判定<b>确定性 100%</b>；四级判定（OK/WARN/BLOCK/MISSING）分级阻断，结论可解释、可复现</li>
+    <li>落地全链路工程化：三单上传 → 异步审查（<b>6 态状态机</b> + 操作日志审计 + SSE 实时进度推送）→ 预审报告版本化与多轮追问，<b>8 张</b>业务表支撑；接入 OpenAI 流式对话并加装接口限流</li>
+    <li>交付软件需求/概要设计/详细设计/测试计划/测试分析<b>全套 5 件文档</b>与对抗测试脚本，为多 Agent 协作预留 Harness 扩展接口</li>
+  </ul>
+
+  <div class="org">
+    <span class="name">基于 Lite-Mamba 医学影像分割模型可视化分析系统 <span class="tag">— 模型训练·评估 / 医疗 AI</span></span>
+    <span class="date">2026（至今）</span>
+  </div>
+  <div class="tech">技术栈：PyTorch · MONAI · FastAPI · Vue3 · ECharts · Docker/Nginx ｜ 开源：github.com/beishengI/Lite-Mamba-Visualization</div>
+  <ul>
+    <li>在 HPC 集群（<b>A800 80GB</b>，Slurm 调度 + Apptainer 容器）自主训练 Lite-Mamba 轻量化分割模型：围绕 <b>BraTS2023</b> 脑肿瘤任务（<b>1251 例</b>、875/125/251 固定划分、4 模态 MRI）构建「预处理→训练→预测→指标→推理」<b>标准化流水线</b></li>
+    <li>设计并执行 <b>16 组对照实验</b>（基线 + 宽度搜索 + 模块消融 + 5 主流模型对比）：Lite-Mamba 参数量 <b>10.9M（↓83.9%）</b>、计算量 <b>↓86.5%</b>，Dice <b>0.879</b>（仅降 0.97pt）且 HD95 反优于基线（4.73 vs 4.92）；消融定位 MAS 模块增益（Dice <b>0.894 超基线</b>）</li>
+    <li>搭建 FastAPI + Vue3 + ECharts 可视化平台：E001–E016 指标对比、三视图切片浏览与 GT 标签叠加、.nii.gz 在线推理、<b>CSV/LaTeX/Markdown/PDF</b> 四类报告一键导出；Docker/Nginx 一键部署，配套大模型在线推理服务支撑 3D 肿瘤视图与 AI 切片解读（见下项目），整体开源至 GitHub</li>
+  </ul>
+</div>
+
+<div class="sheet pg2">
+  <div class="org">
+    <span class="name">Qwen3 大模型在线推理服务与性能优化 <span class="tag">— 模型部署·推理加速</span></span>
+    <span class="date">2026</span>
+  </div>
+  <div class="tech">技术栈：Qwen3-VL-32B · BGE-M3 · FastAPI · SSE 流式 · A800/H800(80GB) · 昇腾 910B · 模型量化 · 性能遥测</div>
+  <ul>
+    <li>独立部署 <b>Qwen3-VL-32B</b> 多模态大模型在线推理服务：原生 Transformers + bfloat16（单卡显存约 <b>70GB/80GB</b>），FastAPI 封装 <b>OpenAI 兼容 API</b>（/v1/chat/completions，文本 + 图像 base64 多模态），<b>TextIteratorStreamer + 线程池</b>实现 SSE 逐 token 流式输出，标准客户端零成本接入</li>
+    <li>自研轻量性能监控 PerformanceMonitor：逐请求记录<b>时延 / token 用量 / GPU 利用率 / 显存 / 温度</b>并落盘 JSONL（累计 <b>171 条</b>遥测），支撑吞吐与<b>首字时延</b>瓶颈定位；配套 BGE-M3 向量服务（CUDA + 批处理 + 归一化），与 LLM 服务<b>双端口解耦</b>（8000/8001）</li>
+    <li>在 <b>NVIDIA H800(80GB)</b> 与 <b>华为昇腾 910B</b> 异构硬件上完成 Qwen3 系列模型量化与推理加速（吞吐/首字时延双指标）；针对 HPC <b>14 天 GPU 配额</b>周期，以 tmux 会话 + SSH 反向隧道 + 一键启停/自愈脚本保障服务长稳在线，打通「部署 → 服务化 → 监控 → 维护」全链路</li>
+  </ul>
+
+  <div class="org">
+    <span class="name">大学代码课程学生管理系统 <span class="tag">— 全栈开发 / 权限管理</span></span>
+    <span class="date">2026</span>
+  </div>
+  <div class="tech">技术栈：Spring Boot · Spring Security · Redis · JWT · Vue3 · Pinia · Element Plus · MySQL</div>
+  <ul>
+    <li>基于若依(RuoYi)前后端分离框架二次开发的「学生-课程」信息管理系统，覆盖<b>学生、班级、课程、成绩</b>等核心业务模块的统一管理与维护，支持数据导入导出与关联查询，获 <b>4C 大赛国家三等奖</b></li>
+    <li>后端二次开发：Spring Security + JWT 权限认证、动态加载权限菜单、接口统一返回规范与操作日志，整合代码生成器<b>自动化生成接口与页面</b>，显著提升交付效率与代码质量</li>
+    <li>前端基于 Vue3 + Pinia + Element Plus（Composition API/script setup）完成页面与接口封装，推动多人前后端联调与<b>多环境发布</b>，沉淀统一工程协作与部署规范</li>
+  </ul>
+
+  <div class="org">
+    <span class="name">某市商业出租车管理系统平台 <span class="tag">— 低代码全栈</span></span>
+    <span class="date">2026</span>
+  </div>
+  <div class="tech">技术栈：Spring Boot · Vue3 · Element Plus · MySQL · JeeLowCode · OpenAI API</div>
+  <ul>
+    <li>基于 JeeLowCode 低代码框架完成在线建表、统计报表（SQL 即报表）、多表关联、租户数据权限等运营管理能力，支撑业务快速上线并缩短交付周期</li>
+    <li>深入出租车运营业务场景，将行业需求转化为低代码数据模型、<b>统计报表与角色权限</b>，运用用户思维开展功能验证与线上问题排查，保证贴合实际业务</li>
+    <li>接入 OpenAI API（对话 / TTS / Whisper）扩展智能交互能力，完成前后端联调与<b>开发/测试/生产多环境</b>构建发布与版本管理，沉淀可复用的部署与运维流程</li>
+    <li>在研发实践中沉淀出「JeeLowCode 低代码框架开发技能包」——梳理框架架构、<b>四种增强模式</b>、硬性约束与运行时校验清单等标准化文档，形成可复用的工程方法论并反哺后续业务交付，降低团队开发与维护成本</li>
+  </ul>
+
+  <h2>荣誉奖项</h2>
+  <hr class="rule">
+  <div class="honor">
+    <div class="lead">2026 全国 4C Web 开发挑战赛 · 国家三等奖；全国大学生软件测试大赛 · 国赛三等奖</div>
+    <ul>
+      <li>全国大学生数学建模竞赛 · 省赛二等奖；蓝桥杯（Python 赛道）· 省赛三等奖</li>
+      <li>连续获国家励志奖学金（全国本科生 <b>3%</b>）、校特等奖学金（前 <b>0.5%</b>）；获评“优秀大学生标兵”</li>
+    </ul>
+  </div>
+
+  <h2>技能证书</h2>
+  <hr class="rule">
+  <p>CET-4 ｜ 工业互联网平台开发工程师（初级）｜ Prompt 工程师 ｜ Python 计算机二级</p>
+
+  <h2>自我评价</h2>
+  <hr class="rule">
+  <p>智能医学工程专业背景兼具算法理解与工程落地能力，已跑通“模型训练与评估（Lite-Mamba 分割模型）→ 模型部署与推理服务化（A800 上的 Qwen3-VL-32B 流式服务 + H800/昇腾 910B 上的 Qwen3 量化加速）→ RAG/Agent 智能体 → 全栈 Web 系统”完整链路，覆盖数据清洗与标注、实验记录与结果分析、模型量化与推理加速、API 封装、Agent 编排及线上问题排查。具备扎实 Python/Java 编程、PyTorch 与数据挖掘能力，熟悉 Linux 与容器编排。目标导向、自驱力强、沟通表达清晰，持续跟踪大模型前沿技术，愿扎根业务场景，用 AI 技术创造实际价值。</p>
+</div>
+</body>
+</html>
