@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
 import { postCover } from '../utils/cover';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 14 · 封面瀑布流：CSS 多栏实现，卡片高度自由、列数随容器自适应。 */
@@ -8,10 +9,13 @@ export default function MasonryHome({ config }: { config: BlogConfig }) {
   const posts = usePosts().allPosts;
   return (
     <div>
-      <header className="mb-6">
-        <p className="kicker">GALLERY</p>
-        <h1 className="font-heading mt-2 text-4xl font-bold leading-tight md:text-5xl">{config.site.title}</h1>
-        <p className="read-max mt-3 text-muted">{config.site.bio}</p>
+      <header className="mb-6 flex items-start gap-4">
+        <SiteAvatar size="md" className="hidden sm:block" />
+        <div className="min-w-0">
+          <p className="kicker">GALLERY</p>
+          <h1 className="font-heading mt-2 text-4xl font-bold leading-tight md:text-5xl">{config.site.title}</h1>
+          <p className="read-max mt-3 text-muted">{config.site.bio}</p>
+        </div>
       </header>
 
       <div className="masonry-cols min-w-0">

@@ -4,6 +4,7 @@ import ArticleCard from '../components/ArticleCard';
 import FeatureCard from '../components/FeatureCard';
 import Reveal from '../components/Reveal';
 import Icon from '../components/Icon';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 08 · 杂志编辑风：巨幕标题 + 非对称拼贴 + 色带。 */
@@ -34,12 +35,17 @@ export default function EditorialHome({ config }: { config: BlogConfig }) {
       <section className="relative">
         <div className="grid items-start gap-[var(--gap)] xl:grid-cols-12">
           <Reveal className="min-w-0 xl:col-span-8" delay={0}>
-            <span className="kicker">VOL.{String(posts.length).padStart(2, '0')} — {config.site.bio}</span>
-            <h1 className="font-heading mt-4 leading-[0.9]">
-              <span className="block text-5xl font-extrabold md:text-6xl xl:text-7xl">医学</span>
-              <span className="block text-5xl font-extrabold md:text-6xl xl:text-7xl display-outline">× AI</span>
-            </h1>
-            <p className="mt-5 max-w-xl text-lg text-muted">{config.site.bio}</p>
+            <div className="flex items-start gap-6">
+              <SiteAvatar size="lg" className="hidden md:block" />
+              <div className="min-w-0">
+                <span className="kicker">VOL.{String(posts.length).padStart(2, '0')} — {config.site.bio}</span>
+                <h1 className="font-heading mt-4 leading-[0.9]">
+                  <span className="block text-5xl font-extrabold md:text-6xl xl:text-7xl">医学</span>
+                  <span className="block text-5xl font-extrabold md:text-6xl xl:text-7xl display-outline">× AI</span>
+                </h1>
+                <p className="mt-5 max-w-xl text-lg text-muted">{config.site.bio}</p>
+              </div>
+            </div>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 to="/posts"

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 20 · 工程蓝图：网格纸底 + 图号标注 + 等宽注释，工程制图感。 */
@@ -7,11 +8,16 @@ export default function BlueprintHome({ config }: { config: BlogConfig }) {
   const posts = usePosts().allPosts;
   return (
     <div className="blueprint-grid overflow-hidden rounded-brand border border-border p-6 md:p-10">
-      <p className="font-mono text-xs tracking-[0.25em] text-primary">FIG. 01 — SYSTEM OVERVIEW</p>
-      <h1 className="font-heading mt-3 text-4xl font-bold uppercase leading-none md:text-5xl">
-        {config.site.title}
-      </h1>
-      <p className="read-max mt-4 font-mono text-sm text-muted">{config.site.bio}</p>
+      <div className="flex items-start gap-4">
+        <SiteAvatar size="md" square className="hidden sm:block" />
+        <div className="min-w-0">
+          <p className="font-mono text-xs tracking-[0.25em] text-primary">FIG. 01 — SYSTEM OVERVIEW</p>
+          <h1 className="font-heading mt-3 text-4xl font-bold uppercase leading-none md:text-5xl">
+            {config.site.title}
+          </h1>
+          <p className="read-max mt-4 font-mono text-sm text-muted">{config.site.bio}</p>
+        </div>
+      </div>
 
       <div className="mt-8 grid-auto-lg">
         {posts.map((p, i) => (

@@ -1,5 +1,6 @@
 import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 11 · 时间轴：中央 dateline + 左右交替笔记卡片（xl 才分列，窄屏自动单列）。 */
@@ -7,8 +8,13 @@ export default function TimelineHome({ config }: { config: BlogConfig }) {
   const posts = usePosts().allPosts;
   return (
     <div>
-      <p className="text-xs tracking-[0.3em] text-primary">{config.site.author}</p>
-      <h1 className="font-heading text-3xl font-bold leading-tight md:text-4xl">实验记录 · EXPERIMENT LOG</h1>
+      <div className="flex items-center gap-4">
+        <SiteAvatar size="md" className="hidden sm:block" />
+        <div className="min-w-0">
+          <p className="text-xs tracking-[0.3em] text-primary">{config.site.author}</p>
+          <h1 className="font-heading mt-1 text-3xl font-bold leading-tight md:text-4xl">实验记录 · EXPERIMENT LOG</h1>
+        </div>
+      </div>
 
       <div className="relative mt-8 pl-8 xl:pl-0">
         {/* 时间轴：小屏靠左，xl 居中 */}

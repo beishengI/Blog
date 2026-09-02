@@ -38,7 +38,9 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col" style={shellStyle}>
       <BackgroundFX />
       <Header />
-      <main className="shell flex-1 py-8">
+      {/* w-full:main 是 flex-col 的交叉轴子项,.shell 的 auto margin 会让 stretch 失效、
+          收缩为内容宽度(窄内容页如 /resume 会被挤成细条),显式定宽后 shell 恒为 maxw 宽 */}
+      <main className="shell w-full flex-1 py-8">
         <div className={`relative z-10 grid gap-[var(--gap)] ${gridCols}`}>
           <div className={mainOrder}>{children}</div>
           {showSidebar && (

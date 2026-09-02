@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 const ECG_SVG = `<svg viewBox="0 0 600 40" preserveAspectRatio="none" class="w-full h-full">
@@ -12,7 +13,10 @@ export default function BrutalistHome({ config }: { config: BlogConfig }) {
   return (
     <div className="font-mono">
       <div className="border-2 border-border p-6">
-        <p className="break-words text-xs">[ {config.site.author} / INTELLIGENT MEDICAL ENGINEERING ]</p>
+        <div className="flex items-center gap-3">
+          <SiteAvatar size="sm" square />
+          <p className="min-w-0 break-words text-xs">[ {config.site.author} / INTELLIGENT MEDICAL ENGINEERING ]</p>
+        </div>
         <h1 className="font-heading mt-2 break-words text-5xl font-black uppercase leading-none tracking-tight md:text-6xl">
           {config.site.title}
         </h1>

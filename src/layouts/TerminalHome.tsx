@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 02 · 终端命令行：等宽字、提示符、ls 式清单。 */
@@ -16,8 +17,13 @@ export default function TerminalHome({ config }: { config: BlogConfig }) {
         </div>
 
         <div className="p-5 text-sm leading-relaxed">
-          <p className="break-words text-primary">$ whoami</p>
-          <p className="mt-1 text-muted">{config.site.author}</p>
+          <div className="flex items-center gap-3">
+            <SiteAvatar size="sm" square className="border border-border" />
+            <div className="min-w-0">
+              <p className="break-words text-primary">$ whoami</p>
+              <p className="mt-1 text-muted">{config.site.author}</p>
+            </div>
+          </div>
 
           <p className="mt-3 break-words text-primary">$ cat about.txt</p>
           <p className="mt-1 text-muted">{config.site.bio}</p>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 06 · 复古报纸：报头 + 头条首字下沉 + CSS 多栏正文。 */
@@ -12,6 +13,7 @@ export default function NewspaperHome({ config }: { config: BlogConfig }) {
   return (
     <div>
       <header className="border-b-4 border-double border-border pb-5 text-center">
+        <SiteAvatar size="md" className="mx-auto mb-3 block border border-border" />
         <p className="text-xs uppercase tracking-[0.3em] text-muted">{config.site.author} · 技术周刊</p>
         <h1 className="font-heading mt-2 text-5xl font-black leading-none md:text-6xl">{config.site.title}</h1>
         <p className="mt-3 text-sm text-muted">

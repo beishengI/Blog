@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 05 · 包豪斯几何：原色块 + 硬边 + 极简几何母题。 */
@@ -17,7 +18,11 @@ export default function BauhausHome({ config }: { config: BlogConfig }) {
             <p className="mt-3 max-w-lg text-muted">{config.site.bio}</p>
           </div>
           <div className="flex shrink-0 items-end gap-3">
-            <span className="h-20 w-20 rounded-full bg-primary md:h-24 md:w-24" />
+            <SiteAvatar
+              size="lg"
+              className="h-20 w-20 border-2 border-border md:h-24 md:w-24"
+              style={{ width: undefined, height: undefined }}
+            />
             <span className="h-20 w-20 bg-accent md:h-24 md:w-24" />
             <span
               className="h-20 w-20 bg-fg md:h-24 md:w-24"

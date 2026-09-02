@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 18 · 文档手册：左侧章节导航树 + 右侧编号条目，技术文档式阅读。 */
@@ -24,9 +25,12 @@ export default function DocsHome({ config }: { config: BlogConfig }) {
       </nav>
 
       <div className="min-w-0">
-        <header className="mb-6">
-          <h1 className="font-heading text-3xl font-bold md:text-4xl">{config.site.title}</h1>
-          <p className="mt-2 text-muted">{config.site.bio}</p>
+        <header className="mb-6 flex items-start gap-4">
+          <SiteAvatar size="md" className="hidden sm:block" />
+          <div className="min-w-0">
+            <h1 className="font-heading text-3xl font-bold md:text-4xl">{config.site.title}</h1>
+            <p className="mt-2 text-muted">{config.site.bio}</p>
+          </div>
         </header>
 
         {categories.map((c, ci) => (

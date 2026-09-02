@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 12 · AI 伴读：左侧原文摘要 / 右侧 AI 摘要与术语，下方更多文章。 */
@@ -13,7 +14,10 @@ export default function CompanionHome({ config }: { config: BlogConfig }) {
     <div className="space-y-10">
       <div className="grid-auto">
         <div className="rounded-brand border border-border bg-surface p-6">
-          <p className="text-xs uppercase tracking-widest text-muted">原文 · {config.site.author}</p>
+          <div className="flex items-center gap-3">
+            <SiteAvatar size="sm" />
+            <p className="text-xs uppercase tracking-widest text-muted">原文 · {config.site.author}</p>
+          </div>
           <h2 className="font-heading mt-2 text-2xl font-bold leading-snug">{featured.title}</h2>
           <p className="mt-2 text-sm text-muted">{featured.excerpt}</p>
           <Link to={`/posts/${featured.id}`} className="mt-3 inline-block text-sm text-primary">阅读全文 →</Link>

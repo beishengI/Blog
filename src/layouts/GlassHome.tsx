@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../context/PostsContext';
+import SiteAvatar from '../components/SiteAvatar';
 import { BlogConfig } from '../types';
 
 /** 04 · 玻璃层叠：渐变舞台上叠半透明毛玻璃面板。 */
@@ -9,12 +10,17 @@ export default function GlassHome({ config }: { config: BlogConfig }) {
     <div className="space-y-[var(--gap)]">
       <section className="glass-stage">
         <div className="glass-panel read-max relative z-10 p-6 md:p-8">
-          <p className="text-xs uppercase tracking-[0.25em] text-primary">{config.site.author}</p>
-          <h1 className="font-heading mt-2 text-4xl font-bold leading-tight md:text-5xl">{config.site.title}</h1>
-          <p className="mt-3 text-muted">{config.site.bio}</p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link to="/posts" className="rounded-brand bg-primary px-4 py-2 text-sm text-white">浏览文章</Link>
-            <Link to="/about" className="rounded-brand border border-border px-4 py-2 text-sm">关于我</Link>
+          <div className="flex items-start gap-5">
+            <SiteAvatar size="md" className="border border-white/40" />
+            <div className="min-w-0">
+              <p className="text-xs uppercase tracking-[0.25em] text-primary">{config.site.author}</p>
+              <h1 className="font-heading mt-2 text-4xl font-bold leading-tight md:text-5xl">{config.site.title}</h1>
+              <p className="mt-3 text-muted">{config.site.bio}</p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link to="/posts" className="rounded-brand bg-primary px-4 py-2 text-sm text-white">浏览文章</Link>
+                <Link to="/about" className="rounded-brand border border-border px-4 py-2 text-sm">关于我</Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
