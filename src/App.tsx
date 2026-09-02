@@ -10,6 +10,7 @@ import Wiki from './pages/Wiki';
 import WikiDetail from './pages/WikiDetail';
 import AdminPage from './pages/AdminPage';
 import EditorPage from './pages/EditorPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/new" element={<EditorPage />} />
         <Route path="/admin/edit/:id" element={<EditorPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Layout>
   );

@@ -42,8 +42,9 @@ export default function ArticleList() {
       base = base.filter(p => p.category === activeCat);
     }
     if (q) {
+      // 全文搜索：标题/摘要/分类/标签/正文（正文为原始 Markdown，含代码等字面内容）
       base = base.filter(p =>
-        `${p.title} ${p.excerpt} ${p.category} ${p.tags.join(' ')}`.toLowerCase().includes(q)
+        `${p.title} ${p.excerpt} ${p.category} ${p.tags.join(' ')} ${p.content}`.toLowerCase().includes(q)
       );
     }
     return base;

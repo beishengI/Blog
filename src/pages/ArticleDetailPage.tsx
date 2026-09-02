@@ -4,6 +4,8 @@ import { Post } from '../data/posts';
 import { usePosts } from '../context/PostsContext';
 import ArticleDetail from '../components/ArticleDetail';
 import Comments from '../components/Comments';
+import PrevNextNav from '../components/PrevNextNav';
+import RelatedPosts from '../components/RelatedPosts';
 import ReadingProgress from '../components/ReadingProgress';
 import StickyTOC from '../components/StickyTOC';
 import { useConfig } from '../context/ConfigContext';
@@ -40,7 +42,7 @@ function ArticleHeader({ post }: { post: Post }) {
   );
 }
 
-function NormalDetail({ post }: { post: Post }) {
+function NormalDetail({ post, prev, next }: { post: Post; prev?: Post; next?: Post }) {
   const { config } = useConfig();
   const headings = useMemo(() => parseHeadings(post.content), [post.content]);
   const activeId = useActiveHeading(headings.map((h) => h.id));
@@ -54,6 +56,8 @@ function NormalDetail({ post }: { post: Post }) {
         <StickyTOC headings={headings} activeId={activeId} progress={progress} />
       )}
       <ArticleDetail content={post.content} />
+      <PrevNextNav prev={prev} next={next} />
+      <RelatedPosts current={post} />
       {config.features.comments !== false && (
         <div className="mt-10 border-t border-border pt-8">
           <Comments postId={post.id} />
@@ -63,7 +67,7 @@ function NormalDetail({ post }: { post: Post }) {
   );
 }
 
-function CompanionDetail({ post }: { post: Post }) {
+function CompanionDetail({ post, prev, next }: { post: Post; prev?: Post; next?: Post }) {
   const [showAI, setShowAI] = useState(false);
   const { config } = useConfig();
   const headings = useMemo(() => parseHeadings(post.content), [post.content]);
@@ -86,6 +90,8 @@ function CompanionDetail({ post }: { post: Post }) {
         <StickyTOC headings={headings} activeId={activeId} progress={progress} />
       )}
       <ArticleDetail content={post.content} />
+      <PrevNextNav prev={prev} next={next} />
+      <RelatedPosts current={post} />
       {config.features.comments !== false && (
         <div className="mt-10 border-t border-border pt-8">
           <Comments postId={post.id} />
@@ -130,8 +136,17 @@ function CompanionDetail({ post }: { post: Post }) {
 export default function ArticleDetailPage() {
   const { id } = useParams();
   const { config } = useConfig();
-  const { getPost } = usePosts();
+  const { getPost, allPosts } = usePosts();
   const post = id ? getPost(id) : undefined;
+
+  // 相邻文章：allPosts 为 date 降序 → 上一篇=更早(idx+1)，下一篇=更新(idx-1)；
+  // 草稿不在 allPosts 中（公开列表语义），此时隐藏导航
+  const { prev, next } = useMemo(() => {
+    if (!post) return { prev: undefined, next: undefined };
+    const idx = allPosts.findIndex((p) => p.id === post.id);
+    if (idx < 0) return { prev: undefined, next: undefined };
+    return { prev: allPosts[idx + 1], next: idx > 0 ? allPosts[idx - 1] : undefined };
+  }, [post, allPosts]);
 
   // SEO + Article JSON-LD：post 不存在时不注入结构化数据
   const seoDescription = post ? (post.description ?? post.excerpt) : undefined;
@@ -163,6 +178,6 @@ export default function ArticleDetailPage() {
   }, [post?.id]);
 
   if (!post) return <NotFound />;
-  if (config.layout.direction === 'companion') return <CompanionDetail post={post} />;
-  return <NormalDetail post={post} />;
+  if (config.layout.direction === 'companion') return <CompanionDetail post={post} prev={prev} next={next} />;
+  return <NormalDetail post={post} prev={prev} next={next} />;
 }
