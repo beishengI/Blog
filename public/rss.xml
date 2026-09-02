@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>MedAI Lab</title>
+  <link>http://localhost:5173</link>
+  <description>湖北医药学院 · 智能医学工程 · 关注医学影像 AI 与可解释性</description>
+  <language>zh-CN</language>
+  <lastBuildDate>Wed, 02 Sep 2026 11:36:49 GMT</lastBuildDate>
+  <generator>MedAI Blog</generator>
+  <item>
+    <guid isPermaLink="false">cnn-ct-segmentation</guid>
+    <link>http://localhost:5173/posts/cnn-ct-segmentation</link>
+    <title>用 U-Net 做肺部 CT 图像分割：从数据到部署</title>
+    <description>梳理医学影像分割的标注规范、数据增强策略，以及如何在有限算力下训练一个可用的 U-Net。</description>
+    <pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
+    <category>深度学习</category>
+    <category>分割</category>
+    <category>PyTorch</category>
+    <category>医学影像</category>
+  </item>
+  <item>
+    <guid isPermaLink="false">gradcam-interpretability</guid>
+    <link>http://localhost:5173/posts/gradcam-interpretability</link>
+    <title>可解释性实战：用 Grad-CAM 让模型「说清」它在看哪</title>
+    <description>临床医生不信任黑盒。Grad-CAM 是建立信任的最低成本一步。</description>
+    <pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate>
+    <category>可解释性</category>
+    <category>Grad-CAM</category>
+    <category>可视化</category>
+  </item>
+  <item>
+    <guid isPermaLink="false">rag-clinical-qa</guid>
+    <link>http://localhost:5173/posts/rag-clinical-qa</link>
+    <title>构建临床知识库问答：RAG 而非微调</title>
+    <description>为什么在医学问答上，检索增强比直接微调更稳妥、更易更新。</description>
+    <pubDate>Mon, 03 Aug 2026 00:00:00 GMT</pubDate>
+    <category>RAG</category>
+    <category>LLM</category>
+    <category>检索增强</category>
+  </item>
+  <item>
+    <guid isPermaLink="false">deploy-fastapi</guid>
+    <link>http://localhost:5173/posts/deploy-fastapi</link>
+    <title>把模型做成 API：FastAPI + ONNX 推理服务</title>
+    <description>从 `.pth` 到可调用接口，记录一次生产化改造。</description>
+    <pubDate>Wed, 22 Jul 2026 00:00:00 GMT</pubDate>
+    <category>部署</category>
+    <category>FastAPI</category>
+    <category>ONNX</category>
+  </item>
+  <item>
+    <guid isPermaLink="false">study-notes-ml</guid>
+    <link>http://localhost:5173/posts/study-notes-ml</link>
+    <title>大四实习笔记：医院影像科的 AI 落地观察</title>
+    <description>一线视角看 AI 工具如何真正进入 workflow，以及阻力来自哪里。</description>
+    <pubDate>Fri, 10 Jul 2026 00:00:00 GMT</pubDate>
+    <category>实习</category>
+    <category>行业观察</category>
+  </item>
+</channel>
+</rss>
