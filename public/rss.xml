@@ -3,7 +3,7 @@
 <channel>
   <title>MedAI Lab</title>
   <link>http://localhost:5173</link>
-  <description>湖北医药学院 · 智能医学工程 · 关注医学影像 AI 与可解释性</description>
+  <description>湖北医药学院 · 智能医学工程 · 关注大模型应用开发（RAG / Agent）与医学影像 AI</description>
   <language>zh-CN</language>
   <lastBuildDate>Fri, 21 Aug 2026 00:00:00 GMT</lastBuildDate>
   <generator>MedAI Blog</generator>
@@ -24,6 +24,7 @@
     <title>可解释性实战：用 Grad-CAM 让模型「说清」它在看哪</title>
     <description>临床医生不信任黑盒。Grad-CAM 是建立信任的最低成本一步。</description>
     <pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate>
+    <category>深度学习</category>
     <category>可解释性</category>
     <category>Grad-CAM</category>
     <category>可视化</category>
@@ -44,6 +45,7 @@
     <title>把模型做成 API：FastAPI + ONNX 推理服务</title>
     <description>从 `.pth` 到可调用接口，记录一次生产化改造。</description>
     <pubDate>Wed, 22 Jul 2026 00:00:00 GMT</pubDate>
+    <category>深度学习</category>
     <category>部署</category>
     <category>FastAPI</category>
     <category>ONNX</category>

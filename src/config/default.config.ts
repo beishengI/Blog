@@ -8,20 +8,21 @@ import { BlogConfig } from '../types';
 export const defaultConfig: BlogConfig = {
   site: {
     title: 'MedAI Lab',
-    author: '林知远',
-    bio: '湖北医药学院 · 智能医学工程 · 关注医学影像 AI 与可解释性',
+    author: '北省',
+    bio: '湖北医药学院 · 智能医学工程 · 关注大模型应用开发（RAG / Agent）与医学影像 AI',
     avatar: '/avatar.jpeg',
     url: '', // 站点根地址（SEO canonical 用），如 https://example.com；空则不生成 canonical
-    email: 'example@email.com',
-    github: 'example',
+    email: '1611045292@qq.com',
+    github: 'beishengI',
     intro: [
-      '这里是湖北医药学院智能医学工程专业的一名大四学生，研究方向聚焦医学影像人工智能与可解释性。',
-      '本博客用于记录学习笔记、项目实践与科研思考。',
+      '这里是湖北医药学院智能医学工程专业的一名大四学生（2027 届），关注大模型应用开发（RAG · Agent · 推理部署）与医学影像 AI。',
+      '本博客用于记录学习笔记、项目实践与科研思考，沉淀从模型训练到 AI 应用落地的完整链路。',
     ],
     research: [
-      '医学影像分割与分类（CNN / Transformer）',
-      '模型可解释性（Grad-CAM、SHAP）',
-      '临床决策支持系统设计',
+      '大模型应用开发：RAG 知识库、Agent 编排与工具调用（Dify / RAGFlow / LangChain）',
+      '模型部署与推理服务化：Qwen3-VL 流式服务、量化加速（A800 / H800 / 昇腾 910B）',
+      '医学影像分割：PyTorch / MONAI，轻量化分割模型训练与可视化（Lite-Mamba）',
+      '全栈 Web 开发：FastAPI / Spring Boot · Vue3 / TypeScript',
     ],
   },
   theme: {
