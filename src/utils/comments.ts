@@ -15,29 +15,33 @@ export interface Comment {
 const COMMENTS_KEY = 'medai-blog-comments';
 const COMMENTER_KEY = 'medai-blog-commenter';
 
-type CommentBuckets = Record<string, Comment[]>;
+export type CommentBuckets = Record<string, Comment[]>;
+
+/** 校验并收敛任意值为合法分桶（非法键/非法评论剔除，不抛错），供读取与备份恢复共用。 */
+export function sanitizeBuckets(value: unknown): CommentBuckets {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  const out: CommentBuckets = {};
+  for (const [pid, list] of Object.entries(value as Record<string, unknown>)) {
+    if (typeof pid !== 'string' || !Array.isArray(list)) continue;
+    out[pid] = list.filter(
+      (c): c is Comment =>
+        !!c &&
+        typeof c === 'object' &&
+        typeof (c as Comment).id === 'string' &&
+        typeof (c as Comment).nickname === 'string' &&
+        typeof (c as Comment).content === 'string' &&
+        typeof (c as Comment).createdAt === 'string'
+    );
+  }
+  return out;
+}
 
 /** 读取全部分桶；结构非法时返回空对象（不抛错）。 */
 function readBuckets(): CommentBuckets {
   try {
     const raw = localStorage.getItem(COMMENTS_KEY);
     if (!raw) return {};
-    const parsed: unknown = JSON.parse(raw);
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
-    const out: CommentBuckets = {};
-    for (const [pid, list] of Object.entries(parsed as Record<string, unknown>)) {
-      if (typeof pid !== 'string' || !Array.isArray(list)) continue;
-      out[pid] = list.filter(
-        (c): c is Comment =>
-          !!c &&
-          typeof c === 'object' &&
-          typeof (c as Comment).id === 'string' &&
-          typeof (c as Comment).nickname === 'string' &&
-          typeof (c as Comment).content === 'string' &&
-          typeof (c as Comment).createdAt === 'string'
-      );
-    }
-    return out;
+    return sanitizeBuckets(JSON.parse(raw));
   } catch {
     return {};
   }
@@ -62,6 +66,18 @@ function genId(existing: Comment[]): string {
     id = `c-${ts}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
   } while (existing.some((c) => c.id === id));
   return id;
+}
+
+/** 读取全部分桶（备份导出用）；无记录返回空对象。 */
+export function readAllBuckets(): CommentBuckets {
+  return readBuckets();
+}
+
+/** 整库替换评论分桶（备份恢复用）；结构先经 sanitizeBuckets 收敛。 */
+export function replaceAllBuckets(value: unknown): CommentBuckets {
+  const buckets = sanitizeBuckets(value);
+  writeBuckets(buckets);
+  return buckets;
 }
 
 /** 读取某篇文章的评论（无记录返回 []）。 */

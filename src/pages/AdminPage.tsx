@@ -1,8 +1,11 @@
+import { useRef, type ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Post } from '../data/posts';
 import { usePosts, isPublished } from '../context/PostsContext';
-import { getViewCount } from '../utils/stats';
+import { getViewCount, getAllViewCounts, replaceAllViewCounts } from '../utils/stats';
 import { useSEO } from '../hooks/useSEO';
+import { exportBackup, parseBackup, exportPostMarkdown } from '../utils/backup';
+import { readAllBuckets, replaceAllBuckets } from '../utils/comments';
 
 /** 标签胶囊：最多展示 3 个，超出折叠为 +N。 */
 function TagChips({ tags }: { tags: string[] }) {
@@ -37,6 +40,75 @@ function StatusBadge({ post, builtin }: { post: Post; builtin: boolean }) {
         <span className="rounded-full border border-border px-2 py-0.5 text-xs text-muted">内置</span>
       )}
     </span>
+  );
+}
+
+/** 备份与恢复：用户文章 + 评论 + 阅读量的 JSON 导出/导入（内置文章在代码中，不参与）。 */
+function BackupSection() {
+  const { userPosts, replaceUserPosts } = usePosts();
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const handleExport = () => exportBackup(userPosts, readAllBuckets(), getAllViewCounts());
+
+  const handleImportFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // 允许重复选择同一文件
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = parseBackup(String(reader.result));
+        const commentCount = Object.values(parsed.comments).reduce((n, l) => n + l.length, 0);
+        const ok = window.confirm(
+          `导入将覆盖当前浏览器中的用户文章（${userPosts.length} 篇）、全部评论与阅读量。\n` +
+            `备份内容：文章 ${parsed.posts.length} 篇、评论 ${commentCount} 条、阅读量 ${Object.keys(parsed.views).length} 项。\n确定继续吗？`
+        );
+        if (!ok) return;
+        replaceUserPosts(parsed.posts);
+        replaceAllBuckets(parsed.comments);
+        replaceAllViewCounts(parsed.views);
+        window.alert(
+          `导入完成：文章 ${parsed.posts.length} 篇、评论 ${commentCount} 条` +
+            (parsed.postsDropped > 0 ? `（剔除无效/冲突文章 ${parsed.postsDropped} 篇）` : '')
+        );
+      } catch (err) {
+        window.alert(`导入失败：${err instanceof Error ? err.message : '未知错误'}`);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  return (
+    <section aria-label="备份与恢复" className="rounded-brand border border-border bg-surface p-4">
+      <h2 className="font-heading text-base font-semibold">备份与恢复</h2>
+      <p className="mt-1 text-sm text-muted">
+        备份范围：用户文章、评论与阅读量（均为浏览器本地数据，清空缓存即丢失）。
+        内置文章保存在代码中，无需备份。
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={handleExport}
+          className="rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary"
+        >
+          导出备份（JSON）
+        </button>
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          className="rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary"
+        >
+          导入备份
+        </button>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="application/json,.json"
+          className="hidden"
+          onChange={handleImportFile}
+        />
+      </div>
+    </section>
   );
 }
 
@@ -101,8 +173,15 @@ export default function AdminPage() {
                 {/* 状态徽章 */}
                 <StatusBadge post={p} builtin={builtin} />
 
-                {/* 操作列：仅用户文章可编辑/删除/切换草稿；内置文章置灰禁用 */}
+                {/* 操作列：导出 MD 对所有文章可用；编辑/删除/切换草稿仅用户文章，内置文章置灰禁用 */}
                 <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => exportPostMarkdown(p)}
+                    className="rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary"
+                  >
+                    导出 MD
+                  </button>
                   {builtin ? (
                     <span
                       aria-disabled
@@ -140,6 +219,8 @@ export default function AdminPage() {
           })}
         </div>
       )}
+
+      <BackupSection />
     </div>
   );
 }

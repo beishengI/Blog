@@ -11,20 +11,24 @@ const VIEWED_KEY = 'medai-blog-viewed';
 
 type ViewCounts = Record<string, number>;
 
+/** 校验并收敛任意值为合法阅读量表（非法键/数值剔除，不抛错），供读取与备份恢复共用。 */
+function sanitizeViewCounts(value: unknown): ViewCounts {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  const out: ViewCounts = {};
+  for (const [id, n] of Object.entries(value as Record<string, unknown>)) {
+    if (typeof id === 'string' && typeof n === 'number' && Number.isFinite(n) && n >= 0) {
+      out[id] = Math.floor(n);
+    }
+  }
+  return out;
+}
+
 /** 读取全站阅读量；结构非法时返回空对象（不抛错）。 */
 function readViewCounts(): ViewCounts {
   try {
     const raw = localStorage.getItem(VIEWS_KEY);
     if (!raw) return {};
-    const parsed: unknown = JSON.parse(raw);
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
-    const out: ViewCounts = {};
-    for (const [id, n] of Object.entries(parsed as Record<string, unknown>)) {
-      if (typeof id === 'string' && typeof n === 'number' && Number.isFinite(n) && n >= 0) {
-        out[id] = Math.floor(n);
-      }
-    }
-    return out;
+    return sanitizeViewCounts(JSON.parse(raw));
   } catch {
     return {};
   }
@@ -80,4 +84,11 @@ export function recordView(id: string): void {
 /** 读取全站阅读量（供热门排行等组件使用）；无记录返回空对象。 */
 export function getAllViewCounts(): ViewCounts {
   return readViewCounts();
+}
+
+/** 整库替换阅读量（备份恢复用）；结构先经 sanitize 收敛。 */
+export function replaceAllViewCounts(value: unknown): ViewCounts {
+  const counts = sanitizeViewCounts(value);
+  writeViewCounts(counts);
+  return counts;
 }

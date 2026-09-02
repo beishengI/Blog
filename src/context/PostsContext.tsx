@@ -20,6 +20,8 @@ interface PostsCtx {
   updatePost: (id: string, patch: Omit<Partial<Post>, 'id'>) => void;
   deletePost: (id: string) => void;
   toggleDraft: (id: string) => void;
+  /** 整库替换用户文章（备份恢复用）：形状校验 + id 去重 + 剔除与内置文章冲突的 id。 */
+  replaceUserPosts: (next: Post[]) => void;
 }
 
 const PostsContext = createContext<PostsCtx | null>(null);
@@ -113,6 +115,18 @@ export function PostsProvider({ children }: { children: ReactNode }) {
       );
     };
 
+    const replaceUserPosts = (next: Post[]) => {
+      const seen = new Set<string>();
+      setUserPosts(
+        next.filter((p) => {
+          if (!p || typeof p.id !== 'string' || typeof p.content !== 'string') return false;
+          if (seen.has(p.id) || posts.some((b) => b.id === p.id)) return false;
+          seen.add(p.id);
+          return true;
+        })
+      );
+    };
+
     return {
       allPosts,
       allPostsIncludingDrafts: combined,
@@ -123,6 +137,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
       updatePost,
       deletePost,
       toggleDraft,
+      replaceUserPosts,
     };
   }, [userPosts]);
 
