@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 19 · 动态流：头像 + 正文 + 标签 + 操作条的类社交信息流。 */
 export default function StreamHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="read-max mx-auto">
       <header className="mb-2 flex flex-wrap items-center gap-3 border-b border-border pb-5">

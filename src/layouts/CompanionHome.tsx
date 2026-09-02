@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
 import { BlogConfig } from '../types';
 
 /** 12 · AI 伴读：左侧原文摘要 / 右侧 AI 摘要与术语，下方更多文章。 */
 export default function CompanionHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   const featured = posts[0];
   if (!featured) return null;
 

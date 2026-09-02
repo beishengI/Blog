@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
 import { BlogConfig } from '../types';
 
 /** 01 · 经典网格：卡片墙，秩序、稳定、信息密度均衡。 */
 export default function GridHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="space-y-[var(--gap)]">
       <section className="rounded-brand border border-border bg-surface p-6 md:p-8">

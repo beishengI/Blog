@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 02 · 终端命令行：等宽字、提示符、ls 式清单。 */
 export default function TerminalHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="font-mono">
       <div className="overflow-hidden rounded-brand border border-border">

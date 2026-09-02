@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { postCover } from '../utils/cover';
 import { BlogConfig } from '../types';
 
 /** 14 · 封面瀑布流：CSS 多栏实现，卡片高度自由、列数随容器自适应。 */
 export default function MasonryHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div>
       <header className="mb-6">

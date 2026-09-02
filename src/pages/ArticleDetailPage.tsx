@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useMemo, useState } from 'react';
-import { posts, Post } from '../data/posts';
+import { Post } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import ArticleDetail from '../components/ArticleDetail';
 import ReadingProgress from '../components/ReadingProgress';
 import StickyTOC from '../components/StickyTOC';
@@ -24,6 +25,9 @@ function ArticleHeader({ post }: { post: Post }) {
       <Link to="/posts" className="text-sm text-muted hover:text-primary">← 返回文章</Link>
       <div className="mt-3 flex items-center gap-2 text-xs text-muted">
         <span className="rounded-full bg-surface-alt px-2 py-0.5 text-primary">{post.category}</span>
+        {post.draft === true && (
+          <span className="rounded-full border border-border px-2 py-0.5 text-muted">草稿</span>
+        )}
         <span>{post.date}</span>
         {config.features.readingTime && <span>· {post.readingTime} 分钟阅读</span>}
       </div>
@@ -63,6 +67,9 @@ function CompanionDetail({ post }: { post: Post }) {
       <Link to="/posts" className="text-sm text-muted hover:text-primary">← 返回</Link>
       <div className="mt-3 flex items-center gap-2 text-xs text-muted">
         <span className="rounded-full bg-surface-alt px-2 py-0.5 text-primary">{post.category}</span>
+        {post.draft === true && (
+          <span className="rounded-full border border-border px-2 py-0.5 text-muted">草稿</span>
+        )}
         <span>{post.date}</span>
       </div>
       <h1 className="font-heading mt-2 text-3xl font-bold">{post.title}</h1>
@@ -109,7 +116,8 @@ function CompanionDetail({ post }: { post: Post }) {
 export default function ArticleDetailPage() {
   const { id } = useParams();
   const { config } = useConfig();
-  const post = posts.find(p => p.id === id);
+  const { getPost } = usePosts();
+  const post = id ? getPost(id) : undefined;
   if (!post) return <NotFound />;
   if (config.layout.direction === 'companion') return <CompanionDetail post={post} />;
   return <NormalDetail post={post} />;

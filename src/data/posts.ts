@@ -10,6 +10,10 @@ export interface Post {
   terms: string[];
   content: string;
   cover?: string; // 可内嵌封面图；为空则按主题色自动生成
+  draft?: boolean; // true=草稿；undefined/false=已发布
+  updatedAt?: string; // YYYY-MM-DD
+  description?: string; // SEO 描述，缺省回退 excerpt
+  keywords?: string[]; // SEO 关键词
 }
 
 export const posts: Post[] = [

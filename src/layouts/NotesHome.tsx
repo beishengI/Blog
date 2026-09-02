@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 17 · 便签墙：轻微旋转的纸质便签拼贴（旋转幅度极小，不会与邻卡重叠）。 */
 export default function NotesHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div>
       <header className="mb-6">

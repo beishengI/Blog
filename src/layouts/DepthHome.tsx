@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 10 · 深度分层舞台：mesh 渐变背景 + 前景玻璃芯片。 */
 export default function DepthHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   const featured = posts[0];
   if (!featured) return null;
 

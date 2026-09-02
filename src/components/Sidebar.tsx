@@ -1,15 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useConfig } from '../context/ConfigContext';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 
 export default function Sidebar() {
   const { config } = useConfig();
+  const { allPosts } = usePosts();
   const tags = useMemo(() => {
     const m = new Map<string, number>();
-    posts.forEach(p => p.tags.forEach(t => m.set(t, (m.get(t) || 0) + 1)));
+    allPosts.forEach(p => p.tags.forEach(t => m.set(t, (m.get(t) || 0) + 1)));
     return [...m.entries()].sort((a, b) => b[1] - a[1]);
-  }, []);
+  }, [allPosts]);
 
   return (
     <aside className="flex flex-col gap-6">
@@ -37,7 +38,7 @@ export default function Sidebar() {
       <div className="rounded-brand border border-border bg-surface p-5">
         <h4 className="font-heading text-sm font-semibold">最近更新</h4>
         <ul className="mt-3 space-y-2 text-sm">
-          {posts.slice(0, config.layout.recentCount).map(p => (
+          {allPosts.slice(0, config.layout.recentCount).map(p => (
             <li key={p.id}>
               <Link to={`/posts/${p.id}`} className="text-muted hover:text-primary">{p.title}</Link>
             </li>

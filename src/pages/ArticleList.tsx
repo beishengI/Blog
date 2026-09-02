@@ -1,23 +1,24 @@
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { useMemo } from 'react';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
 
 export default function ArticleList() {
   const { tag } = useParams();
+  const { allPosts } = usePosts();
   const [params] = useSearchParams();
   const q = (params.get('q') ?? '').trim().toLowerCase();
   const decodedTag = tag ? decodeURIComponent(tag) : '';
 
   const list = useMemo(() => {
-    let base = decodedTag ? posts.filter(p => p.tags.includes(decodedTag)) : posts;
+    let base = decodedTag ? allPosts.filter(p => p.tags.includes(decodedTag)) : allPosts;
     if (q) {
       base = base.filter(p =>
         `${p.title} ${p.excerpt} ${p.category} ${p.tags.join(' ')}`.toLowerCase().includes(q)
       );
     }
     return base;
-  }, [decodedTag, q]);
+  }, [decodedTag, q, allPosts]);
 
   const heading = q ? `搜索：${params.get('q')}` : decodedTag ? `标签：${decodedTag}` : '全部文章';
 

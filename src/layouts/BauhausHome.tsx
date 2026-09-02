@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 05 · 包豪斯几何：原色块 + 硬边 + 极简几何母题。 */
 export default function BauhausHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="space-y-10">
       <section className="border-2 border-border p-6 md:p-10">

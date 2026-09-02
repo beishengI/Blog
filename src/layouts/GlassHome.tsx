@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 04 · 玻璃层叠：渐变舞台上叠半透明毛玻璃面板。 */
 export default function GlassHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="space-y-[var(--gap)]">
       <section className="glass-stage">

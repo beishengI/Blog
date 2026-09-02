@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 18 · 文档手册：左侧章节导航树 + 右侧编号条目，技术文档式阅读。 */
 export default function DocsHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   const categories = Array.from(new Set(posts.map((p) => p.category)));
 
   return (

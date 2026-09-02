@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 const ECG_SVG = `<svg viewBox="0 0 600 40" preserveAspectRatio="none" class="w-full h-full">
@@ -8,6 +8,7 @@ const ECG_SVG = `<svg viewBox="0 0 600 40" preserveAspectRatio="none" class="w-f
 
 /** 13 · 粗野主义：硬边框 + 等宽字 + 心电母题。 */
 export default function BrutalistHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="font-mono">
       <div className="border-2 border-border p-6">

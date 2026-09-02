@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 07 · 沉浸阅读：单栏宽行距，去掉一切卡片与边框。 */
 export default function ReadingHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="read-max mx-auto">
       <header className="py-6 text-center">

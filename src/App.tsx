@@ -7,6 +7,7 @@ import About from './pages/About';
 import TagArchive from './pages/TagArchive';
 import Wiki from './pages/Wiki';
 import WikiDetail from './pages/WikiDetail';
+import AdminPage from './pages/AdminPage';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/wiki" element={<Wiki />} />
         <Route path="/wiki/:slug" element={<WikiDetail />} />
         <Route path="/about" element={<About />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Layout>
   );

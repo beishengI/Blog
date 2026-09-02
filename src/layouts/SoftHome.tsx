@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 03 · 新拟态软卡：无边框，靠双向阴影塑造凸起/凹陷。 */
 export default function SoftHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="space-y-[var(--gap)]">
       <section className="neu-card p-6 md:p-10">

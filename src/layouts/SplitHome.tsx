@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
 import { BlogConfig } from '../types';
 
 /** 15 · 左右分屏：左侧 sticky 个人名片，右侧文章流。 */
 export default function SplitHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   const tags = Array.from(new Set(posts.flatMap((p) => p.tags)));
 
   return (

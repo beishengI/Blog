@@ -1,9 +1,10 @@
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
 import { BlogConfig } from '../types';
 
 /** 11 · 时间轴：中央 dateline + 左右交替笔记卡片（xl 才分列，窄屏自动单列）。 */
 export default function TimelineHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div>
       <p className="text-xs tracking-[0.3em] text-primary">{config.site.author}</p>

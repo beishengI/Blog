@@ -1,4 +1,4 @@
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
 import { BlogConfig } from '../types';
 
@@ -7,6 +7,7 @@ import { BlogConfig } from '../types';
  * 用 grid 列定位实现错位（不用 translate），避免溢出主栏。
  */
 export default function SpineHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div>
       <p className="text-xs tracking-[0.3em] text-primary">

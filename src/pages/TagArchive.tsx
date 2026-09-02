@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 
 export default function TagArchive() {
+  const { allPosts } = usePosts();
   const tags = useMemo(() => {
     const m = new Map<string, number>();
-    posts.forEach(p => p.tags.forEach(t => m.set(t, (m.get(t) || 0) + 1)));
+    allPosts.forEach(p => p.tags.forEach(t => m.set(t, (m.get(t) || 0) + 1)));
     return [...m.entries()].sort((a, b) => b[1] - a[1]);
-  }, []);
+  }, [allPosts]);
   return (
     <div className="space-y-4">
       <h1 className="font-heading text-2xl font-bold">标签归档</h1>

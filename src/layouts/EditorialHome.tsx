@@ -1,21 +1,21 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
 import FeatureCard from '../components/FeatureCard';
 import Reveal from '../components/Reveal';
 import Icon from '../components/Icon';
 import { BlogConfig } from '../types';
 
-/** 滚动字幕内容：由文章标签派生，标签为空时回退到栏目名，保证随内容变化且不为空。 */
-const MARQUEE: string[] = Array.from(
-  new Set([
-    ...posts.flatMap((p) => p.tags),
-    ...posts.map((p) => p.category),
-  ])
-).slice(0, 12);
-
 /** 08 · 杂志编辑风：巨幕标题 + 非对称拼贴 + 色带。 */
 export default function EditorialHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
+  // 滚动字幕内容：由文章标签派生，标签为空时回退到栏目名，保证随内容变化且不为空。
+  const marquee: string[] = Array.from(
+    new Set([
+      ...posts.flatMap((p) => p.tags),
+      ...posts.map((p) => p.category),
+    ])
+  ).slice(0, 12);
   const PICK_COUNT = 2;
   const featured = posts[0];
   const pick = posts.slice(1, 1 + PICK_COUNT);
@@ -25,7 +25,7 @@ export default function EditorialHome({ config }: { config: BlogConfig }) {
   const catStats = categories.map((c) => ({ c, n: posts.filter((p) => p.category === c).length }));
   const tagCount = Array.from(new Set(posts.flatMap((p) => p.tags))).length;
   const lastYear = posts[0]?.date ? new Date(posts[0].date).getFullYear() : new Date().getFullYear();
-  const marqueeLoop = [...MARQUEE, ...MARQUEE];
+  const marqueeLoop = [...marquee, ...marquee];
   if (!featured) return null;
 
   return (

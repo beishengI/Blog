@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 20 · 工程蓝图：网格纸底 + 图号标注 + 等宽注释，工程制图感。 */
 export default function BlueprintHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   return (
     <div className="blueprint-grid overflow-hidden rounded-brand border border-border p-6 md:p-10">
       <p className="font-mono text-xs tracking-[0.25em] text-primary">FIG. 01 — SYSTEM OVERVIEW</p>

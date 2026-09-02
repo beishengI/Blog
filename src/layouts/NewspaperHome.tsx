@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 06 · 复古报纸：报头 + 头条首字下沉 + CSS 多栏正文。 */
 export default function NewspaperHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   const lead = posts[0];
   const rest = posts.slice(1);
   if (!lead) return null;

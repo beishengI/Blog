@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { posts } from '../data/posts';
+import { usePosts } from '../context/PostsContext';
 import { BlogConfig } from '../types';
 
 /** 16 · 数据仪表盘：指标磁贴 + 分类进度条 + 紧凑文章表。 */
 export default function DashboardHome({ config }: { config: BlogConfig }) {
+  const posts = usePosts().allPosts;
   const categories = Array.from(new Set(posts.map((p) => p.category)));
   const catStats = categories.map((c) => ({ c, n: posts.filter((p) => p.category === c).length }));
   const max = Math.max(...catStats.map((s) => s.n), 1);
