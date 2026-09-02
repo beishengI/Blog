@@ -23,9 +23,14 @@ function deepMerge<T>(base: T, patch: any): T {
   return out;
 }
 
+/** 根绝对路径按 Vite base 前缀化:GitHub Pages 子路径(/Blog/)下 /avatar.jpeg 这类 public 资源才可达。 */
+function withBase(p: string): string {
+  if (!p.startsWith('/') || /^(https?:|data:)/.test(p)) return p;
+  return `${import.meta.env.BASE_URL.replace(/\/+$/, '')}${p}`;
+}
+
 /** 将配置写入 :root CSS 变量，实现零核心代码改动的换肤。 */
-function applyVars(c: BlogConfig) {
-  const r = document.documentElement.style;
+function applyVars(c: BlogConfig) {  const r = document.documentElement.style;
   const t = c.theme, l = c.layout;
   r.setProperty('--color-bg', t.bg);
   r.setProperty('--color-surface', t.surface);
@@ -62,7 +67,7 @@ function applyVars(c: BlogConfig) {
 const ConfigContext = createContext<Ctx | null>(null);
 
 export function ConfigProvider({ children }: { children: ReactNode }) {
-  const [config, setConfigState] = useState<BlogConfig>(() => {
+  const [storedConfig, setStoredConfig] = useState<BlogConfig>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) return deepMerge(defaultConfig, JSON.parse(saved));
@@ -70,20 +75,26 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
     return defaultConfig;
   });
 
+  // 对外暴露的 config 做资源路径归一;持久化仍用原始值,保证导出/跨部署可移植
+  const config = useMemo<BlogConfig>(
+    () => ({ ...storedConfig, site: { ...storedConfig.site, avatar: withBase(storedConfig.site.avatar) } }),
+    [storedConfig]
+  );
+
   useEffect(() => {
     applyVars(config);
     // 隐私模式 / 沙箱 iframe 等场景 setItem 可能抛错；持久化失败不应影响运行期联动
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(storedConfig));
     } catch {
       /* ignore */
     }
-  }, [config]);
+  }, [config, storedConfig]);
 
-  const update = (patch: DeepPartial<BlogConfig>) => setConfigState(s => deepMerge(s, patch));
-  const setConfig = (c: BlogConfig) => setConfigState(c);
-  const reset = () => setConfigState(defaultConfig);
-  const exportConfig = () => JSON.stringify(config, null, 2);
+  const update = (patch: DeepPartial<BlogConfig>) => setStoredConfig(s => deepMerge(s, patch));
+  const setConfig = (c: BlogConfig) => setStoredConfig(c);
+  const reset = () => setStoredConfig(defaultConfig);
+  const exportConfig = () => JSON.stringify(storedConfig, null, 2);
 
   const value = useMemo(() => ({ config, update, setConfig, reset, exportConfig }), [config]);
   return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>;
