@@ -1,7 +1,9 @@
 import { useConfig } from '../context/ConfigContext';
+import { useSEO } from '../hooks/useSEO';
 
 export default function About() {
   const { config } = useConfig();
+  useSEO({ title: '关于' });
   const { site } = config;
   const intro = site.intro ?? [];
   const research = site.research ?? [];

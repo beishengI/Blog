@@ -36,6 +36,7 @@ export interface SiteConfig {
   author: string;
   bio: string;
   avatar: string;
+  url?: string;       // 站点根地址（用于 canonical），空则不生成 canonical
   email?: string;      // 关于页联系方式
   github?: string;     // GitHub 用户名
   intro?: string[];    // 关于页简介段落

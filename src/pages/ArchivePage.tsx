@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { usePosts } from '../context/PostsContext';
 import { Post } from '../data/posts';
+import { useSEO } from '../hooks/useSEO';
 
 interface MonthGroup {
   /** 两位月份字符串，如 "09" */
@@ -25,6 +26,7 @@ const CHIP_CLS =
  */
 export default function ArchivePage() {
   const { allPosts } = usePosts();
+  useSEO({ title: '归档' });
 
   // 分组：年降序 → 月降序 → 月内 date 降序（同日按 title 保证稳定）
   const groups = useMemo<YearGroup[]>(() => {

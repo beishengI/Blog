@@ -3,10 +3,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Post } from '../data/posts';
 import { usePosts } from '../context/PostsContext';
 import { renderMarkdown } from '../utils/markdown';
+import { useSEO } from '../hooks/useSEO';
 
 const MAX_TITLE = 100;
 const MAX_EXCERPT = 200;
 const MAX_TAGS = 8;
+const MAX_SEO_DESCRIPTION = 200;
+const MAX_SEO_KEYWORDS = 10;
 const MAX_AI_SUMMARY = 200;
 /** 本地存储配额估算上限（JSON 字符数） */
 const QUOTA_LIMIT = 4_000_000;
@@ -24,6 +27,8 @@ interface FormState {
   cover: string;
   aiSummary: string;
   termsText: string;
+  description: string;
+  keywordsText: string;
   draft: boolean;
   content: string;
 }
@@ -34,6 +39,8 @@ interface FormErrors {
   category?: string;
   tags?: string;
   aiSummary?: string;
+  description?: string;
+  keywords?: string;
   content?: string;
 }
 
@@ -58,6 +65,8 @@ function emptyForm(): FormState {
     cover: '',
     aiSummary: '',
     termsText: '',
+    description: '',
+    keywordsText: '',
     draft: false,
     content: '',
   };
@@ -73,6 +82,8 @@ function formFromPost(p: Post): FormState {
     cover: p.cover ?? '',
     aiSummary: p.aiSummary,
     termsText: p.terms.join(', '),
+    description: p.description ?? '',
+    keywordsText: p.keywords?.join(', ') ?? '',
     draft: p.draft === true,
     content: p.content,
   };
@@ -137,6 +148,8 @@ export default function EditorPage() {
 
   const editing = Boolean(id);
   const existing = id ? getPost(id) : undefined;
+
+  useSEO({ title: editing ? '编辑文章' : '新建文章', noindex: true });
 
   const [form, setForm] = useState<FormState>(() =>
     id && existing ? formFromPost(existing) : emptyForm()
@@ -288,6 +301,10 @@ export default function EditorPage() {
       errs.tags = `标签最多 ${MAX_TAGS} 个`;
     if (form.aiSummary.trim().length > MAX_AI_SUMMARY)
       errs.aiSummary = `AI 摘要不能超过 ${MAX_AI_SUMMARY} 字`;
+    if (form.description.trim().length > MAX_SEO_DESCRIPTION)
+      errs.description = `SEO 描述不能超过 ${MAX_SEO_DESCRIPTION} 字`;
+    if (parseList(form.keywordsText).length > MAX_SEO_KEYWORDS)
+      errs.keywords = `SEO 关键词最多 ${MAX_SEO_KEYWORDS} 个`;
     if (!form.content.trim()) errs.content = '正文不能为空';
     return errs;
   };
@@ -313,6 +330,10 @@ export default function EditorPage() {
     // 编辑路径随 patch 显式携带，避免详情页展示过期的「N 分钟阅读」
     const readingTime = Math.max(1, Math.round(form.content.length / 400));
 
+    // SEO 字段：留空显式置 undefined —— 编辑模式经 {...p, ...patch} 合并可正确清除，
+    // JSON.stringify 丢弃 undefined 键，localStorage 不会落空值
+    const seoDescription = form.description.trim() || undefined;
+    const seoKeywords = parseList(form.keywordsText);
     const payload = {
       title: form.title.trim(),
       excerpt: form.excerpt.trim(),
@@ -324,6 +345,8 @@ export default function EditorPage() {
       terms: parseList(form.termsText),
       content: form.content,
       cover: form.cover.trim() || undefined,
+      description: seoDescription,
+      keywords: seoKeywords.length > 0 ? seoKeywords : undefined,
       draft: form.draft,
     };
 
@@ -462,6 +485,38 @@ export default function EditorPage() {
             value={form.termsText}
             onChange={(e) => setField('termsText', e.target.value)}
             className={inputCls(false)}
+          />
+        </Field>
+
+        <Field
+          label="SEO 描述（选填）"
+          htmlFor="field-seo-description"
+          error={errors.description}
+          hint={`不超过 ${MAX_SEO_DESCRIPTION} 字，留空则使用摘要`}
+          className="md:col-span-2"
+        >
+          <textarea
+            id="field-seo-description"
+            rows={2}
+            value={form.description}
+            onChange={(e) => setField('description', e.target.value)}
+            placeholder="用于搜索引擎与分享卡片的一句话描述"
+            className={`${inputCls(!!errors.description)} resize-y`}
+          />
+        </Field>
+
+        <Field
+          label="SEO 关键词（选填）"
+          htmlFor="field-seo-keywords"
+          error={errors.keywords}
+          hint="逗号分隔，最多 10 个，留空则使用标签"
+        >
+          <input
+            id="field-seo-keywords"
+            type="text"
+            value={form.keywordsText}
+            onChange={(e) => setField('keywordsText', e.target.value)}
+            className={inputCls(!!errors.keywords)}
           />
         </Field>
 

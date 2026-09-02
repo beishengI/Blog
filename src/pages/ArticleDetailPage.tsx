@@ -7,6 +7,7 @@ import Comments from '../components/Comments';
 import ReadingProgress from '../components/ReadingProgress';
 import StickyTOC from '../components/StickyTOC';
 import { useConfig } from '../context/ConfigContext';
+import { useSEO } from '../hooks/useSEO';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import { useActiveHeading } from '../hooks/useActiveHeading';
 import { parseHeadings } from '../utils/toc';
@@ -131,6 +132,30 @@ export default function ArticleDetailPage() {
   const { config } = useConfig();
   const { getPost } = usePosts();
   const post = id ? getPost(id) : undefined;
+
+  // SEO + Article JSON-LD：post 不存在时不注入结构化数据
+  const seoDescription = post ? (post.description ?? post.excerpt) : undefined;
+  const seoKeywords = post ? (post.keywords ?? post.tags) : undefined;
+  const jsonLd = post
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: post.title,
+        datePublished: post.date,
+        dateModified: post.updatedAt ?? post.date,
+        author: { '@type': 'Person', name: config.site.author },
+        description: seoDescription,
+        keywords: seoKeywords,
+      }
+    : null;
+  useSEO({
+    title: post ? post.title : '文章不存在',
+    description: seoDescription,
+    keywords: seoKeywords,
+    image: post?.cover,
+    type: 'article',
+    jsonLd,
+  });
 
   // 阅读计数：同一浏览器会话同一文章只计 1 次（StrictMode 双挂载由 sessionStorage 去重兜底）
   useEffect(() => {

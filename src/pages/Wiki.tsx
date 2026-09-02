@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { wikiDocs, WIKI_LAYERS } from '../content/wiki';
 import { useConfig } from '../context/ConfigContext';
+import { useSEO } from '../hooks/useSEO';
 
 export default function Wiki() {
   const { config } = useConfig();
+  useSEO({ title: '知识库' });
   return (
     <div className="content-max mx-auto space-y-10">
       <header>

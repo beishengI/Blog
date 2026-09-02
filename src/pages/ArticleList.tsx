@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { usePosts } from '../context/PostsContext';
 import ArticleCard from '../components/ArticleCard';
 import Pagination from '../components/Pagination';
+import { useSEO } from '../hooks/useSEO';
 
 const PAGE_SIZE = 9;
 
@@ -47,6 +48,18 @@ export default function ArticleList() {
     }
     return base;
   }, [activeTag, activeCat, q, allPosts]);
+
+  // SEO：q/tag/cat 组合 title，` / ` 连接；description 含结果数量
+  const seoParts: string[] = [];
+  if (q) seoParts.push(`搜索：${(params.get('q') ?? '').trim()}`);
+  if (activeTag) seoParts.push(`标签：${activeTag}`);
+  if (activeCat) seoParts.push(`分类：${activeCat}`);
+  useSEO({
+    title: seoParts.length > 0 ? seoParts.join(' / ') : '全部文章',
+    description: `共 ${list.length} 篇文章${
+      seoParts.length > 0 ? `（${seoParts.join('，')}）` : '，来自 MedAI Lab'
+    }`,
+  });
 
   // 分类集合：从已发布 allPosts 提取 distinct category，按文章计数降序
   const categories = useMemo(() => {

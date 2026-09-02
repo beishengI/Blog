@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Post } from '../data/posts';
 import { usePosts, isPublished } from '../context/PostsContext';
 import { getViewCount } from '../utils/stats';
+import { useSEO } from '../hooks/useSEO';
 
 /** 标签胶囊：最多展示 3 个，超出折叠为 +N。 */
 function TagChips({ tags }: { tags: string[] }) {
@@ -41,6 +42,7 @@ function StatusBadge({ post, builtin }: { post: Post; builtin: boolean }) {
 
 export default function AdminPage() {
   const { allPostsIncludingDrafts, userPosts, isUserPost, deletePost, toggleDraft } = usePosts();
+  useSEO({ title: '管理后台', noindex: true });
   const draftCount = allPostsIncludingDrafts.filter((p) => p.draft === true).length;
 
   const handleDelete = (post: Post) => {

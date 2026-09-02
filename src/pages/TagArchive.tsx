@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { usePosts } from '../context/PostsContext';
+import { useSEO } from '../hooks/useSEO';
 
 export default function TagArchive() {
   const { allPosts } = usePosts();
+  useSEO({ title: '标签归档' });
   const tags = useMemo(() => {
     const m = new Map<string, number>();
     allPosts.forEach(p => p.tags.forEach(t => m.set(t, (m.get(t) || 0) + 1)));

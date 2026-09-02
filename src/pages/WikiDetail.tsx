@@ -8,11 +8,18 @@ import { useReadingProgress } from '../hooks/useReadingProgress';
 import StickyTOC from '../components/StickyTOC';
 import ReadingProgress from '../components/ReadingProgress';
 import { useConfig } from '../context/ConfigContext';
+import { useSEO } from '../hooks/useSEO';
 
 export default function WikiDetail() {
   const { slug } = useParams();
   const { config } = useConfig();
   const doc = slug ? getWikiDoc(slug) : undefined;
+
+  // SEO：读 wikiDocs 静态元信息（title/description）
+  useSEO({
+    title: doc ? doc.title : '文档不存在',
+    description: doc?.description,
+  });
   const [content, setContent] = useState('');
   const [status, setStatus] = useState<'loading' | 'ready' | 'missing'>('loading');
 
