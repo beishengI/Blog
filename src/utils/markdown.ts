@@ -1,19 +1,26 @@
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import hljs from 'highlight.js/lib/common';
-import { slugify } from './toc';
+import { createHeadingIdFactory } from './toc';
 // 明色主题的 hljs 语法色（暗色覆盖见 globals.css 的 [data-mode='dark'] 段）
 import 'highlight.js/styles/github.css';
 
 marked.setOptions({ breaks: true, gfm: true });
 
-/** 给 H2/H3 注入锚点 id，供目录跳转与高亮。 */
+/**
+ * 标题 id 生成器：每次 renderMarkdown 前重建，
+ * 使 HTML 中的 id 与 parseHeadings 产出的目录（含重复标题的 -2/-3 后缀）逐项对应。
+ */
+let nextHeadingId = createHeadingIdFactory();
+
+/** 给 H2/H3 注入锚点 id + 可点击的锚点链接，供目录跳转、高亮与分享定位。 */
 marked.use({
   renderer: {
-    heading(text: string, level: number) {
+    heading(text: string, level: number, raw: string) {
       if (level >= 2 && level <= 3) {
-        const id = slugify(text);
-        return `<h${level} id="${id}">${text}</h${level}>`;
+        // 用 raw（已内联渲染的纯文本）而非 text（HTML）算 id，才能与 parseHeadings 同源
+        const id = nextHeadingId(raw);
+        return `<h${level} id="${id}">${text}<a class="heading-anchor" href="#${id}" aria-label="链接到此章节" tabindex="0">#</a></h${level}>`;
       }
       return `<h${level}>${text}</h${level}>`;
     },
@@ -33,6 +40,9 @@ marked.use({
 
 /** 将 Markdown 转为经过消毒的 HTML，供文章详情与编辑器预览渲染。 */
 export function renderMarkdown(md: string): string {
+  // 每次渲染重置标题 id 计数器，保证与 parseHeadings 的去重序列一致
+  nextHeadingId = createHeadingIdFactory();
   const raw = marked.parse(md) as string;
-  return DOMPurify.sanitize(raw, { ADD_ATTR: ['id'] });
+  // ADD_ATTR 只补 id / tabindex 两个属性，不放宽 allowedTags（DOMPurify 默认即允许 a/href/class/aria-*）
+  return DOMPurify.sanitize(raw, { ADD_ATTR: ['id', 'tabindex'] });
 }

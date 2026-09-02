@@ -9,12 +9,13 @@ interface Props {
 /** 吸顶目录：滚动后固定在 Header 下方，高亮当前章节，底部带阅读进度。 */
 export default function StickyTOC({ headings, activeId, progress = 0 }: Props) {
   return (
-    <nav className="toc-sticky">
+    <nav className="toc-sticky" aria-label="文章目录">
       <div className="toc-sticky__list">
         {headings.map((h) => (
           <a
             key={h.id}
             href={`#${h.id}`}
+            aria-current={activeId === h.id ? 'true' : undefined}
             className={`toc-sticky__link ${activeId === h.id ? 'active' : ''} level-${h.level}`}
           >
             {h.text}

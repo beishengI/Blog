@@ -20,6 +20,10 @@
 
   /* 派生尺寸：运行期由 ConfigContext 写入，此处为兜底默认值 */
   --header-h: 64px;
+  /* 吸顶目录条实高（供标题锚点的 scroll-margin-top 让位，见 .toc-sticky 段推算）：
+     padding .9rem×2(28.8) + 胶囊 min-height 32 + 上下边框 1×2 = 62.8 → 取整 63px。
+     触摸设备胶囊为 36px → 66.8 → 取整 67px（见文末 @media (hover: none) 覆盖）。 */
+  --toc-h: 63px;
   --content-max: 1180px;
   --read-max: 46rem;
   --sidebar-w: 300px;
@@ -82,6 +86,34 @@ body {
 .article-content img { max-width: 100%; border-radius: var(--radius); }
 .article-content table { width: 100%; border-collapse: collapse; margin: 1em 0; }
 .article-content th, .article-content td { border: 1px solid var(--color-border); padding: .5em .7em; text-align: left; }
+
+/* 锚点跳转：为吸顶元素预留高度，避免标题被 Header / 目录条压住。
+   基础值只让开 Header（--header-h，运行期未被 ConfigContext 覆盖）；
+   目录条存在时再叠加其自身实高 --toc-h —— 用兄弟选择器判定，
+   因此 features.toc 关闭或无标题（目录条不渲染）时不会多加偏移。 */
+.article-content h1, .article-content h2, .article-content h3 { scroll-margin-top: calc(var(--header-h, 4rem) + 1rem); }
+.toc-sticky ~ .article-content h1,
+.toc-sticky ~ .article-content h2,
+.toc-sticky ~ .article-content h3 { scroll-margin-top: calc(var(--header-h, 4rem) + var(--toc-h, 63px) + 1rem); }
+
+/* 标题锚点：默认隐藏，鼠标悬停 / 键盘聚焦时显现 */
+.article-content .heading-anchor { margin-left: .5rem; font-size: .85em; font-weight: 400; color: var(--color-text-muted); text-decoration: none; opacity: 0; transition: opacity .15s ease, color .15s ease; }
+.article-content h2:hover .heading-anchor,
+.article-content h3:hover .heading-anchor,
+.article-content h2:focus-within .heading-anchor,
+.article-content h3:focus-within .heading-anchor,
+.article-content .heading-anchor:focus-visible { opacity: 1; }
+.article-content .heading-anchor:hover,
+.article-content .heading-anchor:focus-visible { color: var(--color-primary); text-decoration: underline; text-underline-offset: 3px; }
+
+/* 触摸设备没有 hover：锚点常显（低透明度），避免出现"点不到的跳转入口" */
+@media (hover: none) {
+  .article-content .heading-anchor { opacity: .55; }
+}
+/* 打印时锚点无意义 */
+@media print {
+  .article-content .heading-anchor { display: none; }
+}
 
 /* ===== 代码高亮（highlight.js）=====
    明色语法色来自 github.css（src/utils/markdown.ts 引入）；暗色在下方覆盖。
@@ -180,7 +212,12 @@ body {
 .toc-sticky { position: sticky; top: var(--header-h); z-index: 40; margin: 1.5rem -20px 2rem; padding: .9rem 20px; background: color-mix(in srgb, var(--color-bg) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border); border-top: 1px solid var(--color-border); }
 .toc-sticky__list { display: flex; gap: .55rem; overflow-x: auto; scrollbar-width: none; }
 .toc-sticky__list::-webkit-scrollbar { display: none; }
-.toc-sticky__link { flex: none; padding: .35rem .85rem; border-radius: 999px; font-size: .75rem; color: var(--color-text-muted); border: 1px solid transparent; white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
+.toc-sticky__link { flex: none; display: inline-flex; align-items: center; min-height: 32px; padding: .35rem .85rem; border-radius: 999px; font-size: .75rem; color: var(--color-text-muted); border: 1px solid transparent; white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
+/* 触摸设备：加大胶囊触控目标高度（≥36px）并放宽内边距；目录条实高随之 +4px */
+@media (hover: none) {
+  :root { --toc-h: 67px; }
+  .toc-sticky__link { min-height: 36px; padding-inline: 1rem; }
+}
 .toc-sticky__link:hover { color: var(--color-primary); }
 .toc-sticky__link.active { background: color-mix(in srgb, var(--color-primary) 14%, transparent); color: var(--color-primary); border-color: color-mix(in srgb, var(--color-primary) 24%, transparent); }
 .toc-sticky__link.level-3 { font-size: .7rem; opacity: .85; }
