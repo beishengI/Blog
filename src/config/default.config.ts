@@ -10,7 +10,7 @@ export const defaultConfig: BlogConfig = {
     title: 'MedAI Lab',
     author: '林知远',
     bio: '湖北医药学院 · 智能医学工程 · 关注医学影像 AI 与可解释性',
-    avatar: '/avatar.svg',
+    avatar: '/avatar.jpeg',
     url: '', // 站点根地址（SEO canonical 用），如 https://example.com；空则不生成 canonical
     email: 'example@email.com',
     github: 'example',
