@@ -1,0 +1,16 @@
+node_modules
+dist
+dev.log
+dev.err
+*.local
+.DS_Store
+.env
+.env.*
+.codebuddy
+.agents
+.vite-restart.log
+.vite-restart.err
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+skills-lock.json
