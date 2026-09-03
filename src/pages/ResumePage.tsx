@@ -1,5 +1,6 @@
 import SiteAvatar from '../components/SiteAvatar';
 import Reveal from '../components/Reveal';
+import Magnetic from '../components/Magnetic';
 import { useSEO } from '../hooks/useSEO';
 import {
   resumeHero,
@@ -40,7 +41,11 @@ export default function ResumePage() {
         </div>
         <div className="min-w-0 flex-1">
           <h1 className="font-heading anim-rise text-4xl font-bold md:text-5xl" style={{ animationDelay: '80ms' }}>
-            {resumeHero.name}
+            {resumeHero.name.split('').map((c, i) => (
+              <span key={i} className="anim-rise inline-block" style={{ animationDelay: `${180 + i * 140}ms` }}>
+                {c}
+              </span>
+            ))}
           </h1>
           <p className="anim-rise mt-3 max-w-2xl leading-relaxed" style={{ animationDelay: '160ms' }}>
             {resumeHero.facts}
@@ -63,14 +68,16 @@ export default function ResumePage() {
           </p>
         </div>
         <div className="anim-rise flex gap-2" style={{ animationDelay: '200ms' }}>
-          <a
-            href={`${import.meta.env.BASE_URL}resume-doc.html`}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary"
-          >
-            A4 打印版
-          </a>
+          <Magnetic>
+            <a
+              href={`${import.meta.env.BASE_URL}resume-doc.html`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary"
+            >
+              A4 打印版
+            </a>
+          </Magnetic>
         </div>
       </header>
 

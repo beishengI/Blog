@@ -6,10 +6,8 @@ const CHARS = ['行', '则', '将', '至'];
 
 /**
  * 「行则将至」毛体进入揭幕(首页,每会话一次)。
- * 通过 portal 挂到 body:Layout 内容区的 relative z-10 包裹层会把整个子树压在
- * header(z-30)之下,portal 保证揭幕层脱离该上下文、真正全屏盖住一切。
- * 节奏:铺纸 → 四字逐字落笔(clip-path 模拟运笔,各 0.9s)→ 朱砂印章落款 → 沉浸后整层上收。
- * 点击任意处跳过;prefers-reduced-motion 直接不渲染;动画全程 CSS,零依赖。
+ * portal 挂 body 保证全屏盖住一切;收束为古代卷轴形式:纸面被底轴自下而上卷起。
+ * 期间锁定 body 滚动(右侧滚动条随之隐藏);点击跳过;reduced-motion 不渲染。
  */
 export default function InkSplash() {
   const [show, setShow] = useState(false);
@@ -24,17 +22,22 @@ export default function InkSplash() {
 
     setShow(true);
     try { sessionStorage.setItem(KEY, '1'); } catch { /* ignore */ }
-    // 4.2s 自动进入收起;5.3s 卸载。后台标签页定时器会被节流,
-    // 故再以动画结束事件与 visibilitychange 兜底,保证标签页切走再切回也能收尾。
     const t1 = setTimeout(() => setLeaving(true), 4200);
-    const t2 = setTimeout(() => setShow(false), 5300);
+    const t2 = setTimeout(() => setShow(false), 5400);
     const onVis = () => { if (document.visibilityState === 'visible') setLeaving(true); };
     document.addEventListener('visibilitychange', onVis);
-    return () => {
-      clearTimeout(t1); clearTimeout(t2);
-      document.removeEventListener('visibilitychange', onVis);
-    };
+    // 注意:这里刻意不在 cleanup 里清除 t1/t2——StrictMode(dev)会模拟一次
+    // 卸载-重挂,重挂时因 flag 已置位提前返回,若清掉定时器将永远不会收束。
+    // 页面卸载时定时器随之销毁,无泄漏;后台标签页的节流由 visibilitychange 兜底。
+    return () => document.removeEventListener('visibilitychange', onVis);
   }, []);
+
+  // 锁滚动独立成 effect:只在揭幕显示期间生效,StrictMode 重挂亦能恢复
+  useEffect(() => {
+    if (!show) return;
+    document.documentElement.classList.add('ink-locked');
+    return () => document.documentElement.classList.remove('ink-locked');
+  }, [show]);
 
   if (!show) return null;
 
@@ -44,7 +47,7 @@ export default function InkSplash() {
     <div
       className={`ink-splash ${leaving ? 'ink-splash--leave' : ''}`}
       onClick={skip}
-      onAnimationEnd={(e) => { if (e.animationName === 'ink-lift') setShow(false); }}
+      onAnimationEnd={(e) => { if (e.animationName === 'scroll-close') setShow(false); }}
       role="presentation"
       aria-hidden="true"
     >
@@ -58,6 +61,9 @@ export default function InkSplash() {
           北省
         </span>
       </div>
+      {/* 卷轴收束:上轴恒在纸顶,底轴自下而上将纸面卷起 */}
+      <div className="ink-roller ink-roller--top" />
+      <div className="ink-roller ink-roller--bottom" />
     </div>,
     document.body
   );
