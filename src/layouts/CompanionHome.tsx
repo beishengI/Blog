@@ -23,15 +23,12 @@ export default function CompanionHome({ config }: { config: BlogConfig }) {
           <Link to={`/posts/${featured.id}`} className="mt-3 inline-block text-sm text-primary">阅读全文 →</Link>
         </div>
 
-        <div
-          className="rounded-brand border-2 p-6"
-          style={{ borderColor: 'color-mix(in srgb, var(--color-primary) 40%, transparent)' }}
-        >
-          <p className="text-xs font-bold uppercase tracking-widest text-primary">◆ AI 伴读</p>
+        <div className="rounded-brand border border-border p-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-primary">AI 伴读</p>
           <p className="mt-2 text-sm">{featured.aiSummary}</p>
           <h4 className="mt-4 text-sm font-semibold">关键术语</h4>
           <ul className="mt-2 space-y-1 text-xs text-muted">
-            {featured.terms.map((t) => <li key={t}>▸ {t}</li>)}
+            {featured.terms.map((t) => <li key={t}>{t}</li>)}
           </ul>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useConfig } from '../context/ConfigContext';
 import { LAYOUTS, DEFAULT_DIRECTION } from '../layouts/registry';
 import { useSEO } from '../hooks/useSEO';
+import InkSplash from '../components/InkSplash';
 
 /**
  * 首页分发器：按 config.layout.direction 选择一套独立布局。
@@ -10,5 +11,10 @@ export default function Home() {
   const { config } = useConfig();
   useSEO({});
   const Layout = LAYOUTS[config.layout.direction] ?? LAYOUTS[DEFAULT_DIRECTION];
-  return <Layout config={config} />;
+  return (
+    <>
+      <InkSplash />
+      <Layout config={config} />
+    </>
+  );
 }

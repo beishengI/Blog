@@ -101,17 +101,13 @@ function CompanionDetail({ post, prev, next }: { post: Post; prev?: Post; next?:
   );
 
   const aiPanel = (
-    <aside className="rounded-brand border-2 p-5"
-      style={{ borderColor: 'color-mix(in srgb, var(--color-primary) 40%, transparent)' }}>
-      <p className="text-xs font-bold uppercase tracking-widest text-primary">◆ AI 伴读</p>
+    <aside className="rounded-brand border border-border p-5">
+      <p className="text-xs font-bold uppercase tracking-widest text-primary">AI 伴读</p>
       <p className="mt-2 text-sm">{post.aiSummary}</p>
       <h4 className="mt-4 text-sm font-semibold">关键术语</h4>
       <ul className="mt-2 space-y-1 text-xs text-muted">
-        {post.terms.map(t => <li key={t}>▸ {t}</li>)}
+        {post.terms.map(t => <li key={t}>{t}</li>)}
       </ul>
-      <div className="mt-4 h-28 rounded-brand border border-border bg-surface flex items-center justify-center text-[10px] text-muted">
-        可解释性热力图（占位）
-      </div>
     </aside>
   );
 
@@ -125,7 +121,7 @@ function CompanionDetail({ post, prev, next }: { post: Post; prev?: Post; next?:
         {original}
         <button onClick={() => setShowAI(v => !v)}
           className="mt-4 w-full rounded-brand border border-primary py-2 text-sm text-primary">
-          ◆ AI 伴读 {showAI ? '收起' : '展开'}
+          AI 伴读 {showAI ? '收起' : '展开'}
         </button>
         {showAI && <div className="mt-3">{aiPanel}</div>}
       </div>
