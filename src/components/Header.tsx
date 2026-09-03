@@ -4,6 +4,7 @@ import { useConfig } from '../context/ConfigContext';
 import { DIRECTION_LABELS } from '../layouts/registry';
 import ThemePanel from './ThemePanel';
 import Icon from './Icon';
+import Magnetic from './Magnetic';
 
 export default function Header() {
   const { config } = useConfig();
@@ -25,7 +26,7 @@ export default function Header() {
         <Link to="/" className="font-heading shrink-0 text-lg font-bold tracking-tight">
           {site.title}
         </Link>
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="nav-blur hidden items-center gap-1 md:flex">
           {nav.map(n => (
             <Link key={n.href} to={n.href}
               className="rounded-brand px-3 py-2 text-sm text-muted hover:bg-surface hover:text-fg">
@@ -53,16 +54,18 @@ export default function Header() {
               />
             </form>
           )}
-          <button onClick={() => setOpenPanel(true)}
-            className="inline-flex items-center gap-1.5 rounded-brand border border-border px-3 py-2 text-sm hover:bg-surface hover:text-primary">
-            <Icon name="palette" size={15} /> 定制
-          </button>
+          <Magnetic strength={0.18}>
+            <button onClick={() => setOpenPanel(true)}
+              className="inline-flex items-center gap-1.5 rounded-brand border border-border px-3 py-2 text-sm hover:bg-surface hover:text-primary">
+              <Icon name="palette" size={15} /> 定制
+            </button>
+          </Magnetic>
           <button onClick={() => setMenu(v => !v)}
             className="rounded-brand border border-border px-3 py-2 text-sm md:hidden">菜单</button>
         </div>
       </div>
       {menu && (
-        <nav className="border-t border-border md:hidden">
+        <nav className="nav-blur border-t border-border md:hidden">
           <div className="shell flex flex-col py-2">
             {nav.map(n => (
               <Link key={n.href} to={n.href} onClick={() => setMenu(false)}

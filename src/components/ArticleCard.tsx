@@ -13,7 +13,7 @@ export default function ArticleCard({ post }: { post: Post }) {
   const { config } = useConfig();
   const cls = variantClass[config.layout.cardStyle] ?? variantClass.bordered;
   return (
-    <Link to={`/posts/${post.id}`} className={`group block ${cls}`}>
+    <Link to={`/posts/${post.id}`} className={`group glare block ${cls}`}>
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
         <span className="shrink-0 rounded-full bg-surface-alt px-2 py-0.5 text-primary">{post.category}</span>
         <span className="whitespace-nowrap">{post.date}</span>
