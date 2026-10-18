@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =====================================================================
+  SCP 跨账号取数系统 · 技术架构图（分层）
+  编辑指南：
+  1) 每个层级是一个 <g id="layer-N"> 分组，可整组复制/删除/移动；
+  2) 组件小方块为 <g class="node">，改 rect 的 x/width 即可增删盒子；
+  3) 配色集中在各层 fill/stroke 与 strip（左侧色条）上，改一处即换主题；
+  4) 画布 viewBox="0 0 1240 960"，向下扩展新层时整体下移并加箭头即可。
+  ===================================================================== -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 960" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowTest" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a7f5a"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect x="0" y="0" width="1240" height="960" fill="#f7f9fc"/>
+
+  <!-- 标题 -->
+  <g id="title">
+    <text x="40" y="46" font-size="23" font-weight="bold" fill="#16324f">SCP 跨账号取数系统 · 技术架构图（RPA 取数 ＋ Dify 总控）</text>
+    <text x="40" y="70" font-size="12.5" fill="#64748b">Phase 1 合成数据演示位型 ｜ 智能体做大脑（只决策不伸手）· 编排做调度 · 采集做手脚 · 人做登录 ｜ 括号内为代码/配置落点，可对照 scp-extractor/ 仓库验证</text>
+  </g>
+
+  <!-- ============ 层 1：触发层 Dify 总控 ============ -->
+  <g id="layer-1-dify">
+    <rect x="40" y="92" width="880" height="118" rx="10" fill="#eaf1f8" stroke="#b8cfe4"/>
+    <rect x="40" y="92" width="6" height="118" rx="3" fill="#1f6feb"/>
+    <text x="60" y="116" font-size="14" font-weight="bold" fill="#16324f">① 触发层 · Dify 总控（内网 Docker ＋ 自部署 LLM）—— 只决策，不碰 UI</text>
+    <g class="node">
+      <rect x="58" y="130" width="252" height="36" rx="7" fill="#ffffff" stroke="#b8cfe4"/>
+      <text x="184" y="146" font-size="12.5" font-weight="bold" fill="#1f3a5f" text-anchor="middle">dify/workflow_dsl.yml</text>
+      <text x="184" y="160" font-size="10.5" fill="#64748b" text-anchor="middle">工作流：解析意图 → 调编排 API</text>
+    </g>
+    <g class="node">
+      <rect x="324" y="130" width="268" height="36" rx="7" fill="#ffffff" stroke="#b8cfe4"/>
+      <text x="458" y="146" font-size="12.5" font-weight="bold" fill="#1f3a5f" text-anchor="middle">对话触发 · 进度播报 · 异常上报</text>
+      <text x="458" y="160" font-size="10.5" fill="#64748b" text-anchor="middle">wait 同步 / run_id 异步轮询</text>
+    </g>
+    <g class="node">
+      <rect x="606" y="130" width="282" height="36" rx="7" fill="#ffffff" stroke="#b8cfe4"/>
+      <text x="747" y="146" font-size="12.5" font-weight="bold" fill="#1f3a5f" text-anchor="middle">边界：不动态生成 UI 操作指令</text>
+      <text x="747" y="160" font-size="10.5" fill="#64748b" text-anchor="middle">GUI Agent 可靠性不足，列储备轨不进 MVP</text>
+    </g>
+  </g>
+
+  <!-- 箭头 L1→L2 -->
+  <g id="flow-1-2">
+    <line x1="480" y1="210" x2="480" y2="236" stroke="#475569" stroke-width="1.8" marker-end="url(#arrow)"/>
+    <text x="494" y="228" font-size="11" fill="#475569">HTTP POST /runs（hub-and-spoke 单向）→ 同步响应回传 oracle 结论 ＋ xlsx 路径</text>
+  </g>
+
+  <!-- ============ 层 2：编排层 ============ -->
+  <g id="layer-2-orchestrator">
+    <rect x="40" y="236" width="880" height="150" rx="10" fill="#eef2f7" stroke="#c3cfdd"/>
+    <rect x="40" y="236" width="6" height="150" rx="3" fill="#16324f"/>
+    <text x="60" y="260" font-size="14" font-weight="bold" fill="#16324f">② 编排层 · Python 3.13 ＋ FastAPI（orchestrator/）—— 串行状态机 · 断点续采 · 审计</text>
+    <g class="node">
+      <rect x="58" y="272" width="210" height="36" rx="7" fill="#ffffff" stroke="#c3cfdd"/>
+      <text x="163" y="288" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">强制串行状态机</text>
+      <text x="163" y="302" font-size="10.5" fill="#64748b" text-anchor="middle">state_machine.py · 4 账号×5 切片</text>
+    </g>
+    <g class="node">
+      <rect x="280" y="272" width="212" height="36" rx="7" fill="#ffffff" stroke="#c3cfdd"/>
+      <text x="386" y="288" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">分块续采 chunk=500</text>
+      <text x="386" y="302" font-size="10.5" fill="#64748b" text-anchor="middle">落盘即持久化，中断可 resume</text>
+    </g>
+    <g class="node">
+      <rect x="504" y="272" width="186" height="36" rx="7" fill="#ffffff" stroke="#c3cfdd"/>
+      <text x="597" y="288" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">错峰调度 scheduler.py</text>
+      <text x="597" y="302" font-size="10.5" fill="#64748b" text-anchor="middle">串行＋jitter，防同 IP 风控</text>
+    </g>
+    <g class="node">
+      <rect x="702" y="272" width="182" height="36" rx="7" fill="#ffffff" stroke="#c3cfdd"/>
+      <text x="793" y="288" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">审计 audit.py</text>
+      <text x="793" y="302" font-size="10.5" fill="#64748b" text-anchor="middle">四要素＋SHA-256 哈希链</text>
+    </g>
+    <g class="node">
+      <rect x="58" y="318" width="246" height="36" rx="7" fill="#ffffff" stroke="#c3cfdd"/>
+      <text x="181" y="334" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">编排 API api.py（:8300）</text>
+      <text x="181" y="348" font-size="10.5" fill="#64748b" text-anchor="middle">POST /runs · GET /runs/{id}</text>
+    </g>
+    <g class="node">
+      <rect x="316" y="318" width="268" height="36" rx="7" fill="#ffffff" stroke="#c3cfdd"/>
+      <text x="450" y="334" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">实时监控面板 panel.py（/panel）</text>
+      <text x="450" y="348" font-size="10.5" fill="#64748b" text-anchor="middle">只读磁盘事实，不改编排行为</text>
+    </g>
+    <g class="node">
+      <rect x="596" y="318" width="288" height="36" rx="7" fill="#ffffff" stroke="#c3cfdd"/>
+      <text x="740" y="334" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">watchdog 看护（guardian/）</text>
+      <text x="740" y="348" font-size="10.5" fill="#64748b" text-anchor="middle">心跳超龄 → 防关停告警</text>
+    </g>
+  </g>
+
+  <!-- 箭头 L2→L3 -->
+  <g id="flow-2-3">
+    <line x1="480" y1="386" x2="480" y2="412" stroke="#475569" stroke-width="1.8" marker-end="url(#arrow)"/>
+    <text x="494" y="404" font-size="11" fill="#475569">逐切片串行下发（账号-机器绑定 · 错峰执行 · 失败转人工）</text>
+  </g>
+
+  <!-- ============ 层 3：采集层 三层瀑布 ============ -->
+  <g id="layer-3-collectors">
+    <rect x="40" y="412" width="880" height="170" rx="10" fill="#e9f4ee" stroke="#b5d6c4"/>
+    <rect x="40" y="412" width="6" height="170" rx="3" fill="#1a7f5a"/>
+    <text x="60" y="436" font-size="14" font-weight="bold" fill="#14532d">③ 采集层 · 三层取数瀑布 L0＞L1＞L2（collectors/，按悬崖规则自动路由）</text>
+    <g class="node">
+      <rect x="58" y="448" width="252" height="48" rx="7" fill="#ffffff" stroke="#b5d6c4"/>
+      <text x="184" y="466" font-size="12.5" font-weight="bold" fill="#14532d" text-anchor="middle">L0 后台直连/导出</text>
+      <text x="184" y="482" font-size="10.5" fill="#64748b" text-anchor="middle">大表＞5000 行强制走（G0 闸门）</text>
+      <text x="184" y="494" font-size="10" fill="#94a3b8" text-anchor="middle">真实库 Phase 2 · 闸门校验后启用</text>
+    </g>
+    <g class="node">
+      <rect x="324" y="448" width="268" height="48" rx="7" fill="#ffffff" stroke="#b5d6c4"/>
+      <text x="458" y="466" font-size="12.5" font-weight="bold" fill="#14532d" text-anchor="middle">L1 UIA 控件级采集（常规路径）</text>
+      <text x="458" y="482" font-size="10.5" fill="#64748b" text-anchor="middle">win32/uia 双后端，可选真窗口驱动</text>
+      <text x="458" y="494" font-size="10" fill="#94a3b8" text-anchor="middle">选择器配置化，界面变更低敏</text>
+    </g>
+    <g class="node">
+      <rect x="606" y="448" width="282" height="48" rx="7" fill="#ffffff" stroke="#b5d6c4"/>
+      <text x="747" y="466" font-size="12.5" font-weight="bold" fill="#14532d" text-anchor="middle">L2 视觉兜底 Qwen3-VL</text>
+      <text x="747" y="482" font-size="10.5" fill="#64748b" text-anchor="middle">OpenAI 兼容端点（G2 闸门，关闸降 L1）</text>
+      <text x="747" y="494" font-size="10" fill="#94a3b8" text-anchor="middle">自绘控件占比超阈才触发</text>
+    </g>
+    <g class="node">
+      <rect x="58" y="508" width="272" height="36" rx="7" fill="#ffffff" stroke="#b5d6c4"/>
+      <text x="194" y="524" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">数据无关探针 probe.py</text>
+      <text x="194" y="538" font-size="10.5" fill="#64748b" text-anchor="middle">控件树脱敏 dump · 禁导出（ADR-013）</text>
+    </g>
+    <g class="node">
+      <rect x="344" y="508" width="252" height="36" rx="7" fill="#ffffff" stroke="#b5d6c4"/>
+      <text x="470" y="524" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">会话管理 session.py</text>
+      <text x="470" y="538" font-size="10.5" fill="#64748b" text-anchor="middle">超时 → 重登钩子，计数入审计</text>
+    </g>
+    <g class="node">
+      <rect x="610" y="508" width="274" height="36" rx="7" fill="#ffffff" stroke="#b5d6c4"/>
+      <text x="747" y="524" font-size="12" font-weight="bold" fill="#1f3a5f" text-anchor="middle">Collector 统一协议 base.py</text>
+      <text x="747" y="538" font-size="10.5" fill="#64748b" text-anchor="middle">can_handle / total_rows / extract_chunk / verify</text>
+    </g>
+  </g>
+
+  <!-- 箭头 L3→L4 -->
+  <g id="flow-3-4">
+    <line x1="480" y1="582" x2="480" y2="608" stroke="#475569" stroke-width="1.8" marker-end="url(#arrow)"/>
+    <text x="494" y="600" font-size="11" fill="#475569">chunk 投递区单向落盘（只增不回写，自带血缘标记）</text>
+  </g>
+
+  <!-- ============ 层 4：数据层 ============ -->
+  <g id="layer-4-data">
+    <rect x="40" y="608" width="880" height="150" rx="10" fill="#f0eefa" stroke="#cfc4e8"/>
+    <rect x="40" y="608" width="6" height="150" rx="3" fill="#8250df"/>
+    <text x="60" y="632" font-size="14" font-weight="bold" fill="#4c2889">④ 数据层 · merge/ ＋ verify/（星型合并 · 血缘 · 硬校验）</text>
+    <g class="node">
+      <rect x="58" y="644" width="286" height="36" rx="7" fill="#ffffff" stroke="#cfc4e8"/>
+      <text x="201" y="660" font-size="12" font-weight="bold" fill="#4c2889" text-anchor="middle">投递区 out/dropzone/&lt;run&gt;/&lt;slice&gt;/</text>
+      <text x="201" y="674" font-size="10.5" fill="#64748b" text-anchor="middle">chunk 级 JSON，单向落盘</text>
+    </g>
+    <g class="node">
+      <rect x="358" y="644" width="246" height="36" rx="7" fill="#ffffff" stroke="#cfc4e8"/>
+      <text x="481" y="660" font-size="12" font-weight="bold" fill="#4c2889" text-anchor="middle">merge.py 星型包合并</text>
+      <text x="481" y="674" font-size="10.5" fill="#64748b" text-anchor="middle">机械键归一 · 冲突两边留</text>
+    </g>
+    <g class="node">
+      <rect x="618" y="644" width="266" height="36" rx="7" fill="#ffffff" stroke="#cfc4e8"/>
+      <text x="751" y="660" font-size="12" font-weight="bold" fill="#4c2889" text-anchor="middle">lineage.py 血缘列</text>
+      <text x="751" y="674" font-size="10.5" fill="#64748b" text-anchor="middle">来源账号/切片/层级/校验和/时间</text>
+    </g>
+    <g class="node">
+      <rect x="58" y="690" width="316" height="36" rx="7" fill="#ffffff" stroke="#cfc4e8"/>
+      <text x="216" y="706" font-size="12" font-weight="bold" fill="#4c2889" text-anchor="middle">oracle.py 校验（verify/）</text>
+      <text x="216" y="720" font-size="10.5" fill="#64748b" text-anchor="middle">合计/行数/抽样硬判据＋勾稽 DIFF，不通过即阻塞</text>
+    </g>
+    <g class="node">
+      <rect x="388" y="690" width="496" height="36" rx="7" fill="#ffffff" stroke="#cfc4e8"/>
+      <text x="636" y="706" font-size="12" font-weight="bold" fill="#4c2889" text-anchor="middle">汇总_当日_&lt;run_id&gt;.xlsx（out/reports/）</text>
+      <text x="636" y="720" font-size="10.5" fill="#64748b" text-anchor="middle">5 sheet：汇总明细(血缘列) / 血缘清单 / 冲突明细 / oracle 报告 / 运行摘要</text>
+    </g>
+  </g>
+
+  <!-- ============ 层 5：测试端（虚线支撑，箭头走左侧外沿） ============ -->
+  <g id="layer-5-synthetic">
+    <rect x="40" y="784" width="880" height="104" rx="10" fill="#fdf3e7" stroke="#e8cfae"/>
+    <rect x="40" y="784" width="6" height="104" rx="3" fill="#b45309"/>
+    <text x="60" y="808" font-size="14" font-weight="bold" fill="#92400e">⑤ 测试端 · synthetic/ ＋ tests/（红线：零真实业务数据落盘，ADR-001/007）</text>
+    <g class="node">
+      <rect x="58" y="820" width="282" height="36" rx="7" fill="#ffffff" stroke="#e8cfae"/>
+      <text x="199" y="836" font-size="12" font-weight="bold" fill="#92400e" text-anchor="middle">合成数据 generator.py</text>
+      <text x="199" y="850" font-size="10.5" fill="#64748b" text-anchor="middle">同 seed 幂等，含 ground-truth 合计</text>
+    </g>
+    <g class="node">
+      <rect x="354" y="820" width="282" height="36" rx="7" fill="#ffffff" stroke="#e8cfae"/>
+      <text x="495" y="836" font-size="12" font-weight="bold" fill="#92400e" text-anchor="middle">假 SCP 客户端 fake_scp_client.ps1</text>
+      <text x="495" y="850" font-size="10.5" fill="#64748b" text-anchor="middle">登录框→模块→查询→网格（与真 SCP 同构）</text>
+    </g>
+    <g class="node">
+      <rect x="650" y="820" width="234" height="36" rx="7" fill="#ffffff" stroke="#e8cfae"/>
+      <text x="767" y="836" font-size="12" font-weight="bold" fill="#92400e" text-anchor="middle">mock VLM 端点（:8321）</text>
+      <text x="767" y="850" font-size="10.5" fill="#64748b" text-anchor="middle">仅验证 L2 调用契约 ＋ pytest 28 用例</text>
+    </g>
+  </g>
+
+  <!-- 测试端支撑虚线：L5 → L3（左侧外沿） -->
+  <g id="flow-test-support">
+    <path d="M 30 838 L 30 497 L 40 497" fill="none" stroke="#1a7f5a" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arrowTest)"/>
+    <text transform="rotate(-90 20 668)" x="20" y="668" font-size="11" fill="#1a7f5a" text-anchor="middle">假客户端 / 合成数据 / mock VLM —— 供 L1·L2·探针驱动与验证（零真实数据）</text>
+  </g>
+
+  <!-- ============ 右侧：治理与保障侧栏 ============ -->
+  <g id="sidebar-governance">
+    <rect x="940" y="92" width="260" height="796" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <rect x="940" y="92" width="6" height="796" rx="3" fill="#cf222e"/>
+    <text x="962" y="118" font-size="14" font-weight="bold" fill="#7f1d1d">治理与保障（贯穿全链路）</text>
+
+    <g class="gov-item">
+      <rect x="956" y="134" width="228" height="64" rx="7" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="966" y="152" font-size="12" font-weight="bold" fill="#16324f">审计四要素留痕</text>
+      <text x="966" y="168" font-size="10.5" fill="#64748b">谁 · 何时 · 对什么 · 结果</text>
+      <text x="966" y="184" font-size="10.5" fill="#64748b">SHA-256 哈希链，verify_chain 可验</text>
+    </g>
+    <g class="gov-item">
+      <rect x="956" y="210" width="228" height="64" rx="7" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="966" y="228" font-size="12" font-weight="bold" fill="#7f1d1d">强制串行红线</text>
+      <text x="966" y="244" font-size="10.5" fill="#64748b">4 账号 × 4 现役办公机（各自真实 IP）</text>
+      <text x="966" y="260" font-size="10.5" fill="#64748b">禁同机并行、禁 VM 桥接</text>
+    </g>
+    <g class="gov-item">
+      <rect x="956" y="286" width="228" height="64" rx="7" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="966" y="304" font-size="12" font-weight="bold" fill="#16324f">闸门管控</text>
+      <text x="966" y="320" font-size="10.5" fill="#64748b">G-1 授权 / G0 后台 / G1 UIA / G2 视觉</text>
+      <text x="966" y="336" font-size="10.5" fill="#64748b">未过闸不启用；关闸自动降级并留痕</text>
+    </g>
+    <g class="gov-item">
+      <rect x="956" y="362" width="228" height="64" rx="7" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="966" y="380" font-size="12" font-weight="bold" fill="#16324f">血缘与不出域</text>
+      <text x="966" y="396" font-size="10.5" fill="#64748b">每行带来源血缘列；数据不出域</text>
+      <text x="966" y="412" font-size="10.5" fill="#64748b">探针禁导出、单元格值脱敏</text>
+    </g>
+    <g class="gov-item">
+      <rect x="956" y="438" width="228" height="64" rx="7" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="966" y="456" font-size="12" font-weight="bold" fill="#16324f">防关停</text>
+      <text x="966" y="472" font-size="10.5" fill="#64748b">watchdog 心跳看护 ＋ 审计外置落盘</text>
+      <text x="966" y="488" font-size="10.5" fill="#64748b">日志不可被静默关闭</text>
+    </g>
+    <g class="gov-item">
+      <rect x="956" y="514" width="228" height="64" rx="7" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="966" y="532" font-size="12" font-weight="bold" fill="#16324f">失败处置</text>
+      <text x="966" y="548" font-size="10.5" fill="#64748b">失败 2 次 → 留痕转人工/砍范围</text>
+      <text x="966" y="564" font-size="10.5" fill="#64748b">不静默合并、不带病出数</text>
+    </g>
+
+    <g class="gov-config">
+      <rect x="956" y="596" width="228" height="118" rx="7" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="966" y="616" font-size="12" font-weight="bold" fill="#16324f">一等配置 config/（改配置不改代码）</text>
+      <text x="966" y="634" font-size="10.5" fill="#64748b">settings.yaml 闸门/阈值/分块</text>
+      <text x="966" y="650" font-size="10.5" fill="#64748b">accounts_machines.yaml 账号-机器映射</text>
+      <text x="966" y="666" font-size="10.5" fill="#64748b">plan_demo.yaml 取数计划</text>
+      <text x="966" y="682" font-size="10.5" fill="#64748b">keymap_dictionary.yaml 口径字典</text>
+      <text x="966" y="698" font-size="10.5" fill="#64748b">selectors/win_client.yaml 界面选择器</text>
+    </g>
+  </g>
+
+  <!-- 图例 -->
+  <g id="legend">
+    <text x="40" y="922" font-size="11.5" fill="#64748b">图例：实线＝主流程数据流 ｜ 虚线＝测试支撑 ｜ 左侧色条标识各层主题色 ｜ 分组 &lt;g id&gt; 可整组编辑与扩展 ｜ 2026-09-08</text>
+  </g>
+</svg>
