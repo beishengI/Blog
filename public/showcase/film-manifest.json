@@ -1,22 +1,32 @@
 {
-  "title": "从一张切片，到一条产线",
+  "title": "博客开机自检 / BLOG SELF-TEST",
   "duration": 48.0,
   "fps": 24,
   "resolution": [
     1920,
     1080
   ],
-  "voice": "edge-tts / zh-CN-YunxiNeural",
+  "voice": null,
   "music": "procedural ambient bed (numpy)",
   "sfx": [
-    "scan",
+    "power hum",
+    "three-note scan motif",
+    "printer feed",
     "stamp",
-    "seal",
-    "three-note motif"
+    "card whoosh",
+    "typewriter",
+    "paper fold",
+    "pen scratch",
+    "projector click",
+    "error beep",
+    "riser",
+    "return key"
   ],
-  "captions": "public/showcase/captions.srt",
-  "transcript": "public/showcase/transcript.md",
-  "narration": "public/showcase/narration.m4a",
+  "captions": null,
+  "transcript": null,
+  "narration": null,
+  "project": "video/blog-intro",
+  "storyboard": "video/blog-intro/storyboard.html",
   "final": {
     "path": "public/showcase/profile-film.mp4",
     "duration": 48.0,
@@ -24,18 +34,10 @@
     "height": 1080,
     "fps": 24,
     "video": "H.264 High, yuv420p, faststart",
-    "audio": "AAC LC, 128 kbps, 48 kHz, stereo",
-    "bytes": 3537653,
-    "lufs": -16.1,
-    "truePeakDbfs": -1.7
+    "audio": "AAC LC, 160 kbps, 48 kHz, stereo",
+    "bytes": 7791562,
+    "lufs": -17.3,
+    "truePeakDbfs": -1.3
   },
-  "assets": [
-    "public/showcase/projects/lite-mamba.webp",
-    "public/showcase/projects/contract-report.jpg",
-    "public/showcase/projects/mes-workbench.jpg",
-    "public/showcase/projects/taxi-architecture.svg",
-    "public/showcase/projects/scp-architecture.svg",
-    "public/portrait-halftone.webp"
-  ],
-  "privacy": "no phone number, no client names, redacted UI only"
+  "privacy": "no full phone number, no client names, redacted assets only"
 }

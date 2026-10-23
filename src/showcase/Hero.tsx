@@ -82,11 +82,11 @@ export default function Hero({
               </div>
 
               <button type="button" className="hero__mobile-plate" onClick={playFilm} aria-label="播放介绍片">
-                <img src={asset('/showcase/poster.jpg')} alt="介绍片海报：BraTS 影像三联图" width={1600} height={900} />
+                <img src={asset('/showcase/poster.jpg')} alt="介绍片海报：博客开机自检" width={1600} height={900} />
                 <span className="hero__mobile-plate__overlay">
                   <span className="hero__mobile-plate__play">▶</span>
                   <span>播放介绍片 0:48</span>
-                  <small>从一张切片，到一条产线</small>
+                  <small>博客开机自检 / 48s</small>
                 </span>
               </button>
 

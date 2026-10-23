@@ -96,7 +96,7 @@ export function FilmPlayer({ meta = film }: { meta?: FilmMeta }) {
           onError={() => setFailed(true)}
         >
           <source src={asset(meta.src)} type="video/mp4" />
-          你的浏览器不支持 HTML5 视频。可查看下方文字稿。
+          你的浏览器不支持 HTML5 视频。
         </video>
       )}
 
@@ -119,7 +119,7 @@ export function FilmPlayer({ meta = film }: { meta?: FilmMeta }) {
           className="lightbox__play"
           onClick={start}
           disabled={!meta.available}
-          aria-label={meta.available ? `播放介绍片，${meta.duration}` : '介绍片正在渲染，查看文字稿'}
+          aria-label={meta.available ? `播放介绍片，${meta.duration}` : '介绍片正在渲染'}
         >
           <span className="lightbox__play-icon">
             <Icon name={meta.available ? 'play' : 'film'} size={22} />
@@ -128,7 +128,7 @@ export function FilmPlayer({ meta = film }: { meta?: FilmMeta }) {
             {meta.available ? `播放介绍片 ${meta.duration}` : '影片渲染中'}
           </span>
           <span className="lightbox__play-sub">
-            {meta.available ? '声音默认开启 · 可暂停 / 全屏 / 字幕' : '可先读下方文字稿'}
+            {meta.available ? '音效设计 · 可暂停 / 全屏' : '稍后再来'}
           </span>
         </button>
       )}
@@ -301,25 +301,31 @@ export function HeroViewer({
               </li>
             ))}
           </ol>
-          <details className="audio-note">
-            <summary>只听音频版 / 打开文字稿</summary>
-            <p className="mono-label">旁白 · Edge TTS · {film.duration}</p>
-            <audio controls preload="none" src={asset(film.audio)}>
-              你的浏览器不支持音频播放。可打开文字稿。
-            </audio>
-            <a href={asset(film.transcript)} className="text-link" target="_blank" rel="noreferrer">
-              完整文字稿 →
-            </a>
-          </details>
+          {film.audio && (
+            <details className="audio-note">
+              <summary>只听音频版 / 打开文字稿</summary>
+              <p className="mono-label">音频 · {film.duration}</p>
+              <audio controls preload="none" src={asset(film.audio)}>
+                你的浏览器不支持音频播放。可打开文字稿。
+              </audio>
+              {film.transcript && (
+                <a href={asset(film.transcript)} className="text-link" target="_blank" rel="noreferrer">
+                  完整文字稿 →
+                </a>
+              )}
+            </details>
+          )}
           <div className="hero-findings__foot">
             <div className="tag-row">
-              <Tag>声音默认开启</Tag>
+              <Tag>音效设计</Tag>
+              <Tag>无配音</Tag>
               <Tag>可暂停</Tag>
-              <Tag>文字稿</Tag>
             </div>
-            <a href={asset(film.transcript)} className="text-link" target="_blank" rel="noreferrer">
-              打开文字稿 →
-            </a>
+            {film.transcript && (
+              <a href={asset(film.transcript)} className="text-link" target="_blank" rel="noreferrer">
+                打开文字稿 →
+              </a>
+            )}
           </div>
         </div>
       ) : work ? (

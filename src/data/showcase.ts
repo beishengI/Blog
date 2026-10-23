@@ -210,9 +210,9 @@ export interface FilmMeta {
   subtitle: string;
   src: string;
   poster: string;
-  audio: string;
-  transcript: string;
-  captions: string;
+  audio?: string;
+  transcript?: string;
+  captions?: string;
   duration: string;
   available: boolean;
   chapters: { time: string; label: string }[];
@@ -220,25 +220,26 @@ export interface FilmMeta {
 }
 
 export const film: FilmMeta = {
-  title: '从一张切片，到一条产线',
-  subtitle: 'PERSONAL INTRO FILM / 48s',
+  title: '博客开机自检',
+  subtitle: 'BLOG SELF-TEST / 48s / NO VO',
   src: '/showcase/profile-film.mp4',
   poster: '/showcase/poster.jpg',
-  audio: '/showcase/narration.m4a',
-  transcript: '/showcase/transcript.md',
-  captions: '/showcase/captions.srt',
   duration: '0:48',
   available: true,
   chapters: [
-    { time: '00:00', label: '一张切片' },
-    { time: '00:06', label: 'Lite-Mamba' },
-    { time: '00:16', label: 'Qwen3 服务' },
-    { time: '00:25', label: '合同规则引擎' },
-    { time: '00:35', label: 'MES / 迁移' },
-    { time: '00:43', label: '一条链路' },
+    { time: '00:00', label: '开机' },
+    { time: '00:04', label: '读片台' },
+    { time: '00:09', label: '七张项目卡' },
+    { time: '00:15', label: '知识库' },
+    { time: '00:20', label: '简历' },
+    { time: '00:25', label: '文章' },
+    { time: '00:30', label: '影片' },
+    { time: '00:35', label: '故障' },
+    { time: '00:40', label: '汇总' },
+    { time: '00:45', label: '签发' },
   ],
   summary:
-    '48 秒个人介绍片：从 BraTS 切片开始，经过轻量分割模型、32B 流式推理、确定性合同规则引擎，最后落到 MES 与出租车平台的产线交付。',
+    '48 秒无旁白介绍片：把博客当成一台读片机开机自检——读片台、7 个项目、30 篇知识、简历、文章、影片，中途出一次「过度认真」的故障，最后汇总签发。',
 };
 
 export const awardItems = [
