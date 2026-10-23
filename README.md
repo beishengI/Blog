@@ -59,7 +59,7 @@
 - 邮箱：**1611045292@qq.com**
 - GitHub：**[github.com/beishengI](https://github.com/beishengI)**
 - 个人站：[beishengi.github.io/Blog](https://beishengi.github.io/Blog/)（源码即本仓库）
-- 简历：[一页版 PDF](public/resume/zhangdongdong-resume-2026-10.pdf)（公开脱敏版）
+- 简历：[一页版 PDF](public/resume/zhangdongdong-resume-2026-10.pdf)
 - 微信：扫码添加，备注「岗位 + 姓名」更快通过
 
 <img src="public/wechat-qr.png" width="150" alt="微信二维码">

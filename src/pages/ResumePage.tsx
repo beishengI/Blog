@@ -82,7 +82,7 @@ export default function ResumePage() {
             </a>
             <Link to="/about" className="btn btn--ghost">关于我 →</Link>
             <p className="mono-label" style={{ flexBasis: '100%', marginTop: 4 }}>
-              PDF · 2026-10 · 一页版 · 公开脱敏版
+              PDF · 2026-10 · 一页版
             </p>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function ResumePage() {
             <span className="ed-cv__no">CV</span>
             <h2 className="ed-cv__title" id="ed-cv-title">简历原件</h2>
             <span className="ed-cv__en">CURRICULUM VITAE / PDF</span>
-            <span className="ed-cv__meta">FDE · 2026-10 · 1 页 · 公开脱敏版</span>
+            <span className="ed-cv__meta">FDE · 2026-10 · 1 页</span>
           </div>
           <div className="ed-cv__body">
             <a
@@ -114,7 +114,7 @@ export default function ResumePage() {
             </a>
             <aside className="ed-cv__side">
               <p className="ed-cv__lead">
-                FDE 版一页简历，公开脱敏：电话 {resumeHero.phoneMasked}；GPA、排名与证件照按站点隐私规则处理。
+                FDE 版一页简历，2026-10 更新；可下载，或在新窗口打开。
               </p>
               <div className="ed-cv__actions">
                 <a className="btn btn--primary" href={asset(resumeHero.resumePdf)} download>
