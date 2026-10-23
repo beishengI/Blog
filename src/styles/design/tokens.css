@@ -1,0 +1,86 @@
+/* ============================================================
+   Design tokens · 个人读片报告 / Reading Report
+   纸本报告 × 医学影像灯箱。所有页面共享这一套令牌。
+   ============================================================ */
+
+:root {
+  /* paper & ink */
+  --paper: #f3ebdd;
+  --paper-2: #fbf6ea;
+  --paper-3: #eadfca;
+  --ink: #1b1813;
+  --ink-2: #4a4238;
+  --muted: #7b7060;
+  --line: #d8ccb6;
+  --line-strong: #b7a78c;
+
+  /* signal colours */
+  --red: #b23a2a;
+  --red-2: #d4633f;
+  --jade: #4f6f5e;
+  --amber: #b98431;
+
+  /* lightbox */
+  --graphite: #12100d;
+  --graphite-2: #1b1712;
+  --graphite-3: #272119;
+  --bone: #ede4d3;
+
+  /* type */
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", Georgia, serif;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* layout */
+  --shell: 1200px;
+  --gutter: clamp(18px, 4vw, 48px);
+  --header-h: 64px;
+  --radius: 2px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* legacy aliases: keep admin/comments/old components on the same palette */
+  --color-bg: var(--paper);
+  --color-surface: var(--paper-2);
+  --color-surface-alt: var(--paper-3);
+  --color-text: var(--ink);
+  --color-text-muted: var(--muted);
+  --color-border: var(--line);
+  --color-primary: var(--red);
+  --color-accent: var(--jade);
+  --font-heading: var(--font-serif);
+  --font-body: var(--font-sans);
+  --font-mono-legacy: var(--font-mono);
+  --maxw: var(--shell);
+  --gap: 24px;
+  --content-max: var(--shell);
+  --read-max: 44rem;
+  --sidebar-w: 280px;
+  --col-min: 280px;
+  --col-min-sm: 220px;
+  --avatar-sm: 2.5rem;
+  --avatar-md: 3.5rem;
+  --avatar-lg: 5rem;
+  --toc-h: 63px;
+
+  color-scheme: light;
+}
+
+[data-mode='dark'] {
+  --paper: #12100d;
+  --paper-2: #1a1712;
+  --paper-3: #241e16;
+  --ink: #ede4d3;
+  --ink-2: #cfc3ae;
+  --muted: #9c8f7a;
+  --line: #352d22;
+  --line-strong: #5a4a36;
+  --red: #d4633f;
+  --red-2: #e07a55;
+  --jade: #7fa28d;
+  --amber: #d1a052;
+  --graphite: #0b0907;
+  --graphite-2: #14110d;
+  --graphite-3: #211b13;
+  --bone: #ede4d3;
+  color-scheme: dark;
+}

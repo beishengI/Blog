@@ -19,13 +19,16 @@ skills-lock.json
 .zcode
 privacy-denylist.local.txt
 
-# ---- 本地工作目录，不进仓库（如需发布请另开仓库或 git add -f） ----
-video/
-design/
-new_blog/
-Dify DSL/
-.dsh-vision-router/
-tools/
+# ---- 本地工作目录（只匹配仓库根目录，避免误伤 src/ 下的同名目录） ----
+/video/
+/design/
+/new_blog/
+/Dify DSL/
+/.dsh-vision-router/
+/tools/
+
+# ---- 原始微信二维码截图（含昵称/头像），只提交裁剪后的 public/wechat-qr.png ----
+/微信.png
 
 # ---- 客户素材待授权，暂不入库 ----
 public/showcase/projects/mes-workbench.jpg
