@@ -1,0 +1,41 @@
+{
+  "title": "从一张切片，到一条产线",
+  "duration": 48.0,
+  "fps": 24,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "voice": "edge-tts / zh-CN-YunxiNeural",
+  "music": "procedural ambient bed (numpy)",
+  "sfx": [
+    "scan",
+    "stamp",
+    "seal",
+    "three-note motif"
+  ],
+  "captions": "public/showcase/captions.srt",
+  "transcript": "public/showcase/transcript.md",
+  "narration": "public/showcase/narration.m4a",
+  "final": {
+    "path": "public/showcase/profile-film.mp4",
+    "duration": 48.0,
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "video": "H.264 High, yuv420p, faststart",
+    "audio": "AAC LC, 128 kbps, 48 kHz, stereo",
+    "bytes": 3537653,
+    "lufs": -16.1,
+    "truePeakDbfs": -1.7
+  },
+  "assets": [
+    "public/showcase/projects/lite-mamba.webp",
+    "public/showcase/projects/contract-report.jpg",
+    "public/showcase/projects/mes-workbench.jpg",
+    "public/showcase/projects/taxi-architecture.svg",
+    "public/showcase/projects/scp-architecture.svg",
+    "public/portrait-halftone.webp"
+  ],
+  "privacy": "no phone number, no client names, redacted UI only"
+}

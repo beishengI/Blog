@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-  <title>MedAI Lab</title>
+  <title>张栋栋 · 全栈开发 / AI 应用</title>
   <link>https://beishengi.github.io/Blog</link>
-  <description>湖北医药学院 · 智能医学工程 · 关注大模型应用开发（RAG / Agent）与医学影像 AI</description>
+  <description>智能医学工程 2027 届。做过医学影像分割、32B 模型服务化、合同预审智能体，也把 MES 与出租车平台从旧架构迁到新架构。算法、服务、交付，一条链路亲手跑完。</description>
   <language>zh-CN</language>
   <lastBuildDate>Wed, 02 Sep 2026 00:00:00 GMT</lastBuildDate>
-  <generator>MedAI Blog</generator>
+  <generator>张栋栋 · 读片报告</generator>
   <item>
     <guid isPermaLink="false">contract-preaudit-agent</guid>
     <link>https://beishengi.github.io/Blog/posts/contract-preaudit-agent</link>

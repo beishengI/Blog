@@ -82,7 +82,7 @@ async function main() {
     lines.push(`  <description>${esc(site.bio)}</description>`);
     lines.push('  <language>zh-CN</language>');
     lines.push(`  <lastBuildDate>${lastBuild.toUTCString()}</lastBuildDate>`);
-    lines.push('  <generator>MedAI Blog</generator>');
+    lines.push('  <generator>张栋栋 · 读片报告</generator>');
     for (const post of published) {
       lines.push('  <item>');
       lines.push(`    <guid isPermaLink="false">${esc(post.id)}</guid>`);

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://beishengi.github.io/Blog/sitemap.xml
