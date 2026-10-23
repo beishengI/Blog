@@ -17,3 +17,17 @@ skills-lock.json
 .superpowers
 .verify
 .zcode
+privacy-denylist.local.txt
+
+# ---- 本地工作目录，不进仓库（如需发布请另开仓库或 git add -f） ----
+video/
+design/
+new_blog/
+Dify DSL/
+.dsh-vision-router/
+tools/
+
+# ---- 客户素材待授权，暂不入库 ----
+public/showcase/projects/mes-workbench.jpg
+public/showcase/projects/taxi-architecture.svg
+public/showcase/projects/scp-architecture.svg
