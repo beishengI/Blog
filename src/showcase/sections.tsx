@@ -487,7 +487,7 @@ export function Contact() {
                 <span>待补充</span>
               </div>
             )}
-            <p>占位；提供二维码后替换。</p>
+            <p>{wechatQr ? '扫码添加；备注「岗位 + 姓名」更快通过。' : '二维码待补充；可先邮件联系。'}</p>
           </div>
           <div className="contact-block">
             <h3>简历 / PDF</h3>

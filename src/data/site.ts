@@ -85,7 +85,7 @@ export const site: SiteConfig = {
     location: '湖北 · 武汉',
     phoneMasked: '153****3881',
     phonePublic: false,
-    wechatQr: '',
+    wechatQr: '/wechat-qr.png',
   },
   email: '1611045292@qq.com',
   github: 'beishengI',
