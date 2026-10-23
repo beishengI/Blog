@@ -14,9 +14,10 @@
 | `public/showcase/projects/scp-architecture.svg` | SCP 取数架构图 | 无企业名；保留方法示意 | 仅示意 | **待客户授权** |
 | `public/showcase/poster.jpg` | 程序生成 + BraTS 三联图 | 1600×900，干净灯箱板 | 公开 | 自生成 |
 | `public/showcase/og-cover.jpg` | 程序生成 | 1200×630 | 公开 | 自生成 |
-| `public/resume/zhangdongdong-resume-2026-10.pdf` | 用户提供的 2026-10 一页简历 PDF | 1 页；电话脱敏为 153****3881；GPA/排名/平均分移除；证件照替换为半调肖像；PDF 元数据重写 | 公开脱敏版 | 用户提供 |
-| `public/resume/zhangdongdong-resume-2026-10-preview.jpg` | 上述 PDF 第 1 页 160dpi 渲染 | 1100×1555 JPEG；用于 `/resume` 内嵌预览 | 公开脱敏版 | 用户提供 |
-| `public/resume/zhangdongdong-resume.pdf` | 网页 `/resume` 打印 | 5 页；电话脱敏；无 GPA；无客户名；作为「完整版」保留 | 公开脱敏版 | 用户授权（待确认） |
+| `public/resume/zhangdongdong-resume-2026-10.pdf` | 用户提供的 FDE / 软件开发（STAR 版）简历 PDF，经 `scripts/resume/fde-2026-10.html` 重建 | 1 页；电话脱敏为 153****3881；GPA/排名/平均分移除；证件照替换为半调肖像；页脚附微信二维码；PDF 元数据重写 | 公开脱敏版 | 用户提供 |
+| `public/resume/zhangdongdong-resume-2026-10-preview.jpg` | 上述 PDF 第 1 页 1100px 渲染 | 1100×1557 JPEG；用于 `/resume` 内嵌预览 | 公开脱敏版 | 用户提供 |
+| `public/resume/zhangdongdong-resume.pdf` | 网页 `/resume` 打印 | 6 页；电话脱敏；无 GPA；无客户名；作为「完整版」保留 | 公开脱敏版 | 用户授权 |
+| `public/wechat-qr.png` | 用户提供的微信加好友二维码截图 | 裁掉昵称/头像与说明文字，只保留二维码 + 静区，600×600 PNG | 公开（用户提供） | 用户提供 |
 | `public/favicon.svg` | 程序生成 BS 切片框 | — | 公开 | 自生成 |
 | `public/showcase/profile-film.mp4` | HyperFrames 工程 | 48.0s；1920×1080；H.264 + AAC；3.5MB | 公开 | 已渲染 |
 
