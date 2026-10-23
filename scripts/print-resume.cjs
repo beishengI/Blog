@@ -13,7 +13,18 @@ const path = require('node:path');
   const outDir = path.resolve('public/resume');
   fs.mkdirSync(outDir, { recursive: true });
   const out = path.join(outDir, 'zhangdongdong-resume.pdf');
-  const browser = await chromium.launch({ channel: 'chrome' });
+  /** 本机可能只有 Edge：优先 Chrome，其次 Edge，最后用 Playwright 自带浏览器。 */
+  let browser;
+  for (const options of [{ channel: 'chrome' }, { channel: 'msedge' }, {}]) {
+    try {
+      browser = await chromium.launch(options);
+      console.log('[print-resume] browser:', JSON.stringify(options));
+      break;
+    } catch (error) {
+      console.warn('[print-resume] launch failed:', String(error).split('\n')[0]);
+    }
+  }
+  if (!browser) throw new Error('No Chrome / Edge / bundled Chromium available for PDF printing');
   const page = await browser.newPage({ viewport: { width: 1100, height: 1400 } });
   await page.goto('http://127.0.0.1:5173/resume', { waitUntil: 'networkidle' });
   await page.waitForTimeout(800);

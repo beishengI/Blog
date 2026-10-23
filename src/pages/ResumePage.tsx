@@ -9,6 +9,7 @@ import {
   resumeHonors,
   resumeInternship,
   resumeProjects,
+  resumePublication,
   resumeSkills,
   resumeSummary,
 } from '../data/resume';
@@ -18,8 +19,8 @@ export default function ResumePage() {
   useSEO({
     title: '简历',
     description:
-      '张栋栋 · 软件开发工程师（全栈开发 · 医学影像软件 · AI 应用）· 湖北医药学院智能医学工程 2027 届。7 项工程作品、2 套企业系统、30 篇知识文档。',
-    keywords: ['张栋栋', '简历', '全栈开发', 'AI 应用', '医学影像', 'MES', 'Agent'],
+      '张栋栋 · FDE / 软件开发工程师（医学影像 AI · 全栈交付）· 湖北医药学院智能医学工程 2027 届。7 项工程作品、2 套企业系统、30 篇知识文档、1 篇国际会议论文。',
+    keywords: ['张栋栋', '简历', 'FDE', '全栈开发', 'AI 应用', '医学影像', 'MES', 'Agent'],
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'Person',
@@ -65,12 +66,19 @@ export default function ResumePage() {
               {resumeHero.phoneMasked}
             </p>
           </div>
+          <div>
+            <span className="mono-label">微信</span>
+            <div className="resume-wechat">
+              <img src={asset('/wechat-qr.png')} alt="张栋栋 · 微信二维码" width={92} height={92} />
+              <p>扫码添加，备注来意与岗位。</p>
+            </div>
+          </div>
           <div className="resume-contact__actions">
             <a className="btn btn--primary" href={asset(resumeHero.resumePdf)} download>
               下载简历 PDF <span className="btn__arrow">↓</span>
             </a>
             <a className="btn btn--ghost" href={asset(resumeHero.resumePdfFull)} download>
-              完整版 · 5 页
+              完整版 · 6 页
             </a>
             <Link to="/about" className="btn btn--ghost">关于我 →</Link>
             <p className="mono-label" style={{ flexBasis: '100%', marginTop: 4 }}>
@@ -84,7 +92,7 @@ export default function ResumePage() {
             <span className="ed-cv__no">CV</span>
             <h2 className="ed-cv__title" id="ed-cv-title">简历原件</h2>
             <span className="ed-cv__en">CURRICULUM VITAE / PDF</span>
-            <span className="ed-cv__meta">2026-10 · 1 页 · 公开脱敏版</span>
+            <span className="ed-cv__meta">FDE · 2026-10 · 1 页 · 公开脱敏版</span>
           </div>
           <div className="ed-cv__body">
             <a
@@ -97,7 +105,7 @@ export default function ResumePage() {
               <span className="ed-cv__tape" aria-hidden="true" />
               <img
                 src={asset(resumeHero.resumePdfPreview)}
-                alt="张栋栋 · 软件开发工程师简历 PDF 第一页预览"
+                alt="张栋栋 · FDE / 软件开发工程师简历 PDF 第一页预览"
                 width={1100}
                 height={1555}
                 loading="lazy"
@@ -106,7 +114,7 @@ export default function ResumePage() {
             </a>
             <aside className="ed-cv__side">
               <p className="ed-cv__lead">
-                一页版，公开脱敏：电话 {resumeHero.phoneMasked}；GPA、排名与证件照按站点隐私规则处理。
+                FDE 版一页简历，公开脱敏：电话 {resumeHero.phoneMasked}；GPA、排名与证件照按站点隐私规则处理。
               </p>
               <div className="ed-cv__actions">
                 <a className="btn btn--primary" href={asset(resumeHero.resumePdf)} download>
@@ -147,6 +155,7 @@ export default function ResumePage() {
             <a href="#experience">实习</a>
             <a href="#projects">项目</a>
             <a href="#education">教育</a>
+            <a href="#publication">学术</a>
             <a href="#honors">荣誉</a>
           </aside>
 
@@ -218,8 +227,22 @@ export default function ResumePage() {
               </div>
             </section>
 
+            <section className="resume-block" id="publication">
+              <SectionMark no="05" title="学术成果" en="PUBLICATION" />
+              <div className="resume-item">
+                <div className="resume-item__head">
+                  <h3 className="resume-item__title">{resumePublication.title}</h3>
+                  <span className="resume-item__meta">{resumePublication.status}</span>
+                </div>
+                <div className="resume-item__tag">
+                  {resumePublication.venue} · {resumePublication.publisher}
+                </div>
+                <p className="resume-summary" style={{ marginTop: 8 }}>{resumePublication.note}</p>
+              </div>
+            </section>
+
             <section className="resume-block" id="honors">
-              <SectionMark no="05" title="荣誉 / 证书" en="HONORS" />
+              <SectionMark no="06" title="荣誉 / 证书" en="HONORS" />
               <ul className="resume-honors">
                 {resumeHonors.map(honor => <li key={honor}>{honor}</li>)}
               </ul>

@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>张栋栋 - FDE / 软件开发工程师（公开脱敏版）</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #16130f;
+    --ink-2: #3a352d;
+    --muted: #6f665a;
+    --rule: #241f18;
+    --red: #b23a2a;
+    --paper: #ffffff;
+  }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Segoe UI", Arial, sans-serif;
+    color: var(--ink); background: var(--paper);
+    font-size: 9.9px; line-height: 1.5;
+  }
+  .sheet { width: 210mm; min-height: 297mm; padding: 7.5mm 9.5mm 6mm; background: #fff; }
+  b, strong { font-weight: 700; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .header .info { flex: 1; min-width: 0; }
+  h1 { font-size: 22px; letter-spacing: 2px; font-weight: 700; }
+  .target { font-size: 12px; margin: 2px 0 4px; color: var(--ink); }
+  .target b { color: var(--red); }
+  .hline { font-size: 10px; color: var(--ink-2); margin-bottom: 1px; }
+  .hline .sep { color: #9a9082; margin: 0 4px; }
+  .portrait {
+    width: 19mm; height: 23.5mm; object-fit: cover; flex: 0 0 auto;
+    filter: grayscale(1) contrast(1.08); border: 1px solid #cfc6b8;
+  }
+  h2 {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 2px; color: var(--red);
+    margin: 6.5px 0 0; padding-bottom: 1.5px; border-bottom: 1.4px solid var(--red);
+  }
+  h2 .en { float: right; font-size: 8px; letter-spacing: 1.6px; color: var(--muted); font-weight: 400; }
+  .org { display: flex; justify-content: space-between; align-items: baseline; margin-top: 5px; }
+  .org .name { font-weight: 700; font-size: 11.4px; }
+  .org .name .tag { font-weight: 400; color: var(--ink-2); font-size: 9.6px; }
+  .org .date { color: var(--ink-2); font-size: 9.6px; white-space: nowrap; }
+  .tech { color: var(--muted); font-size: 9.4px; margin: 1px 0 2px; }
+  ul { list-style: none; }
+  li { position: relative; padding-left: 10px; margin-bottom: 1.5px; text-align: justify; }
+  li::before { content: "·"; position: absolute; left: 1px; top: -1px; color: var(--red); font-weight: 700; }
+  .lead { text-align: justify; }
+  .cols li { width: 100%; }
+  .two-col { display: flex; gap: 12px; }
+  .two-col > div { flex: 1; min-width: 0; }
+  .footer {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    margin-top: 5px; padding-top: 4px; border-top: 1px solid #d8cfc0;
+  }
+  .footer .note { font-size: 8.6px; color: var(--muted); line-height: 1.5; }
+  .footer .qr { display: flex; align-items: center; gap: 6px; }
+  .footer .qr img { width: 15mm; height: 15mm; border: 1px solid #d8cfc0; padding: 1px; background: #fff; }
+  .footer .qr span { font-size: 8.4px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="header">
+    <div class="info">
+      <h1>张栋栋</h1>
+      <div class="target"><b>求职意向：FDE / 软件开发工程师</b>｜医学影像 AI · 全栈交付</div>
+      <div class="hline">电话 153****3881<span class="sep">|</span>邮箱 1611045292@qq.com<span class="sep">|</span>湖北·武汉</div>
+      <div class="hline">GitHub github.com/beishengI<span class="sep">|</span>个人站 beishengi.github.io/Blog</div>
+    </div>
+    <img class="portrait" src="../../public/portrait-halftone.webp" alt="">
+  </div>
+
+  <h2>教育背景 <span class="en">EDUCATION</span></h2>
+  <div class="org">
+    <span class="name">湖北医药学院 <span class="tag">— 智能医学工程｜本科（2027 届）</span></span>
+    <span class="date">2023.09 – 2027.06</span>
+  </div>
+  <p class="lead">核心课程：Python 程序设计、Web 开发技术及应用、机器学习及应用、数据挖掘、大数据关键技术、数据库系统原理。</p>
+
+  <h2>实习经历 <span class="en">EXPERIENCE</span></h2>
+  <div class="org">
+    <span class="name">武汉引力云科技有限公司 <span class="tag">— 企业系统交付｜全栈开发工程师</span></span>
+    <span class="date">2026.06 – 至今</span>
+  </div>
+  <ul>
+    <li><b>工作概述：</b>独立负责出租车平台重构迁移；作为 MES 项目组核心开发，负责工单全生命周期模块；直接对接客户业务与生产部门，覆盖需求 → 方案 → 开发 → 迁移 → 上线 → 运维。</li>
+    <li><b>出租车运营管理平台重构迁移（独立负责｜2026.06–2026.09）：</b>老旧 PHP + Java 双栈单体，92 张表 / 6.9 万条数据 / 5.1G 附件，无备份（RPO≈60 天），需 3 个月内完成生产切换且数据零丢失。主导重构至 Spring Boot 3 + Vue3，设计「水位增量 + 主键∨时间戳兜底 + 幂等清洗 + 三重对账」迁移管道，治理 1,416 行脏数据与 62,804 行重复数据并完成慢查询治理。3 个月零丢失切换（88 表对账 src_only=0）；月欠费 60s+ → 毫秒级、单车欠费 349 → 11.2ms；交付 96 套表单 / 219 条 JS 增强 / 150 个迁移脚本。</li>
+    <li><b>MES 工单全生命周期模块（项目组核心开发｜2026.07–至今）：</b>工单-工序-载具-报工-检验存在严格状态与数量账，原始记录不可覆盖，需支持 SN 正反向追溯。负责工单创建 → 排程 → 下发 → 报工 → 状态流转 → 载具绑定 → 追溯；设计工单-工序-检验多状态机、一单一码、载具防混装；参与元数据驱动表单引擎二次开发，基于现场 7 条痛点 / 14 条问题完成需求澄清。工单全生命周期闭环，支撑 SN 14 类节点正反向追溯与载具级禁混装。</li>
+  </ul>
+
+  <h2>项目经历 <span class="en">PROJECTS</span></h2>
+  <div class="org">
+    <span class="name">AI 医学影像分析与可视化平台 <span class="tag">— 独立负责｜已开源</span></span>
+    <span class="date">2026</span>
+  </div>
+  <div class="tech">PyTorch · MONAI · FastAPI · Vue3 · TypeScript · ECharts · Qwen3-VL-32B · BGE-M3 · A800 / H800 / 昇腾 910B</div>
+  <ul>
+    <li>在 A800 80GB HPC 完成 16 组对照实验（基线 + 宽度搜索 + 模块消融 + 5 主流模型对比），训练 Lite-Mamba（w=0.75）：参数 67.7M → 10.9M（↓83.9%）、算力 ↓86.5%，Dice 0.879（仅降 0.97pt），HD95 4.73 优于基线 4.92。</li>
+    <li>以 FastAPI + Vue3 + TypeScript + ECharts 开发平台：.nii.gz 在线推理、三视图逐切片、GT 叠加、16 组指标对比、CSV / LaTeX / Markdown / PDF 四类报告导出；Docker Compose + Nginx 一键部署。</li>
+    <li>自建 Qwen3-VL-32B + BGE-M3 推理服务（OpenAI 兼容 API + SSE），逐请求遥测 171 条（时延 / token / GPU / 显存），在 H800 与昇腾 910B 完成量化与加速适配，数据不出内网。</li>
+  </ul>
+
+  <div class="org">
+    <span class="name">企业合同预审辅助智能体 <span class="tag">— 独立负责</span></span>
+    <span class="date">2026.06 – 2026.07</span>
+  </div>
+  <div class="tech">Spring Boot 3 · Vue3 · Dify · DSL 规则引擎 · MySQL / Redis · OpenAI API · SSE</div>
+  <ul>
+    <li>设计「大模型感知 + 代码判定」三层架构：Dify 抽取字段并完成三单语义对齐，判定下沉自研 Java 规则引擎（金额比率 / 精确值 / 日期 / 文本相似度 / DSL 共 5 种模式）；判定确定性 100%、单字段 &lt;100ms（原 LLM 方案 10–30 秒），三单预审 30–90 秒。</li>
+    <li>构建五道防幻觉与白盒溯源护栏（数值回原文锚定 / 页码校验 / 逐侧验证 / 低置信拦截 / 比例守卫）：字段编造率 9.8% → 0，对抗测试通过率 80% → 95.7%，核心字段准确率 84.0%（50 份真实合同金标准）。</li>
+    <li>交付规则 DSL 引擎与无代码配置中心（52+ 算子 / 20 模板 / 21 配置接口），新增合同类型零代码；SSE 实时进度 + 6 态审查状态机 + 操作日志审计；354 个单测，7 周独立完成设计 → 开发 → 生产对接。</li>
+  </ul>
+
+  <h2>学术成果与荣誉 <span class="en">PUBLICATION / HONORS</span></h2>
+  <ul>
+    <li><b>学术成果：</b>DMI 2026 国际会议论文录用（第三作者，FAIA / IOS Press）——多模态大模型生成健康科普短视频的自动评价模型。</li>
+    <li><b>荣誉奖项：</b>国家奖学金（全国本专科生前 0.2%）、国家励志奖学金 ×2、校特等奖学金（前 0.5%）、优秀大学生标兵；2026 全国 4C Web 开发挑战赛国家三等奖、全国大学生软件测试大赛国赛三等奖。</li>
+  </ul>
+
+  <h2>专业技能 <span class="en">SKILLS</span></h2>
+  <ul>
+    <li><b>编程与后端：</b>Python（FastAPI）、Java（Spring Boot 3 / MyBatis Plus）、TypeScript / JavaScript、SQL、RESTful API</li>
+    <li><b>大模型开发：</b>LangChain / LangGraph（Agent / ReAct）、MCP / Function Calling、RAG（多路召回 / BGE-Rerank）、微调（LoRA / QLoRA / PEFT）、Llama-Factory / DeepSpeed</li>
+    <li><b>AI 交付：</b>vLLM、Ollama / Xinference、PyTorch、MONAI、BraTS、Qwen3-VL、A800 / H800 / 昇腾 910B</li>
+    <li><b>前端与工程：</b>Vue3、React 18、Vite、Element Plus、Pinia、ECharts；Linux、Docker、Nginx、MySQL / Redis、Git</li>
+    <li><b>证书：</b>CET-4、Python 计算机二级、工业互联网平台开发工程师（初级）、Prompt 工程认证</li>
+  </ul>
+
+  <h2>个人总结 <span class="en">SUMMARY</span></h2>
+  <p class="lead">智能医学工程 2027 届，DMI 2026 论文录用（第三作者）。具备医学影像训练 → 大模型推理服务化 → 企业系统全栈交付链路，能直接对接客户并独立完成需求 → 方案 → 开发 → 迁移 → 上线 → 运维。</p>
+
+  <div class="footer">
+    <div class="note">
+      本 PDF 为公开脱敏版：完整手机号不进入文件，GPA / 排名 / 平均分 / 证件照按站点规则移除。<br>
+      ｜更多项目案例：beishengi.github.io/Blog/work
+    </div>
+    <div class="qr">
+      <img src="../../public/wechat-qr.png" alt="微信二维码">
+      <span>微信<br>扫码添加</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
