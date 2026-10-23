@@ -31,6 +31,25 @@ function git(args, opts = {}) {
   });
 }
 
+/** 复用主仓库最近一次提交的作者身份(全局未配置时也不会卡住)。 */
+function repoIdentity() {
+  try {
+    const name = execFileSync('git', ['log', '-1', '--format=%an'], { cwd: ROOT, encoding: 'utf8' }).trim();
+    const email = execFileSync('git', ['log', '-1', '--format=%ae'], { cwd: ROOT, encoding: 'utf8' }).trim();
+    if (name && email) return { name, email };
+  } catch { /* 首次部署没有提交历史 */ }
+  return { name: 'beishengI', email: '1611045292@qq.com' };
+}
+
+/** 当前仓库的 origin 地址(SSH 或 HTTPS),部署时复用同一协议。 */
+function originUrl() {
+  try {
+    return execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: ROOT, encoding: 'utf8' }).trim();
+  } catch {
+    return REPO_HTTPS;
+  }
+}
+
 /** 从凭据管理器取 github.com 令牌(仅内存使用,不打印)。 */
 function githubToken() {
   const r = spawnSync('git', ['credential', 'fill'], {
@@ -73,24 +92,37 @@ function main() {
   git(['init'], { cwd: DIST });
   try { git(['checkout', '-B', BRANCH], { cwd: DIST }); } catch { /* 首次 init 默认分支即可 */ }
   git(['add', '-A'], { cwd: DIST });
+  const who = repoIdentity();
+  git(['config', 'user.name', who.name], { cwd: DIST });
+  git(['config', 'user.email', who.email], { cwd: DIST });
   git(['commit', '-m', `deploy: ${new Date().toISOString()}`, '--allow-empty'], { cwd: DIST });
-  try { git(['remote', 'add', 'origin', REPO_HTTPS], { cwd: DIST }); } catch { /* 已存在 */ }
+  try { git(['remote', 'add', 'origin', originUrl()], { cwd: DIST }); } catch { /* 已存在 */ }
+  git(['remote', 'set-url', 'origin', originUrl()], { cwd: DIST });
   git(['push', '-f', 'origin', `HEAD:${BRANCH}`], { cwd: DIST });
   console.log(`[deploy] 已推送 dist → ${BRANCH} 分支`);
 
-  // 确保 Pages 已开启并指向 gh-pages
-  const token = githubToken();
-  const check = ghApi(token, 'GET', 'pages');
-  if (check.status === 404) {
-    const create = ghApi(token, 'POST', 'pages', {
-      source: { branch: BRANCH, path: '/' },
-    });
-    if (create.status !== 201 && create.status !== 409) {
-      throw new Error(`开启 Pages 失败: HTTP ${create.status} ${create.body.slice(0, 200)}`);
+  // Pages 已存在时无需再调 API;取不到令牌或接口不可用只提示,不影响已完成的推送
+  let token;
+  try {
+    token = githubToken();
+  } catch (error) {
+    console.warn(`[deploy] 跳过 Pages API:${error.message}`);
+  }
+  if (token) {
+    const check = ghApi(token, 'GET', 'pages');
+    if (check.status === 200) {
+      console.log('[deploy] Pages 已存在,跳过创建');
+    } else if (check.status === 404) {
+      const create = ghApi(token, 'POST', 'pages', {
+        source: { branch: BRANCH, path: '/' },
+      });
+      if (create.status !== 201 && create.status !== 409) {
+        throw new Error(`开启 Pages 失败: HTTP ${create.status} ${create.body.slice(0, 200)}`);
+      }
+      console.log('[deploy] 已通过 API 开启 GitHub Pages(gh-pages 分支)');
+    } else {
+      console.warn(`[deploy] Pages API 返回 HTTP ${check.status},跳过`);
     }
-    console.log('[deploy] 已通过 API 开启 GitHub Pages(gh-pages 分支)');
-  } else {
-    console.log(`[deploy] Pages 已存在(HTTP ${check.status}),跳过创建`);
   }
 
   const url = `https://beishengi.github.io/Blog/`;
