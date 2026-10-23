@@ -170,8 +170,7 @@ export function SelectedWorks() {
     <section className="home-section" id="studies" aria-labelledby="studies-title">
       <SectionMark no="03" title="检查所见" en="STUDIES" id="studies-title" aside="7 项作品 · 5 个章节" />
       <p className="section-lede">
-        不按年份平铺，按能力链路展开：<strong>感知 → 理解 → 决策 → 执行 → 交付</strong>。
-        每一章只放能证明这件事的项目，证据不足的地方标「待补充」。
+        按能力链路展开：<strong>感知 → 理解 → 决策 → 执行 → 交付</strong>。
       </p>
       <PlateStrip />
       <div className="section-foot">
@@ -208,7 +207,7 @@ export function LightboxInterlude() {
 export function Positioning() {
   return (
     <section className="home-section" id="diagnosis" aria-labelledby="diagnosis-title">
-      <SectionMark no="02" title="诊断意见" en="DIAGNOSIS" id="diagnosis-title" aside="复合型交付，而不是单点技能" />
+      <SectionMark no="02" title="诊断意见" en="DIAGNOSIS" id="diagnosis-title" aside="复合型交付" />
       <div className="positioning">
         <div className="positioning__statement">
           <p className="positioning__quote">
@@ -262,7 +261,7 @@ export function CapabilityMap() {
     <section className="home-section" id="protocols" aria-labelledby="protocols-title">
       <SectionMark no="04" title="扫描协议" en="PROTOCOLS" id="protocols-title" aside="能力由项目事实支撑" />
       <p className="section-lede">
-        这不是技能清单，是证据索引：每一项能力都指向至少一个项目；项目里没有的，不写。
+        每一项能力，都来自下面这些项目。
       </p>
       <div className="skills">
         {skillGroups.map(group => (
@@ -355,7 +354,7 @@ export function WritingIndex() {
     <section className="home-section" id="literature" aria-labelledby="literature-title">
       <SectionMark no="06" title="文献索引" en="LITERATURE" id="literature-title" aside="文章 / 学习轨迹 / 知识库" />
       <p className="section-lede">
-        技术博客不是文章列表，是一条可复现的学习轨迹：先遇到什么问题，读了哪几篇，最后落到哪个项目。
+        每篇文章都从一个具体问题开始，最后落到项目里的做法。
       </p>
 
       <div className="writing-grid">

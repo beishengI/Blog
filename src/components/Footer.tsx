@@ -17,7 +17,6 @@ export default function Footer() {
               <div className="site-footer__title">让模型，在真实系统里<br />跑起来。</div>
               <p className="site-footer__note">
                 个人读片报告：7 项工程项目、2 套企业系统、30 篇 Agent 知识文档。
-                每个数字都标注来源；没做完的事写「待补充」，不编造。
               </p>
             </div>
           </div>

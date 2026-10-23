@@ -314,7 +314,7 @@ export const works: Work[] = [
     status: 'iterating',
     period: '2026.07 – 至今',
     date: '2026',
-    role: '实习期全栈开发：独立负责前后端与业务建模（简历口径）',
+    role: '实习期全栈开发：独立负责前后端与业务建模',
     why:
       '制造企业的 MES 不是「一堆表单」：工单、工序、载具、报工、检验之间有严格的状态与数量账。低代码平台能快，但元数据驱动的表单引擎有边界，必须先把状态机和追溯链设计清楚，再谈配置。',
     solution:
@@ -366,7 +366,7 @@ export const works: Work[] = [
       },
     ],
     tradeoffs:
-      '不展开：客户业务量化收益（效率/良率）没有公开出处，公开页不写；客户真实界面不直接发布，只给裁剪/示意图。',
+      '客户业务收益（效率、良率）暂无公开数据；界面只保留裁剪 / 示意图。',
     relatedWiki: ['AI_Coding_Quality_Gate_Wiki', 'Vibe_Coding_Methodology_Wiki', 'LLM_Wiki'],
     relatedPosts: [],
     links: [],
@@ -385,7 +385,7 @@ export const works: Work[] = [
     status: 'live',
     period: '2026.06 – 2026.09',
     date: '2026',
-    role: '独立负责需求对接 → 开发升级 → 灰度测试 → 上线部署（简历口径）',
+    role: '独立负责需求对接 → 开发升级 → 灰度测试 → 上线部署',
     why:
       '老旧 PHP Webman + Vue2 单体要重构，数据库 92 张业务表、6.9 万条数据、5.1G 附件，且没有可靠备份（RPO≈60 天）。迁移不是「导数据」：脏数据、重复数据、附件、权限、报表口径都要在切换前算清楚。',
     solution:
@@ -440,7 +440,7 @@ export const works: Work[] = [
       },
     ],
     tradeoffs:
-      '没做：微服务拆分（业务体量单体足够，拆分运维成本大于故障隔离收益）；没做自研报表引擎（平台原生 SQL 报表已覆盖场景）；客户真实业务截图不公开。',
+      '没做：微服务拆分（业务体量单体足够，拆分运维成本大于故障隔离收益）；没做自研报表引擎（平台原生 SQL 报表已覆盖场景）。',
     relatedWiki: ['Vibe_Coding_Methodology_Wiki', 'AI_Coding_Quality_Gate_Wiki', 'Domain_Deployment_Wiki'],
     relatedPosts: ['jiayu-lowcode-migration'],
     links: [],
@@ -506,7 +506,7 @@ export const works: Work[] = [
       },
     ],
     tradeoffs:
-      '不展开：用户量/并发/性能指标没有公开出处，公开页不写；团队分工与奖项年份待确认；Gitea token 等配置不公开。',
+      '用户量、并发与性能指标暂无公开数据；团队分工与奖项年份待确认；Gitea 等配置不公开。',
     relatedWiki: ['AI_Coding_Quality_Gate_Wiki', 'Vibe_Coding_Methodology_Wiki'],
     relatedPosts: [],
     links: [],
@@ -525,7 +525,7 @@ export const works: Work[] = [
     status: 'iterating',
     period: '2026.09',
     date: '2026',
-    role: '方案设计与 Phase 1 原型（角色/汇报口径待确认）',
+    role: '方案设计与 Phase 1 原型（角色待确认）',
     why:
       '某能源国企的 SCP 系统是 Windows C/S 架构，需要 4 个权限互斥的账号分别取数再人工拼接。环境要求数据不出域、账号绑定不同真实 IP、登录行为受监控，合规尚未报批。GUI Agent 在桌面场景的成功率只有 12–20%，而企业要求 99%+——所以不能让大模型直接点 UI。',
     solution:

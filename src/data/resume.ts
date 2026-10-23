@@ -39,7 +39,6 @@ export interface ResumeProject {
   stack: string[];
   link?: string;
   slug?: string;
-  pending?: string;
 }
 
 export const resumeInternship = {
@@ -78,7 +77,6 @@ export const resumeProjects: ResumeProject[] = [
       '交付规则 DSL 引擎与无代码配置中心（52+ 算子 / 20 模板 / 21 配置接口），新增合同类型零代码；SSE 实时进度与 6 态审查状态机、操作日志审计；354 个单测，7 周独立完成设计 → 开发 → 生产对接。',
     ],
     stack: ['Spring Boot 3', 'Vue3', 'Dify', 'MySQL / Redis', 'OpenAI API', 'SSE'],
-    pending: '客户授权材料与部分判定口径待确认。',
   },
 ];
 
@@ -87,7 +85,6 @@ export const resumePublication = {
   venue: 'DMI 2026 国际会议 · 第三作者',
   publisher: 'FAIA / IOS Press',
   status: '已录用',
-  note: '录用证明可在面试时提供。',
 };
 
 export const resumeSkills: { label: string; items: string[] }[] = [

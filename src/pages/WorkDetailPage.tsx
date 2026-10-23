@@ -191,10 +191,10 @@ export default function WorkDetailPage() {
                 <span className="mono-label">隐私边界</span>
                 <p>
                   {work.privacy === 'public'
-                    ? '公开素材；不含客户隐私数据。'
+                    ? '公开素材，不含客户隐私数据。'
                     : work.privacy === 'redacted'
-                      ? '公开页只使用裁剪/示意界面；原始客户数据不进入仓库。'
-                      : '仅公开架构与方法示意；真实界面、账号与数据不公开。'}
+                      ? '界面已裁剪 / 替换，不含客户原始数据。'
+                      : '仅公开架构与方法示意。'}
                 </p>
               </div>
             </div>

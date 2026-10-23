@@ -128,7 +128,7 @@ export function FilmPlayer({ meta = film }: { meta?: FilmMeta }) {
             {meta.available ? `播放介绍片 ${meta.duration}` : '影片渲染中'}
           </span>
           <span className="lightbox__play-sub">
-            {meta.available ? '声音默认开启 · 可暂停 / 全屏 / 字幕' : '先读下方文字稿，成片上线后自动替换'}
+            {meta.available ? '声音默认开启 · 可暂停 / 全屏 / 字幕' : '可先读下方文字稿'}
           </span>
         </button>
       )}

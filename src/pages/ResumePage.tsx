@@ -209,7 +209,6 @@ export default function ResumePage() {
                     {project.slug && <Link to={`/work/${project.slug}`} className="text-link">检查报告 →</Link>}
                     {project.link && <a href={project.link} target="_blank" rel="noreferrer" className="text-link">GitHub ↗</a>}
                   </div>
-                  {project.pending && <p className="resume-pending">待确认 · {project.pending}</p>}
                 </div>
               ))}
             </section>
@@ -237,7 +236,6 @@ export default function ResumePage() {
                 <div className="resume-item__tag">
                   {resumePublication.venue} · {resumePublication.publisher}
                 </div>
-                <p className="resume-summary" style={{ marginTop: 8 }}>{resumePublication.note}</p>
               </div>
             </section>
 
@@ -247,9 +245,6 @@ export default function ResumePage() {
                 {resumeHonors.map(honor => <li key={honor}>{honor}</li>)}
               </ul>
               <p className="mono-label" style={{ marginTop: 10 }}>证书 · {resumeCertificates.join(' / ')}</p>
-              <p className="resume-pending">
-                证书扫描件公开前需遮证书编号/身份证号；默认只在面试材料中提供。
-              </p>
             </section>
 
             <div className="page-foot">

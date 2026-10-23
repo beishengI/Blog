@@ -74,7 +74,7 @@ export default function WorkPage() {
       <PageHead
         eyebrow="WORKLIST / 检查列表"
         title="七项工程，一条能力链路"
-        lead="按「感知 → 理解 → 决策 → 执行 → 交付」排列，而不是按年份平铺。每项都写清我的角色、可量化结果与证据；查不到的数字标「待补充」。"
+        lead="七个项目，一条能力链：感知 → 理解 → 决策 → 执行 → 交付。"
         aside={
           <div className="page-head__seal">
             <Seal lines={['张栋栋', '北省']} label="张栋栋 · 北省印章" />
@@ -113,7 +113,7 @@ export default function WorkPage() {
         })}
 
         <div className="page-foot">
-          <p className="mono-label">客户项目使用示意素材；私有仓库可面试演示。数据来源见每项「证据与来源」。</p>
+          <p className="mono-label">客户项目已做脱敏；私有仓库可面试演示。</p>
           <Link to="/resume" className="btn btn--ghost">查看完整简历 →</Link>
         </div>
       </div>
