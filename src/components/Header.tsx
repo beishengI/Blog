@@ -1,91 +1,295 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
-import { DIRECTION_LABELS } from '../layouts/registry';
-import ThemePanel from './ThemePanel';
-import Icon from './Icon';
-import Magnetic from './Magnetic';
+import { isSoundEnabled, playScanTone, setSoundEnabled } from '../utils/sound';
 
+/**
+ * 全局发行信息条（Edition band）。
+ * 设计：44px sticky 报头线，替代原来的大 logo 导航栏。
+ * 保留原有能力：导航、搜索、声音开关、日夜切换、移动端菜单。
+ */
 export default function Header() {
-  const { config } = useConfig();
-  const navigate = useNavigate();
-  const [openPanel, setOpenPanel] = useState(false);
-  const [menu, setMenu] = useState(false);
-  const [q, setQ] = useState('');
+  const { config, effectiveMode, toggleMode } = useConfig();
   const { site, nav, features } = config;
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-  const submitSearch = (e: FormEvent) => {
-    e.preventDefault();
+  const [menu, setMenu] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [q, setQ] = useState('');
+  const [sound, setSound] = useState(isSoundEnabled);
+
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const now = useMemo(() => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }, []);
+
+  const activeIndex = useMemo(() => {
+    const exact = nav.findIndex(item => item.href === pathname);
+    if (exact >= 0) return exact;
+    const nested = nav.findIndex(item => item.href !== '/' && pathname.startsWith(item.href));
+    return nested;
+  }, [nav, pathname]);
+
+  /** 移动端发行条只显示当前栏目；非主导航页面用「别册」里的名字，不冒充读片台。 */
+  const currentLabel = useMemo(() => {
+    if (activeIndex >= 0) return { no: String(activeIndex).padStart(2, '0'), label: nav[activeIndex].label };
+    if (pathname.startsWith('/archive')) return { no: '', label: '归档' };
+    if (pathname.startsWith('/tags')) return { no: '', label: '标签' };
+    if (pathname.startsWith('/admin')) return { no: '', label: '管理' };
+    return null;
+  }, [activeIndex, nav, pathname]);
+
+  useEffect(() => {
+    setMenu(false);
+    setSearchOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!searchOpen) return;
+    const input = searchInputRef.current;
+    input?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSearchOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [searchOpen]);
+
+  useEffect(() => {
+    if (!menu) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const menuEl = menuRef.current;
+    const focusables = () =>
+      Array.from(
+        menuEl?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])') ?? []
+      );
+    focusables()[0]?.focus();
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenu(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus?.();
+    };
+  }, [menu]);
+
+  const submitSearch = (event: FormEvent) => {
+    event.preventDefault();
     const keyword = q.trim();
-    navigate(keyword ? `/posts?q=${encodeURIComponent(keyword)}` : '/posts');
+    setSearchOpen(false);
+    setMenu(false);
+    navigate(keyword ? '/posts?q=' + encodeURIComponent(keyword) : '/posts');
+  };
+
+  const toggleSound = () => {
+    const next = !sound;
+    setSoundEnabled(next);
+    setSound(next);
+    if (next) playScanTone('open');
   };
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-bg">
-      <div className="shell flex h-[var(--header-h)] items-center justify-between gap-3">
-        <Link to="/" className="font-heading shrink-0 text-lg font-bold tracking-tight">
-          {site.title}
-        </Link>
-        <nav className="nav-blur hidden items-center gap-1 md:flex">
-          {nav.map(n => (
-            <Link key={n.href} to={n.href}
-              className="rounded-brand px-3 py-2 text-sm text-muted hover:bg-surface hover:text-fg">
-              {n.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="flex items-center gap-2">
-          <span
-            data-testid="current-layout"
-            className="hidden items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-xs text-muted lg:inline-flex"
-            title="当前页面布局"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            {DIRECTION_LABELS[config.layout.direction] ?? '默认'}
-          </span>
-          {features.search && (
-            <form onSubmit={submitSearch} className="hidden sm:flex">
+    <>
+      <header className="ed-band" role="banner">
+        <div className="ed-band__inner">
+          <Link to="/" className="ed-band__brand" aria-label={site.name + ' · 读片台首页'}>
+            <span className="ed-band__mast">读片</span>
+            <span className="ed-band__vol">VOL.07</span>
+            <span className="ed-band__meta">READING REPORT · VOL.07 · 2026 秋 · 武汉</span>
+          </Link>
+
+          <nav className="ed-band__nav" aria-label="主导航">
+            {nav.map((item, index) => {
+              const current =
+                item.href === '/'
+                  ? pathname === '/'
+                  : pathname === item.href || pathname.startsWith(item.href + '/');
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  aria-current={current ? 'page' : undefined}
+                  className={current ? 'is-current' : undefined}
+                >
+                  <span className="ed-band__no">{String(index).padStart(2, '0')}</span>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {currentLabel && (
+            <span className="ed-band__current" aria-hidden="true">
+              {currentLabel.no && <b>{currentLabel.no}</b>}
+              {currentLabel.label}
+            </span>
+          )}
+
+          <div className="ed-band__utils">
+            {features.search && (
+              <button
+                type="button"
+                className="ed-band__util"
+                onClick={() => setSearchOpen(true)}
+                aria-expanded={searchOpen}
+                aria-controls="ed-search"
+              >
+                检索 <em>SEARCH</em>
+              </button>
+            )}
+            <span className="ed-band__now">此刻 {now}</span>
+            <button
+              type="button"
+              className="ed-band__util ed-band__util--sound"
+              aria-pressed={sound}
+              aria-label={sound ? '关闭界面声音' : '开启界面声音'}
+              onClick={toggleSound}
+            >
+              声音 <em>{sound ? '开' : '关'}</em>
+            </button>
+            <button
+              type="button"
+              className="ed-band__util ed-band__util--theme"
+              aria-label={effectiveMode === 'dark' ? '切换到日间模式' : '切换到夜间模式'}
+              onClick={toggleMode}
+            >
+              {effectiveMode === 'dark' ? '日间' : '夜间'}
+            </button>
+            <button
+              ref={menuButtonRef}
+              type="button"
+              className="ed-band__util ed-band__menu-btn"
+              aria-label={menu ? '关闭菜单' : '打开菜单'}
+              aria-expanded={menu}
+              aria-controls="ed-menu"
+              onClick={() => setMenu(value => !value)}
+            >
+              {menu ? '关闭' : '目录'}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {searchOpen && (
+        <div className="ed-search" id="ed-search" role="dialog" aria-modal="false" aria-label="检索本站">
+          <div className="ed-search__inner">
+            <form className="ed-search__field" onSubmit={submitSearch} role="search">
+              <label htmlFor="ed-search-input">检索 / INDEX SEARCH — 标题、摘要、正文、标签</label>
               <input
+                ref={searchInputRef}
+                id="ed-search-input"
                 value={q}
-                onChange={e => setQ(e.target.value)}
-                placeholder="搜索文章…"
-                aria-label="搜索文章"
-                className="w-28 rounded-brand border border-border bg-surface px-3 py-1.5 text-sm outline-none transition-[width] focus:w-44 focus:border-primary md:w-36 md:focus:w-52"
+                onChange={event => setQ(event.target.value)}
+                placeholder="输入一个词，抽屉会自己打开…"
+                autoComplete="off"
               />
             </form>
-          )}
-          <Magnetic strength={0.18}>
-            <button onClick={() => setOpenPanel(true)}
-              className="inline-flex items-center gap-1.5 rounded-brand border border-border px-3 py-2 text-sm hover:bg-surface hover:text-primary">
-              <Icon name="palette" size={15} /> 定制
-            </button>
-          </Magnetic>
-          <button onClick={() => setMenu(v => !v)}
-            className="rounded-brand border border-border px-3 py-2 text-sm md:hidden">菜单</button>
-        </div>
-      </div>
-      {menu && (
-        <nav className="nav-blur border-t border-border md:hidden">
-          <div className="shell flex flex-col py-2">
-            {nav.map(n => (
-              <Link key={n.href} to={n.href} onClick={() => setMenu(false)}
-                className="py-2 text-sm text-muted">{n.label}</Link>
-            ))}
-            {features.search && (
-              <form onSubmit={(e) => { submitSearch(e); setMenu(false); }} className="py-2">
-                <input
-                  value={q}
-                  onChange={e => setQ(e.target.value)}
-                  placeholder="搜索文章…"
-                  aria-label="搜索文章"
-                  className="w-full rounded-brand border border-border bg-surface px-3 py-1.5 text-sm outline-none focus:border-primary"
-                />
-              </form>
-            )}
+            <div className="ed-search__actions">
+              <span className="ed-search__hint">ENTER 检索 / ESC 收回</span>
+              <button type="button" className="ed-search__close" onClick={() => setSearchOpen(false)}>
+                收回 ×
+              </button>
+            </div>
           </div>
-        </nav>
+          <div className="ed-search__quick">
+            <span>另见 /</span>
+            <Link to="/wiki" onClick={() => setSearchOpen(false)}>知识库 30 篇</Link>
+            <Link to="/work" onClick={() => setSearchOpen(false)}>项目 7 项</Link>
+            <Link to="/archive" onClick={() => setSearchOpen(false)}>归档</Link>
+            <Link to="/tags" onClick={() => setSearchOpen(false)}>标签</Link>
+          </div>
+        </div>
       )}
-      <ThemePanel open={openPanel} onClose={() => setOpenPanel(false)} />
-    </header>
+
+      {menu && (
+        <div className="ed-menu" id="ed-menu" ref={menuRef}>
+          <div className="ed-menu__head">
+            <span className="ed-label">CONTENTS / 目录</span>
+            <span className="ed-label">NO.07 — 2026 秋</span>
+          </div>
+          <nav className="ed-menu__list" aria-label="移动端主导航">
+            {nav.map((item, index) => {
+              const current =
+                item.href === '/'
+                  ? pathname === '/'
+                  : pathname === item.href || pathname.startsWith(item.href + '/');
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  aria-current={current ? 'page' : undefined}
+                  onClick={() => setMenu(false)}
+                >
+                  {item.label}
+                  <span>{String(index).padStart(2, '0')}</span>
+                </Link>
+              );
+            })}
+          </nav>
+          <form className="ed-search__field" onSubmit={submitSearch} role="search" style={{ marginTop: 18 }}>
+            <label htmlFor="ed-menu-search">检索 / SEARCH</label>
+            <input
+              id="ed-menu-search"
+              value={q}
+              onChange={event => setQ(event.target.value)}
+              placeholder="标题、摘要、正文…"
+              autoComplete="off"
+            />
+          </form>
+          <div className="ed-menu__utils">
+            <button
+              type="button"
+              className="ed-menu__util"
+              aria-pressed={sound}
+              onClick={toggleSound}
+            >
+              声音 {sound ? '开' : '关'}
+            </button>
+            <button
+              type="button"
+              className="ed-menu__util"
+              onClick={toggleMode}
+            >
+              {effectiveMode === 'dark' ? '日间模式' : '夜间模式'}
+            </button>
+          </div>
+          <div className="ed-menu__foot">
+            <div>{site.contact.email}</div>
+            <div>github.com/{site.contact.github}</div>
+            <div>{site.contact.phoneMasked}</div>
+            <div style={{ marginTop: 8 }}>
+              <Link to="/resume" onClick={() => setMenu(false)}>下载简历 / PDF</Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

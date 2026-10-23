@@ -1,166 +1,242 @@
-import SiteAvatar from '../components/SiteAvatar';
-import Reveal from '../components/Reveal';
-import Magnetic from '../components/Magnetic';
-import { useSEO } from '../hooks/useSEO';
+import { Link } from 'react-router-dom';
+import { PageHead, Seal, SectionMark, SliceMark, TagRow } from '../components/report/primitives';
+import { asset } from '../showcase/parts';
 import {
-  resumeHero,
-  resumeSkills,
-  resumeProjects,
-  resumeEducation,
-  resumeHonors,
   resumeCertificates,
+  resumeEducation,
+  resumeFacts,
+  resumeHero,
+  resumeHonors,
+  resumeInternship,
+  resumeProjects,
+  resumeSkills,
   resumeSummary,
 } from '../data/resume';
+import { useSEO } from '../hooks/useSEO';
 
-function SectionTitle({ children }: { children: string }) {
-  return <h2 className="font-heading text-2xl font-bold">{children}</h2>;
-}
-
-function Chip({ children }: { children: string }) {
-  return (
-    <span className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted">
-      {children}
-    </span>
-  );
-}
-
-/**
- * 网页版简历(参考 egoist.dev/asu.html 的分区节奏与 didilili.github.io 的标签/卡片元素)。
- * A4 打印版独立在 public/resume-doc.html(静态文件不能叫 resume.html,
- * 否则 GitHub Pages 干净 URL 会遮蔽本路由);文案原则:只写可核查的事实。
- */
 export default function ResumePage() {
-  useSEO({ title: '简历', description: '北省 · AI 应用开发工程师 · 个人简历' });
+  useSEO({
+    title: '简历',
+    description:
+      '张栋栋 · 软件开发工程师（全栈开发 · 医学影像软件 · AI 应用）· 湖北医药学院智能医学工程 2027 届。7 项工程作品、2 套企业系统、30 篇知识文档。',
+    keywords: ['张栋栋', '简历', '全栈开发', 'AI 应用', '医学影像', 'MES', 'Agent'],
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: resumeHero.name,
+      alternateName: resumeHero.handle,
+      jobTitle: resumeHero.role,
+      email: resumeHero.email,
+      alumniOf: { '@type': 'CollegeOrUniversity', name: resumeEducation.school },
+      sameAs: [`https://github.com/${resumeHero.github}`],
+    },
+  });
 
   return (
-    <div className="content-max mx-auto space-y-14">
-      {/* Hero:进入页面即播分层入场 */}
-      <header className="flex flex-wrap items-start gap-6">
-        <div className="anim-pop" style={{ animationDelay: '0ms' }}>
-          <SiteAvatar size="lg" className="border border-border" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <h1 className="font-heading anim-rise text-4xl font-bold md:text-5xl" style={{ animationDelay: '80ms' }}>
-            {resumeHero.name.split('').map((c, i) => (
-              <span key={i} className="anim-rise inline-block" style={{ animationDelay: `${180 + i * 140}ms` }}>
-                {c}
-              </span>
-            ))}
-          </h1>
-          <p className="anim-rise mt-3 max-w-2xl leading-relaxed" style={{ animationDelay: '160ms' }}>
-            {resumeHero.facts}
-          </p>
-          <div className="anim-rise mt-4 flex flex-wrap gap-2" style={{ animationDelay: '240ms' }}>
-            {resumeHero.tags.map(t => <Chip key={t}>{t}</Chip>)}
-          </div>
-          <p className="anim-rise mt-4 text-sm text-muted" style={{ animationDelay: '300ms' }}>
-            邮箱 <a href={`mailto:${resumeHero.email}`} className="text-primary hover:underline">{resumeHero.email}</a>
-            {' · '}GitHub{' '}
-            <a
-              href={`https://github.com/${resumeHero.github}`}
-              target="_blank"
-              rel="noreferrer"
-              className="text-primary hover:underline"
-            >
-              @{resumeHero.github}
-            </a>
-            {' · '}{resumeHero.location}
-          </p>
-        </div>
-        <div className="anim-rise flex gap-2" style={{ animationDelay: '200ms' }}>
-          <Magnetic>
-            <a
-              href={`${import.meta.env.BASE_URL}resume-doc.html`}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block rounded-brand border border-border px-3 py-2 text-sm hover:border-primary hover:text-primary"
-            >
-              A4 打印版
-            </a>
-          </Magnetic>
-        </div>
-      </header>
-
-      {/* 项目经历 */}
-      <Reveal className="space-y-5">
-        <SectionTitle>项目经历</SectionTitle>
-        <div className="grid gap-5 lg:grid-cols-2">
-          {resumeProjects.map(p => (
-            <article key={p.name} className="flex flex-col rounded-brand border border-border bg-surface p-6">
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="font-heading text-lg font-bold leading-snug">{p.name}</h3>
-                <span className="shrink-0 text-xs text-muted">{p.period}</span>
-              </div>
-              <p className="mt-1 text-xs font-medium text-primary">{p.tag}</p>
-              <ul className="mt-3 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-muted">
-                {p.points.map(pt => <li key={pt} className="text-justify">{pt}</li>)}
-              </ul>
-              <div className="mt-auto flex flex-wrap gap-1.5 pt-4">
-                {p.stack.map(s => <Chip key={s}>{s}</Chip>)}
-              </div>
-              {p.link && (
-                <a
-                  href={p.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-3 inline-block text-xs text-primary hover:underline"
-                >
-                  {p.link.replace('https://', '')}
-                </a>
-              )}
-            </article>
-          ))}
-        </div>
-      </Reveal>
-
-      {/* 技术栈 */}
-      <Reveal className="space-y-4">
-        <SectionTitle>技术栈</SectionTitle>
-        <div className="space-y-3">
-          {resumeSkills.map(g => (
-            <div key={g.label} className="flex flex-col gap-2 sm:flex-row sm:items-baseline">
-              <span className="w-40 shrink-0 text-sm font-semibold">{g.label}</span>
-              <div className="flex flex-wrap gap-1.5">
-                {g.items.map(i => <Chip key={i}>{i}</Chip>)}
-              </div>
+    <div>
+      <PageHead
+        eyebrow="CURRICULUM VITAE / 个人报告"
+        title={resumeHero.name}
+        lead={resumeHero.facts}
+        aside={
+          <div className="page-head__seal">
+            <div className="resume-portrait">
+              <img src={asset('/portrait-halftone.webp')} alt="张栋栋 · 半调肖像" width={800} height={1000} />
             </div>
+            <Seal lines={['张栋栋', '北省']} label="张栋栋 · 北省印章" />
+            <div className="mono-label" style={{ textAlign: 'center', marginTop: 8 }}>2027 届 · 可实习</div>
+          </div>
+        }
+      />
+
+      <div className="page-body">
+        <div className="resume-contact">
+          <div>
+            <span className="mono-label">求职意向</span>
+            <p>{resumeHero.targetRole}</p>
+          </div>
+          <div>
+            <span className="mono-label">联系方式</span>
+            <p>
+              <a href={`mailto:${resumeHero.email}`}>{resumeHero.email}</a>
+              {' · '}
+              <a href={`https://github.com/${resumeHero.github}`} target="_blank" rel="noreferrer">github.com/{resumeHero.github}</a>
+              {' · '}
+              {resumeHero.phoneMasked}
+            </p>
+          </div>
+          <div className="resume-contact__actions">
+            <a className="btn btn--primary" href={asset(resumeHero.resumePdf)} download>
+              下载简历 PDF <span className="btn__arrow">↓</span>
+            </a>
+            <a className="btn btn--ghost" href={asset(resumeHero.resumePdfFull)} download>
+              完整版 · 5 页
+            </a>
+            <Link to="/about" className="btn btn--ghost">关于我 →</Link>
+            <p className="mono-label" style={{ flexBasis: '100%', marginTop: 4 }}>
+              PDF · 2026-10 · 一页版 · 公开脱敏版
+            </p>
+          </div>
+        </div>
+
+        <section className="ed-cv" id="cv" aria-labelledby="ed-cv-title">
+          <div className="ed-cv__head">
+            <span className="ed-cv__no">CV</span>
+            <h2 className="ed-cv__title" id="ed-cv-title">简历原件</h2>
+            <span className="ed-cv__en">CURRICULUM VITAE / PDF</span>
+            <span className="ed-cv__meta">2026-10 · 1 页 · 公开脱敏版</span>
+          </div>
+          <div className="ed-cv__body">
+            <a
+              className="ed-cv__sheet"
+              href={asset(resumeHero.resumePdf)}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="在新窗口查看张栋栋的简历 PDF"
+            >
+              <span className="ed-cv__tape" aria-hidden="true" />
+              <img
+                src={asset(resumeHero.resumePdfPreview)}
+                alt="张栋栋 · 软件开发工程师简历 PDF 第一页预览"
+                width={1100}
+                height={1555}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <aside className="ed-cv__side">
+              <p className="ed-cv__lead">
+                一页版，公开脱敏：电话 {resumeHero.phoneMasked}；GPA、排名与证件照按站点隐私规则处理。
+              </p>
+              <div className="ed-cv__actions">
+                <a className="btn btn--primary" href={asset(resumeHero.resumePdf)} download>
+                  下载 PDF <span className="btn__arrow">↓</span>
+                </a>
+                <a className="btn btn--ghost" href={asset(resumeHero.resumePdf)} target="_blank" rel="noreferrer">
+                  新窗口打开 ↗
+                </a>
+              </div>
+              <p className="ed-cv__hint">点击左侧纸张也可直接打开 PDF；移动端可双指放大。</p>
+              <details className="ed-cv__embed">
+                <summary>在页面内打开 PDF 阅读器</summary>
+                <iframe
+                  title="张栋栋 · 简历 PDF"
+                  src={asset(resumeHero.resumePdf) + '#view=FitH'}
+                  loading="lazy"
+                />
+              </details>
+            </aside>
+          </div>
+        </section>
+
+        <div className="resume-facts" style={{ marginTop: 20 }}>
+          {resumeFacts.map(fact => (
+            <span key={fact.label} className="resume-fact">
+              <b>{fact.value}</b>
+              <small>{fact.label}</small>
+            </span>
           ))}
         </div>
-      </Reveal>
 
-      {/* 教育 */}
-      <Reveal className="space-y-3">
-        <SectionTitle>教育背景</SectionTitle>
-        <div className="rounded-brand border border-border bg-surface p-5">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <span className="text-sm font-semibold">
-              {resumeEducation.school} <span className="font-normal text-muted">— {resumeEducation.major}</span>
-            </span>
-            <span className="text-xs text-muted">{resumeEducation.period}</span>
-          </div>
-          <p className="mt-2 text-sm">{resumeEducation.highlight}</p>
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {resumeEducation.courses.map(c => <Chip key={c}>{c}</Chip>)}
-          </div>
+        <div className="resume-grid" style={{ marginTop: 30 }}>
+          <aside className="resume-nav" aria-label="简历目录">
+            <div className="mono-label">CONTENTS</div>
+            <a href="#cv">原件</a>
+            <a href="#summary">摘要</a>
+            <a href="#skills">技能</a>
+            <a href="#experience">实习</a>
+            <a href="#projects">项目</a>
+            <a href="#education">教育</a>
+            <a href="#honors">荣誉</a>
+          </aside>
+
+          <main className="resume-body">
+            <section className="resume-block" id="summary">
+              <SectionMark no="00" title="摘要" en="SUMMARY" />
+              <p className="resume-summary">{resumeSummary}</p>
+            </section>
+
+            <section className="resume-block" id="skills">
+              <SectionMark no="01" title="技能" en="SKILLS" />
+              <div className="resume-skills">
+                {resumeSkills.map(group => (
+                  <div className="resume-skill" key={group.label}>
+                    <span className="resume-skill__label">{group.label}</span>
+                    <div className="resume-skill__items">
+                      {group.items.map(item => <span key={item}>{item}</span>)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="resume-block" id="experience">
+              <SectionMark no="02" title="实习" en="EXPERIENCE" />
+              <div className="resume-item">
+                <div className="resume-item__head">
+                  <h3 className="resume-item__title">{resumeInternship.company} · {resumeInternship.role}</h3>
+                  <span className="resume-item__meta">{resumeInternship.period}</span>
+                </div>
+                <ul className="resume-item__points">
+                  {resumeInternship.points.map(point => <li key={point}>{point}</li>)}
+                </ul>
+              </div>
+            </section>
+
+            <section className="resume-block" id="projects">
+              <SectionMark no="03" title="项目" en="PROJECTS" aside={`${resumeProjects.length} 项`} />
+              {resumeProjects.map(project => (
+                <div className="resume-item" key={project.name}>
+                  <div className="resume-item__head">
+                    <h3 className="resume-item__title">{project.name}</h3>
+                    <span className="resume-item__meta">{project.period}</span>
+                  </div>
+                  <div className="resume-item__tag">{project.tag}</div>
+                  <ul className="resume-item__points">
+                    {project.points.map(point => <li key={point}>{point}</li>)}
+                  </ul>
+                  <div className="resume-item__foot">
+                    <TagRow items={project.stack} />
+                    {project.slug && <Link to={`/work/${project.slug}`} className="text-link">检查报告 →</Link>}
+                    {project.link && <a href={project.link} target="_blank" rel="noreferrer" className="text-link">GitHub ↗</a>}
+                  </div>
+                  {project.pending && <p className="resume-pending">待确认 · {project.pending}</p>}
+                </div>
+              ))}
+            </section>
+
+            <section className="resume-block" id="education">
+              <SectionMark no="04" title="教育" en="EDUCATION" />
+              <div className="resume-item">
+                <div className="resume-item__head">
+                  <h3 className="resume-item__title">{resumeEducation.school}</h3>
+                  <span className="resume-item__meta">{resumeEducation.period}</span>
+                </div>
+                <div className="resume-item__tag">{resumeEducation.major}</div>
+                <p className="resume-summary" style={{ marginTop: 8 }}>{resumeEducation.highlight}</p>
+                <TagRow items={resumeEducation.courses} />
+              </div>
+            </section>
+
+            <section className="resume-block" id="honors">
+              <SectionMark no="05" title="荣誉 / 证书" en="HONORS" />
+              <ul className="resume-honors">
+                {resumeHonors.map(honor => <li key={honor}>{honor}</li>)}
+              </ul>
+              <p className="mono-label" style={{ marginTop: 10 }}>证书 · {resumeCertificates.join(' / ')}</p>
+              <p className="resume-pending">
+                证书扫描件公开前需遮证书编号/身份证号；默认只在面试材料中提供。
+              </p>
+            </section>
+
+            <div className="page-foot">
+              <SliceMark label="CV" size="sm" ghost />
+              <span className="mono-label">简历 PDF / CURRICULUM VITAE</span>
+              <Link to="/work" className="btn btn--ghost btn--sm">查看 7 项作品 →</Link>
+            </div>
+          </main>
         </div>
-      </Reveal>
-
-      {/* 荣誉与证书 */}
-      <Reveal className="space-y-3">
-        <SectionTitle>荣誉与证书</SectionTitle>
-        <div className="flex flex-wrap gap-2">
-          {resumeHonors.map(h => <Chip key={h}>{h}</Chip>)}
-        </div>
-        <p className="text-sm text-muted">证书:{resumeCertificates.join(' · ')}</p>
-      </Reveal>
-
-      {/* 自我评价 */}
-      <Reveal className="space-y-3">
-        <SectionTitle>自我评价</SectionTitle>
-        <blockquote className="border-l-2 border-primary pl-4 leading-relaxed text-muted">
-          {resumeSummary}
-        </blockquote>
-      </Reveal>
+      </div>
     </div>
   );
 }

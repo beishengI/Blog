@@ -1,20 +1,9 @@
-import { useConfig } from '../context/ConfigContext';
-import { LAYOUTS, DEFAULT_DIRECTION } from '../layouts/registry';
-import { useSEO } from '../hooks/useSEO';
-import InkSplash from '../components/InkSplash';
+import ShowcasePage from '../showcase/ShowcasePage';
 
 /**
- * 首页分发器：按 config.layout.direction 选择一套独立布局。
- * 新增布局只需在 src/layouts/registry.ts 注册，无需改动本文件。
+ * 首页 = 个人读片报告（ShowcasePage）。
+ * 旧版 20 套布局/主题面板已退役；首页不再按 layout.direction 分发。
  */
 export default function Home() {
-  const { config } = useConfig();
-  useSEO({});
-  const Layout = LAYOUTS[config.layout.direction] ?? LAYOUTS[DEFAULT_DIRECTION];
-  return (
-    <>
-      <InkSplash />
-      <Layout config={config} />
-    </>
-  );
+  return <ShowcasePage />;
 }

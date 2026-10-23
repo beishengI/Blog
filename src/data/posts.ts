@@ -82,7 +82,7 @@ Dify 侧同样加码:code 节点 \`_parse_partial\` 在整体 JSON 坏掉时按�
     terms: ['JeeLowCode', '低代码', 'dbform', '增强机制', '治理门禁'],
     content: `## 遗留系统:3594 个文件的单体
 
-十堰某出租车公司的运营平台:车辆、驾驶员、安全、质量、财务(12 个子表单)、报表中心等 9 大模块,遗留栈是 PHP Webman + Vue 2(3594 个 PHP 文件)。老系统停迭代,整体迁移到 JeeLowCode 低代码平台(Spring Boot 3.3.1 + Vue 3 + Element Plus)。
+某市某出租车公司的运营平台:车辆、驾驶员、安全、质量、财务(12 个子表单)、报表中心等 9 大模块,遗留栈是 PHP Webman + Vue 2(3594 个 PHP 文件)。老系统停迭代,整体迁移到 JeeLowCode 低代码平台(Spring Boot 3.3.1 + Vue 3 + Element Plus)。
 
 ## 三库架构:业务与平台配置分离
 

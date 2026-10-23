@@ -1,63 +1,110 @@
 import { Link } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
+import { PageHead, Seal, SectionMark, SliceMark } from '../components/report/primitives';
+import { timeline } from '../data/showcase';
+import { asset } from '../showcase/parts';
 import { useSEO } from '../hooks/useSEO';
 
 export default function About() {
   const { config } = useConfig();
-  useSEO({ title: '关于' });
   const { site } = config;
-  const intro = site.intro ?? [];
-  const research = site.research ?? [];
+  useSEO({
+    title: '关于',
+    description: `${site.name} · ${site.role}。${site.bio}`,
+    keywords: ['张栋栋', '北省', '关于', '全栈开发', 'AI 应用'],
+  });
 
   return (
-    <div className="content-max mx-auto space-y-4">
-      <h1 className="font-heading text-3xl font-bold">关于</h1>
+    <div>
+      <PageHead
+        eyebrow="STATEMENT / 自述"
+        title="把证据做进系统的人"
+        lead="我不是「AI 全栈专家」——这个标签太轻。更准确的说法是：我习惯先把问题拆成可验证的账，再用工程把它做成能上线的系统。"
+        aside={<Seal lines={['张栋栋', '北省']} label="张栋栋 · 北省印章" />}
+      />
 
-      <div className="flex flex-wrap items-center gap-4">
-        <img
-          src={site.avatar}
-          className="shrink-0 rounded-full"
-          style={{ width: 'var(--avatar-lg)', height: 'var(--avatar-lg)' }}
-          alt={site.author}
-        />
-        <div className="min-w-0">
-          <h2 className="font-heading text-xl font-semibold">{site.author}</h2>
-          <p className="text-sm text-muted">{site.bio}</p>
-          <Link to="/resume" className="mt-2 inline-block text-sm text-primary hover:underline">
-            查看在线简历 →
-          </Link>
+      <div className="page-body">
+        <section className="about-intro">
+          <div className="about-portrait">
+            <img src={asset('/portrait-halftone.webp')} alt={`${site.name} · 半调肖像`} width={800} height={1000} />
+            <div className="plate__corner plate__corner--tl" aria-hidden="true" />
+            <div className="plate__corner plate__corner--br" aria-hidden="true" />
+            <div className="about-portrait__cap">
+              <span>SUBJECT / {site.name} · {site.handle}</span>
+              <span>{site.location} / 2027</span>
+            </div>
+          </div>
+          <div className="about-copy">
+            {site.intro.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+            <div className="about-tags">
+              {site.research.map(item => <span key={item} className="tag">{item.split('：')[0]}</span>)}
+            </div>
+            <div className="about-actions">
+              <a className="btn btn--primary" href={`mailto:${site.contact.email}`}>邮件联系</a>
+              <Link className="btn btn--ghost" to="/resume">查看简历</Link>
+              <Link className="btn btn--ghost" to="/work">7 项作品</Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="home-section" style={{ paddingTop: 10 }}>
+          <SectionMark no="01" title="工作原则" en="PRINCIPLES" aside="写在项目之后的判断" />
+          <div className="principles">
+            {site.principles.map((principle, index) => (
+              <div className="principle" key={principle.title}>
+                <span className="principle__no">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{principle.title}</h3>
+                  <p>{principle.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="home-section">
+          <SectionMark no="02" title="时间线" en="TIMELINE" aside="2023 – 2027" />
+          <div className="timeline">
+            {timeline.map(item => (
+              <div className="timeline__row" key={`${item.period}-${item.title}`}>
+                <div className="timeline__when">{item.period}</div>
+                <div>
+                  <h3 className="timeline__title">{item.title}</h3>
+                  <div className="timeline__org">{item.org}</div>
+                  <p className="timeline__body">{item.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="home-section">
+          <SectionMark no="03" title="关于本站" en="COLOPHON" aside="React + Vite + HyperFrames" />
+          <div className="about-colophon">
+            <p>
+              这个站点同时是作品集、知识系统与个人设计练习。视觉母题是「个人读片报告」：
+              纸本报告的可靠感 + 医学影像灯箱的产品感。所有项目数字都能在简历、README、
+              设计文档或代码里找到出处；没有出处的，页面标「待补充」。
+            </p>
+            <p>
+              界面符号是一枚「切片框」：方框、红角、扫描线。它出现在页头、章节、文章与页脚，
+              提醒自己每次只看一片、只看证据。声音是一个三音扫描动机，默认关闭，只在切换检查项时出现。
+            </p>
+            <div className="about-tech">
+              <SliceMark label="BS" />
+              <span className="mono-label">React 18 · TypeScript · Vite · Tailwind · HyperFrames</span>
+            </div>
+          </div>
+        </section>
+
+        <div className="about-contact">
+          <div>
+            <div className="mono-label">联系 / CONTACT</div>
+            <a href={`mailto:${site.contact.email}`} className="about-contact__mail">{site.contact.email}</a>
+            <p>{site.contact.phoneMasked} · {site.contact.location}</p>
+          </div>
+          <Link to="/resume" className="btn btn--primary">下载简历 PDF →</Link>
         </div>
-      </div>
-
-      <div className="article-content">
-        {intro.map((p, i) => <p key={i}>{p}</p>)}
-
-        {research.length > 0 && (
-          <>
-            <h2>研究方向</h2>
-            <ul>
-              {research.map(r => <li key={r}>{r}</li>)}
-            </ul>
-          </>
-        )}
-
-        <h2>联系方式</h2>
-        <p className="break-words">
-          邮箱：
-          {site.email ? (
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-          ) : (
-            <span className="text-muted">未设置</span>
-          )}
-          {' · '}GitHub：
-          {site.github ? (
-            <a href={`https://github.com/${site.github}`} target="_blank" rel="noreferrer">
-              @{site.github}
-            </a>
-          ) : (
-            <span className="text-muted">未设置</span>
-          )}
-        </p>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 {
-  "name": "medai-blog",
+  "name": "zhangdongdong-blog",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,10 @@
     "build": "npm run gen:rss && tsc -b && vite build",
     "build:pages": "npm run gen:rss && tsc -b && vite build --base=/Blog/",
     "deploy:pages": "npm run build:pages && node scripts/deploy-pages.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check:content": "node scripts/validate-content.mjs",
+    "check:privacy": "node scripts/check-privacy.mjs",
+    "check": "npm run check:content && npm run check:privacy"
   },
   "dependencies": {
     "dompurify": "^3.1.6",

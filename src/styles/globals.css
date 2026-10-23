@@ -432,3 +432,154 @@ html.ink-locked { overflow: hidden; }
 .nav-blur a { transition: filter 0.25s ease, opacity 0.25s ease; }
 .nav-blur:hover a { filter: blur(2px); opacity: 0.5; }
 .nav-blur:hover a:hover { filter: none; opacity: 1; }
+
+/* =====================================================================
+   作品案卷室 · work.archive —— 独立世界观
+   「宣纸 × 墨 × 朱砂印 × 等宽机录」：老纸的判词与机器的日志相遇。
+   与毛体幕布同一先例——作品级固定配色，刻意不随主题定制漂移。
+   实现原理：在 .work-archive 作用域重定义全部颜色/字体/圆角令牌，
+   子树的 bg-surface / text-muted / rounded-brand 等自动进入案卷世界，
+   组件零改动。暗色模式 = 夜里的档案室（暗木台面 × 旧纸文字）。
+   ===================================================================== */
+.work-archive {
+  --color-bg: #f1ead9;
+  --color-surface: #f8f3e6;
+  --color-surface-alt: #e9e1cb;
+  --color-text: #2b2519;
+  --color-text-muted: #7a7160;
+  --color-border: #d8ccae;
+  --color-primary: #a33328;
+  --color-accent: #445a78;
+  --radius: 2px;
+  --font-heading: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+  --font-body: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+
+  position: relative;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  box-shadow: 0 32px 64px -40px rgba(43, 37, 25, 0.45);
+}
+[data-mode='dark'] .work-archive {
+  --color-bg: #1c1811;
+  --color-surface: #241e15;
+  --color-surface-alt: #2c251a;
+  --color-text: #e5dcc6;
+  --color-text-muted: #9a8f77;
+  --color-border: #3d3527;
+  --color-primary: #c05a4a;
+  --color-accent: #7f95b5;
+  box-shadow: 0 32px 64px -40px rgba(0, 0, 0, 0.7);
+}
+/* 案卷世界的机录等宽：统一为 JetBrains Mono（Tailwind 默认栈太"现代"） */
+.work-archive .font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+/* 毛笔字工具类（案卷大标题；毛体幕布同源字体） */
+.font-brush { font-family: 'Liu Jian Mao Cao', var(--font-heading); }
+
+/* 公文题头：上下两道朱线，头粗尾细——档案室最响的门面 */
+.archive-masthead {
+  border-top: 3px solid var(--color-primary);
+  border-bottom: 1px solid var(--color-primary);
+  padding: 1.1rem 0 0.9rem;
+}
+
+/* 案卷竖排边书（仅宽屏显示；writing-mode 是最强的档案信号） */
+.archive-vertical {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.45em;
+  font-family: var(--font-heading);
+}
+
+/* 自刻小印（页眉个人章；区别于幕布的大印 .ink-seal） */
+.seal-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: #a33328;
+  color: #f5f1e8;
+  border-radius: 5px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  text-align: center;
+  transform: rotate(-5deg);
+  box-shadow: 0 2px 8px -2px rgba(163, 51, 40, 0.6);
+}
+
+/* 状态戳：白底红框红字的小章，替代现代感胶囊 chip */
+.seal-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 2px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+}
+
+/* 案卷卡片：无圆角、纸面左缘红签条，hover 红签条变宽 */
+.case-card {
+  position: relative;
+  display: block;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  padding: 1.1rem 1.25rem 1.1rem 1.5rem;
+  transition: border-color 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.case-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  bottom: -1px;
+  width: 3px;
+  background: var(--color-primary);
+  opacity: 0.45;
+  transition: opacity 0.25s ease, width 0.25s ease;
+}
+.case-card:hover { border-color: var(--color-primary); transform: translateX(3px); }
+.case-card:hover::before { opacity: 1; width: 5px; }
+
+/* 卷号水印：档案页角的巨大编号 */
+.archive-watermark {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.4rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 8vw, 4.5rem);
+  line-height: 1;
+  color: var(--color-text);
+  opacity: 0.06;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 判词标题的朱笔左杆 */
+.archive-verdict {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 0.6rem;
+}
+
+/* 卷末「了」记：旧账册写完一整卷的收束符号 */
+.archive-end {
+  text-align: center;
+  font-family: var(--font-heading);
+  letter-spacing: 0.9em;
+  text-indent: 0.9em; /* 补偿末字符间距，视觉居中 */
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-card:hover { transform: none !important; }
+}

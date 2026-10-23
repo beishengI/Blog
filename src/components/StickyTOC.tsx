@@ -6,23 +6,25 @@ interface Props {
   progress?: number;
 }
 
-/** 吸顶目录：滚动后固定在 Header 下方，高亮当前章节，底部带阅读进度。 */
+/** 右侧目录轨：高亮当前章节，底部带阅读进度。 */
 export default function StickyTOC({ headings, activeId, progress = 0 }: Props) {
   return (
-    <nav className="toc-sticky" aria-label="文章目录">
-      <div className="toc-sticky__list">
-        {headings.map((h) => (
-          <a
-            key={h.id}
-            href={`#${h.id}`}
-            aria-current={activeId === h.id ? 'true' : undefined}
-            className={`toc-sticky__link ${activeId === h.id ? 'active' : ''} level-${h.level}`}
-          >
-            {h.text}
-          </a>
-        ))}
+    <nav className="toc-rail" aria-label="文章目录">
+      <p className="toc-rail__title">CONTENTS / 目录</p>
+      {headings.map(heading => (
+        <a
+          key={heading.id}
+          href={`#${heading.id}`}
+          aria-current={activeId === heading.id ? 'true' : undefined}
+          className={activeId === heading.id ? 'is-active' : ''}
+          data-depth={heading.level}
+        >
+          {heading.text}
+        </a>
+      ))}
+      <div className="toc-rail__bar" aria-hidden="true">
+        <span style={{ width: `${Math.min(100, Math.max(0, progress))}%` }} />
       </div>
-      <div className="toc-sticky__bar" style={{ width: `${progress}%` }} aria-hidden="true" />
     </nav>
   );
 }
