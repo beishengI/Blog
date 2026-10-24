@@ -65,20 +65,26 @@ export default function VolumeSlicer() {
     if (status === 'static') sceneRef.current?.render(1);
   };
 
-  // 真实数据元信息：读取不到就退回程序化体数据（不阻断主视觉）
+  // 真实数据元信息：失败重试一次（新部署时 CDN 可能还没就绪），仍失败才退回程序化体数据
   useEffect(() => {
     let cancelled = false;
-    fetch(asset(META_URL))
-      .then(response => (response.ok ? response.json() : Promise.reject(new Error(String(response.status)))))
-      .then((data: VolumeMeta) => {
-        if (!cancelled) setMeta(data);
-      })
-      .catch(() => {
-        if (!cancelled) setMeta(null);
-      })
-      .finally(() => {
-        if (!cancelled) setMetaReady(true);
-      });
+    const load = async (attempt: number): Promise<VolumeMeta | null> => {
+      try {
+        const url = asset(attempt ? `${META_URL}?v=${Date.now()}` : META_URL);
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) throw new Error(String(response.status));
+        return (await response.json()) as VolumeMeta;
+      } catch {
+        if (attempt >= 1) return null;
+        await new Promise(resolve => window.setTimeout(resolve, 1200));
+        return load(attempt + 1);
+      }
+    };
+    load(0).then(data => {
+      if (cancelled) return;
+      setMeta(data);
+      setMetaReady(true);
+    });
     return () => {
       cancelled = true;
     };
