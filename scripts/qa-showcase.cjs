@@ -39,6 +39,9 @@ function watch(page, tag) {
   await page.waitForTimeout(1800);
 
   const status = await page.locator('.volume').getAttribute('data-webgl');
+  await page
+    .waitForFunction(() => document.querySelector('.volume')?.getAttribute('data-source') === 'brats', { timeout: 15000 })
+    .catch(() => undefined);
   const source = await page.locator('.volume').getAttribute('data-source');
   check('桌面默认展示体切片且 WebGL 运行', status === 'on', `data-webgl=${status}`);
   check('体切片使用真实 BraTS 数据集', source === 'brats', `data-source=${source}`);
@@ -151,7 +154,9 @@ function watch(page, tag) {
   await mobilePage.screenshot({ path: path.join(SHOTS, 'mobile-home.png'), fullPage: false });
 
   await mobilePage.getByRole('tab', { name: /体切片/ }).click();
-  await mobilePage.waitForTimeout(1500);
+  await mobilePage
+    .waitForFunction(() => document.querySelector('.volume')?.getAttribute('data-source') === 'brats', { timeout: 15000 })
+    .catch(() => undefined);
   const mobileStatus = await mobilePage.locator('.volume').getAttribute('data-webgl');
   const mobileSource = await mobilePage.locator('.volume').getAttribute('data-source');
   check('移动端可展示真实体切片', mobileStatus === 'on' && mobileSource === 'brats', `${mobileStatus}/${mobileSource}`);

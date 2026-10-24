@@ -54,6 +54,7 @@ export default function VolumeSlicer() {
   });
   const [meta, setMeta] = useState<VolumeMeta | null>(null);
   const [metaReady, setMetaReady] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
   const [manual, setManual] = useState<number | null>(null);
   const interactive = status === 'on' && hasFinePointer();
   const slices = meta?.slices ?? 48;
@@ -96,11 +97,13 @@ export default function VolumeSlicer() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     let scene: VolumeScene | null = null;
+    setDataReady(false);
     try {
       scene = createVolumeScene(canvas, {
         slices: meta?.slices ?? 48,
         maxDpr: hasFinePointer() ? 2 : 1.5,
         atlas: meta ? { url: asset(ATLAS_URL), grid: meta.grid } : undefined,
+        onDataReady: () => setDataReady(true),
       });
       sceneRef.current = scene;
       scene.resize();
@@ -222,10 +225,16 @@ export default function VolumeSlicer() {
     applyManual((manual ?? 0.5) + delta);
   };
 
-  const source = meta ? 'brats' : 'procedural';
+  const usingData = Boolean(meta && dataReady);
+  const source = usingData ? 'brats' : 'procedural';
   const note = meta
     ? `BraTS2023 · ${meta.modality} + 预测掩码 · 公开脱敏数据`
     : '程序化体数据 · 无真实患者数据';
+  const topRight = meta
+    ? dataReady
+      ? `${meta.slices} SLICES / T1c + SEG`
+      : `LOADING T1c · ${meta.slices} SLICES`
+    : 'PROCEDURAL / GLSL';
 
   return (
     <div
@@ -234,7 +243,7 @@ export default function VolumeSlicer() {
       data-webgl={status}
       data-source={source}
       role="group"
-      aria-label={`体切片扫描器：${slices} 层${meta ? '真实 T1c 影像与 Lite-Mamba 预测掩码' : '程序化影像'}切片堆叠成体积，朱红扫描面逐层切换。${STATUS_TEXT[status]}`}
+      aria-label={`体切片扫描器：${slices} 层${usingData ? '真实 T1c 影像与 Lite-Mamba 预测掩码' : '程序化影像'}切片堆叠成体积，朱红扫描面逐层切换。${STATUS_TEXT[status]}`}
       tabIndex={status === 'on' ? 0 : undefined}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
@@ -259,12 +268,12 @@ export default function VolumeSlicer() {
 
       <div className="lightbox__top">
         <span>W-00 · VOLUME STUDY</span>
-        <span>{meta ? `${meta.slices} SLICES / T1c + SEG` : 'PROCEDURAL / GLSL'}</span>
+        <span>{topRight}</span>
       </div>
 
       <div className="volume__hud">
         <span className="volume__note">{note}</span>
-        {meta && (
+        {usingData && (
           <span className="volume__legend" aria-hidden="true">
             <i className="volume__swatch volume__swatch--net" /> NET
             <i className="volume__swatch volume__swatch--ed" /> ED

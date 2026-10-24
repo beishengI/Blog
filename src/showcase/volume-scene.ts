@@ -14,6 +14,8 @@ export interface VolumeSceneOptions {
   maxDpr?: number;
   /** 真实切片图集；缺省或加载失败时退回程序化体数据 */
   atlas?: { url: string; grid: number };
+  /** 图集解码完成、真实数据真正上屏时回调 */
+  onDataReady?: () => void;
 }
 
 export interface VolumeScene {
@@ -131,10 +133,15 @@ export function createVolumeScene(
 
   // 真实切片图集：异步加载，成功后切到 uHasData 分支；失败则保持程序化体数据
   let atlasTexture: THREE.Texture | null = null;
+  let disposed = false;
   if (options.atlas) {
     new THREE.TextureLoader().load(
       options.atlas.url,
       texture => {
+        if (disposed) {
+          texture.dispose();
+          return;
+        }
         texture.flipY = false; // 第 0 层在图片左上角，与实例 0（最下层）对齐
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
@@ -145,6 +152,7 @@ export function createVolumeScene(
         material.uniforms.uHasData.value = 1;
         atlasTexture = texture;
         placeholder.dispose();
+        options.onDataReady?.();
       },
       undefined,
       () => console.warn('[volume] 切片图集加载失败，回退程序化体数据')
@@ -206,6 +214,7 @@ export function createVolumeScene(
     },
 
     dispose() {
+      disposed = true;
       slices.dispose();
       geometry.dispose();
       scanMesh.geometry.dispose();
