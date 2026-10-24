@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>小片 / S-00 · 角色设定</title>
+<style>
+  :root{
+    --paper:#F3EBDD; --paper2:#FBF6EA; --ink:#1B1813; --ink2:#4A4238;
+    --muted:#7B7060; --line:#D8CCB6; --line2:#B7A78C;
+    --red:#B23A2A; --red2:#D4633F; --jade:#4F6F5E; --graphite:#12100D; --bone:#EDE4D3;
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;
+    --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+    --mono:"JetBrains Mono","Cascadia Mono","Consolas",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);}
+  body{font-family:var(--sans);}
+  #sheet{
+    width:2400px;min-height:1700px;padding:70px 80px 60px;position:relative;
+    background:
+      linear-gradient(rgba(27,24,19,.035) 1px,transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg,rgba(27,24,19,.035) 1px,transparent 1px) 0 0/48px 48px,
+      radial-gradient(1200px 700px at 18% 0%,#FBF6EA 0%,transparent 60%),
+      var(--paper);
+  }
+  #sheet:before{content:"";position:absolute;inset:28px;border:1px solid var(--line);pointer-events:none}
+  #sheet:after{content:"BS-2026-10 / CHARACTER BIBLE / PLATE 01";position:absolute;right:84px;top:44px;font:11px/1 var(--mono);letter-spacing:.18em;color:var(--muted)}
+  header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:22px}
+  .brand{display:flex;align-items:baseline;gap:22px}
+  .brand h1{font-family:var(--serif);font-size:92px;line-height:.9;margin:0;letter-spacing:-.04em}
+  .brand .en{font:13px/1.4 var(--mono);letter-spacing:.16em;color:var(--muted)}
+  .brand .cn{font-size:20px;color:var(--ink2);letter-spacing:.08em}
+  .head-right{text-align:right;font:12px/1.7 var(--mono);letter-spacing:.12em;color:var(--muted)}
+  .head-right b{display:block;font-family:var(--serif);font-size:30px;letter-spacing:.02em;color:var(--ink);font-weight:600;margin-bottom:4px}
+  .red-rule{height:6px;background:var(--red);margin:12px 0 0}
+  .grid{display:grid;grid-template-columns:600px 1fr 760px;gap:44px;margin-top:38px}
+  .col{min-width:0}
+  .kicker{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line2);padding-bottom:8px;margin:0 0 18px}
+  .kicker .no{font:12px/1 var(--mono);color:var(--red);letter-spacing:.1em}
+  .kicker h2{font-family:var(--serif);font-size:27px;margin:0;font-weight:600;letter-spacing:.02em}
+  .kicker .en{margin-left:auto;font:10px/1 var(--mono);letter-spacing:.16em;color:var(--muted)}
+  .big-char{position:relative;height:560px;border:1px solid var(--line);background:
+    linear-gradient(rgba(178,58,42,.05) 1px,transparent 1px) 0 0/40px 40px,
+    linear-gradient(90deg,rgba(178,58,42,.05) 1px,transparent 1px) 0 0/40px 40px,
+    var(--paper2);
+    display:grid;place-items:center;}
+  .big-char svg{width:430px;height:510px;filter:drop-shadow(0 14px 20px rgba(27,24,19,.12))}
+  .dim{position:absolute;font:10px/1.3 var(--mono);color:var(--muted);letter-spacing:.06em;background:var(--paper2);padding:2px 5px;border:1px solid var(--line)}
+  .d1{left:22px;top:120px}.d2{right:22px;top:120px}.d3{left:22px;bottom:96px}.d4{right:22px;bottom:96px}.d5{left:50%;bottom:18px;transform:translateX(-50%)}
+  .views3{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  .view{border:1px solid var(--line);background:var(--paper2);height:220px;display:grid;place-items:center;position:relative}
+  .view svg{width:150px;height:178px}
+  .view span{position:absolute;left:10px;top:8px;font:9px/1 var(--mono);letter-spacing:.12em;color:var(--muted)}
+  .scale{margin-top:18px;border:1px solid var(--line);background:var(--paper2);padding:14px 16px}
+  .scale .ruler{height:22px;background:repeating-linear-gradient(90deg,var(--ink) 0 1px,transparent 1px 10px);border-bottom:1px solid var(--ink);position:relative;margin:8px 0 4px}
+  .scale .ruler:after{content:"0";position:absolute;left:0;bottom:-15px;font:9px/1 var(--mono)}
+  .scale .ruler:before{content:"8 cm";position:absolute;right:0;bottom:-15px;font:9px/1 var(--mono);color:var(--muted)}
+  .scale p{margin:16px 0 0;font-size:11px;line-height:1.7;color:var(--ink2)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper2);padding:5px 8px;font:9px/1 var(--mono);letter-spacing:.04em}
+  .chip i{width:14px;height:14px;display:block;border:1px solid rgba(27,24,19,.2)}
+  .poses{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .pose{border:1px solid var(--line);background:var(--paper2);height:300px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+  .pose svg{width:190px;height:220px}
+  .pose .label{position:absolute;left:10px;top:8px;font:9px/1 var(--mono);letter-spacing:.12em;color:var(--muted)}
+  .pose .cn{position:absolute;left:10px;bottom:9px;font-family:var(--serif);font-size:16px}
+  .pose .note{position:absolute;right:9px;bottom:9px;font:8px/1.3 var(--mono);color:var(--muted);text-align:right}
+  .eyes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .eye-cell{border:1px solid var(--line);background:var(--paper2);height:150px;display:grid;place-items:center;position:relative}
+  .eye-cell svg{width:120px;height:140px}
+  .eye-cell span{position:absolute;left:8px;top:6px;font:8px/1 var(--mono);letter-spacing:.1em;color:var(--muted)}
+  .eye-cell b{position:absolute;right:8px;bottom:6px;font:9px/1 var(--mono);color:var(--ink2);font-weight:400}
+  .rules{margin:0;padding:0;list-style:none;font-size:12px;line-height:1.7;color:var(--ink2)}
+  .rules li{padding:7px 0 7px 20px;border-bottom:1px dashed var(--line);position:relative}
+  .rules li:before{content:"—";position:absolute;left:0;color:var(--red)}
+  .rules b{color:var(--ink)}
+  .sound{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .sound span{border:1px solid var(--line);background:var(--paper2);padding:5px 9px;font:9px/1 var(--mono);letter-spacing:.05em}
+  .dont{background:var(--graphite);color:var(--bone);padding:16px 18px;margin-top:16px}
+  .dont h3{margin:0 0 8px;font-family:var(--serif);font-size:18px;font-weight:500;color:var(--bone)}
+  .dont p{margin:0;font-size:11px;line-height:1.8;color:#CFC3AE}
+  .form-arc{margin-top:34px;border-top:2px solid var(--ink);padding-top:18px}
+  .arc-row{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr 28px 1fr 28px 1fr;gap:8px;align-items:center;margin-top:10px}
+  .arc-item{height:210px;border:1px solid var(--line);background:var(--paper2);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .arc-item svg{width:110px;height:130px}
+  .arc-item b{position:absolute;left:10px;top:8px;font:9px/1 var(--mono);letter-spacing:.1em;color:var(--muted);font-weight:400}
+  .arc-item .cn{position:absolute;left:10px;bottom:24px;font-family:var(--serif);font-size:16px}
+  .arc-item .tm{position:absolute;left:10px;bottom:8px;font:8px/1 var(--mono);color:var(--muted);letter-spacing:.06em}
+  .arc-arrow{font:18px/1 var(--serif);color:var(--red);text-align:center}
+  .props{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:30px;border-top:2px solid var(--ink);padding-top:22px}
+  .prop{border:1px solid var(--line);background:var(--paper2);padding:16px 18px;position:relative;min-height:150px}
+  .prop h3{font-family:var(--serif);font-size:19px;margin:0 0 6px;font-weight:600}
+  .prop p{margin:0;font-size:11px;line-height:1.7;color:var(--ink2)}
+  .prop .mono{font:9px/1.6 var(--mono);color:var(--muted);letter-spacing:.06em}
+  .prop svg{position:absolute;right:14px;bottom:12px}
+  footer{display:flex;justify-content:space-between;margin-top:26px;border-top:1px solid var(--line2);padding-top:10px;font:9px/1.6 var(--mono);letter-spacing:.08em;color:var(--muted)}
+  .stamp{position:absolute;right:88px;bottom:72px;width:150px;height:150px;border:5px solid var(--red);color:var(--red);display:grid;place-items:center;font-family:var(--serif);font-size:42px;line-height:1.05;text-align:center;transform:rotate(-7deg);opacity:.9}
+  .stamp:after{content:"";position:absolute;inset:7px;border:1px solid var(--red);opacity:.6}
+  .tiny{font:9px/1.5 var(--mono);color:var(--muted);letter-spacing:.06em}
+</style>
+</head>
+<body>
+<div id="sheet">
+  <header>
+    <div class="brand">
+      <h1>小片</h1>
+      <div>
+        <div class="en">S-00 / THE SLICE</div>
+        <div class="cn">读片员 · 这份报告的最后一个读者</div>
+      </div>
+    </div>
+    <div class="head-right">
+      <b>角色设定</b>
+      CHARACTER BIBLE / v2.0<br>
+      影片《一份报告的旅行》/ 60s / 无旁白 / 一镜到底
+    </div>
+  </header>
+  <div class="red-rule"></div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="kicker"><span class="no">01</span><h2>结构</h2><span class="en">CONSTRUCTION</span></div>
+      <div class="big-char" id="big-char">
+        <span class="dim d1">外框 84 × 84 / 描边 6</span>
+        <span class="dim d2">红角 20 × 20 / 线轴</span>
+        <span class="dim d3">眼线 48 × 4 / 瞳孔 8 × 4</span>
+        <span class="dim d4">腿 4 × 22 / 脚 10 × 3</span>
+        <span class="dim d5">总高 126 / 本地坐标 120 × 140</span>
+      </div>
+      <div class="views3">
+        <div class="view" data-view="side"><span>SIDE / 侧</span></div>
+        <div class="view" data-view="back"><span>BACK / 背</span></div>
+      </div>
+      <div class="scale">
+        <div class="kicker" style="margin:0 0 6px;border:0;padding:0"><span class="no">02</span><h2 style="font-size:20px">尺度</h2></div>
+        <div class="ruler"></div>
+        <p>现实高度 8 cm。片中宽镜头占画面高 1/10，近景占 1/3。它始终是页面上的一个记号，不是玩偶。</p>
+        <div class="chips">
+          <span class="chip"><i style="background:#F3EBDD"></i>纸白 #F3EBDD</span>
+          <span class="chip"><i style="background:#1B1813"></i>墨 #1B1813</span>
+          <span class="chip"><i style="background:#B23A2A"></i>朱砂 #B23A2A</span>
+          <span class="chip"><i style="background:#4F6F5E"></i>玉 #4F6F5E</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="kicker"><span class="no">03</span><h2>动作库</h2><span class="en">POSES / 8</span></div>
+      <div class="poses" id="poses"></div>
+      <div class="kicker" style="margin-top:26px"><span class="no">04</span><h2>表演规则</h2><span class="en">PERFORMANCE</span></div>
+      <ul class="rules">
+        <li><b>有重量。</b>落地必 squash，起跳必 anticipation；不做无重力漂浮。</li>
+        <li><b>有纸性。</b>转身时框会弯，跑动时腿像纸条甩，被风吹会翻面。</li>
+        <li><b>有停顿。</b>每次大动作前停 2 帧，让观众看清意图。</li>
+        <li><b>有指向。</b>眼睛和身体永远指向下一个动作；观众跟着它看。</li>
+        <li><b>不过度。</b>它是读片员，不是杂技演员；每间房只做 1–2 个高光动作。</li>
+        <li><b>不说话。</b>只有 880Hz 的短鸣；全片没有配音；唯一的人声是笔尖。</li>
+      </ul>
+      <div class="kicker" style="margin-top:26px"><span class="no">05</span><h2>声音</h2><span class="en">SOUND</span></div>
+      <div class="sound">
+        <span>880Hz / 60ms 方波 · 收到</span>
+        <span>880Hz ×2 · 疑问</span>
+        <span>880Hz ×3 · 开心</span>
+        <span>纸步 1.2kHz</span>
+        <span>落地 paper tap</span>
+        <span>展开 440Hz 上行</span>
+        <span>盖章 90Hz + paper slap</span>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="kicker"><span class="no">06</span><h2>眼睛 / 表情</h2><span class="en">EYES / 6</span></div>
+      <div class="eyes" id="eyes"></div>
+      <div class="kicker" style="margin-top:26px"><span class="no">07</span><h2>红线 / 挎包 / 印章</h2><span class="en">PROPS</span></div>
+      <div class="props" style="grid-template-columns:1fr 1fr;margin-top:0;border-top:1px solid var(--line2);padding-top:14px">
+        <div class="prop">
+          <h3>红线</h3>
+          <p>从左上红角抽出的朱砂线。它是「寻找」的实体化，也是相机的引导线。不能被剪断，只能被系上。</p>
+          <div class="mono">RED THREAD / 0 → 5m</div>
+          <svg width="120" height="46" viewBox="0 0 120 46"><path d="M4 38 C30 6 52 44 78 18 S108 8 116 4" fill="none" stroke="#B23A2A" stroke-width="2"/><circle cx="4" cy="38" r="3" fill="#B23A2A"/></svg>
+        </div>
+        <div class="prop">
+          <h3>挎包</h3>
+          <p>30 × 38 的纸片，斜挎在右后侧；7 个印章位。它收集的不是纪念品，是证据。</p>
+          <div class="mono">SATCHEL / 7 TAGS</div>
+          <svg width="110" height="70" viewBox="0 0 110 70"><rect x="30" y="12" width="50" height="46" fill="#FBF6EA" stroke="#1B1813" stroke-width="2"/><path d="M30 12 L14 60 M80 12 L96 60" stroke="#B23A2A" stroke-width="2" opacity=".7"/><rect x="38" y="22" width="10" height="8" fill="#B23A2A"/><rect x="52" y="22" width="10" height="8" fill="#B23A2A"/><rect x="66" y="22" width="10" height="8" fill="#B23A2A"/><rect x="38" y="36" width="10" height="8" fill="#B23A2A" opacity=".6"/><rect x="52" y="36" width="10" height="8" fill="#B23A2A" opacity=".6"/></svg>
+        </div>
+        <div class="prop" style="grid-column:1 / -1">
+          <h3>印章（最终形态）</h3>
+          <p>小片折叠后的样子：朱砂方印，2px 红边，宋体「张栋栋 / 北省」。在「北」字第一笔里，藏着一条 4px 的扫描线——它的眼睛。</p>
+          <div class="mono">SEAL / 62 × 62 / ROTATE -6°</div>
+          <svg width="86" height="86" viewBox="0 0 86 86" style="position:absolute;right:18px;bottom:10px"><rect x="5" y="5" width="76" height="76" fill="none" stroke="#B23A2A" stroke-width="4"/><rect x="12" y="12" width="62" height="62" fill="none" stroke="#B23A2A" stroke-width="1" opacity=".6"/><text x="43" y="39" text-anchor="middle" font-family="Songti SC,serif" font-size="22" fill="#B23A2A">张栋栋</text><text x="43" y="64" text-anchor="middle" font-family="Songti SC,serif" font-size="22" fill="#B23A2A">北省</text><line x1="18" y1="30" x2="30" y2="30" stroke="#F3EBDD" stroke-width="2"/></svg>
+        </div>
+      </div>
+      <div class="dont">
+        <h3>禁止 / DON'TS</h3>
+        <p>不做嘴、牙、舌头；不做人类手指；不做毛绒质感、高光、3D 倒角；不做爱心、星星、汗滴、表情包；不做无意义漂浮；不抢文字；不在安静时刻做滑稽动作。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-arc">
+    <div class="kicker" style="margin-bottom:4px"><span class="no">08</span><h2>形态变化</h2><span class="en">FORM ARC / 5 STAGES</span></div>
+    <div class="arc-row" id="arc-row"></div>
+  </div>
+
+  <footer>
+    <span>《一份报告的旅行》/ 角色设定 v2.0 / 2026-10-23</span>
+    <span>小片 / S-00 · 切片框 · 左上红角 · 扫描线眼睛 · 纸腿 · 证据挎包</span>
+  </footer>
+</div>
+
+<script>
+const EYE = {
+  idle: `<line x1="38" y1="62" x2="82" y2="62" stroke="#B23A2A" stroke-width="4"/><rect x="56" y="60" width="8" height="5" fill="#B23A2A"/>`,
+  blink: `<line x1="38" y1="62" x2="82" y2="62" stroke="#B23A2A" stroke-width="4" transform="translate(0 62) scale(1 .16) translate(0 -62)"/>`,
+  look: `<line x1="38" y1="62" x2="82" y2="62" stroke="#B23A2A" stroke-width="4"/><rect x="44" y="60" width="8" height="5" fill="#B23A2A"/>`,
+  up: `<line x1="38" y1="64" x2="82" y2="64" stroke="#B23A2A" stroke-width="4"/><rect x="56" y="57" width="8" height="5" fill="#B23A2A"/>`,
+  surprise: `<circle cx="60" cy="62" r="5" fill="#B23A2A"/>`,
+  happy: `<path d="M38 64 Q60 52 82 64" fill="none" stroke="#B23A2A" stroke-width="4"/>`,
+  dizzy: `<path d="M38 62 C46 54 54 70 62 62 S78 54 82 62" fill="none" stroke="#B23A2A" stroke-width="4"/>`,
+  determined: `<line x1="38" y1="58" x2="82" y2="66" stroke="#B23A2A" stroke-width="4"/><rect x="56" y="60" width="8" height="5" fill="#B23A2A"/>`
+};
+const LEGS = {
+  idle: `<path d="M40 102 L36 126 M76 102 L80 126" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/><path d="M28 126 L44 126 M72 126 L88 126" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`,
+  walk: `<path d="M40 102 L28 126 M76 102 L88 122" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/><path d="M20 126 L36 126 M80 122 L96 122" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`,
+  run: `<path d="M40 102 L22 118 M76 102 L96 114" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/><path d="M14 118 L30 118 M88 114 L104 114" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`,
+  hop: `<path d="M40 102 L42 116 M76 102 L74 116" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/><path d="M32 116 L46 116 M70 116 L84 116" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`,
+  stamp: `<path d="M40 102 L36 126 M76 102 L80 126" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/><path d="M28 126 L44 126 M72 126 L88 126" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`,
+  portal: ``,
+  seal: ``,
+  climb: `<path d="M40 102 L26 116 M76 102 L86 110" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/><path d="M18 116 L34 116 M80 110 L96 110" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`
+};
+const ARMS = {
+  idle: ``,
+  walk: ``,
+  run: `<path d="M18 80 L4 92 M102 80 L116 92" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`,
+  hop: `<path d="M18 80 L8 62 M102 80 L112 62" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`,
+  stamp: `<path d="M102 80 L114 58" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/><rect x="106" y="42" width="20" height="16" fill="#F3EBDD" stroke="#1B1813" stroke-width="3"/><rect x="110" y="46" width="12" height="4" fill="#B23A2A"/>`,
+  portal: ``,
+  seal: ``,
+  climb: `<path d="M18 80 L4 58 M102 80 L116 72" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>`
+};
+function charSVG(pose='idle', eye='idle', opts={}){
+  const scale = opts.scale || 1;
+  const tilt = opts.tilt || 0;
+  const shadow = pose==='hop' ? `<ellipse cx="60" cy="132" rx="20" ry="3.5" fill="#1B1813" opacity=".12"/>`
+    : pose==='portal' ? `<ellipse cx="60" cy="136" rx="42" ry="4" fill="#1B1813" opacity=".08"/>`
+    : `<ellipse cx="60" cy="132" rx="30" ry="5" fill="#1B1813" opacity=".14"/>`;
+  const satchel = (pose==='portal'||pose==='seal') ? '' : `
+    <path d="M100 46 L96 88" stroke="#B23A2A" stroke-width="2" opacity=".55"/>
+    <rect x="84" y="90" width="26" height="32" fill="#FBF6EA" stroke="#1B1813" stroke-width="2"/>
+    <rect x="89" y="97" width="6" height="5" fill="#B23A2A"/><rect x="98" y="97" width="6" height="5" fill="#B23A2A"/>
+    <rect x="89" y="106" width="6" height="5" fill="#B23A2A" opacity=".65"/><rect x="98" y="106" width="6" height="5" fill="#B23A2A" opacity=".65"/>`;
+  if (pose==='seal') {
+    return `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="132" rx="36" ry="5" fill="#1B1813" opacity=".12"/>
+      <g transform="rotate(-5 60 70)">
+        <rect x="18" y="18" width="84" height="84" fill="#B23A2A"/>
+        <rect x="26" y="26" width="68" height="68" fill="none" stroke="#F3EBDD" stroke-width="2" opacity=".85"/>
+        <text x="60" y="57" text-anchor="middle" font-family="Songti SC,serif" font-size="26" fill="#F3EBDD">张栋栋</text>
+        <text x="60" y="84" text-anchor="middle" font-family="Songti SC,serif" font-size="26" fill="#F3EBDD">北省</text>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#F3EBDD" stroke-width="2" opacity=".7"/>
+      </g>
+    </svg>`;
+  }
+  const isPortal = pose==='portal';
+  return `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+    ${shadow}
+    <g transform="translate(60 70) rotate(${tilt}) scale(${scale}) translate(-60 -70)">
+      <rect x="18" y="18" width="84" height="84" fill="${isPortal?'rgba(251,246,234,.18)':'#F3EBDD'}" stroke="#1B1813" stroke-width="${isPortal?4:5}"/>
+      ${isPortal?'<rect x="30" y="30" width="60" height="60" fill="none" stroke="#D8CCB6" stroke-width="1" stroke-dasharray="3 5"/>':''}
+      <rect x="20" y="20" width="20" height="20" fill="#B23A2A"/>
+      <rect x="20" y="20" width="5" height="5" fill="#F3EBDD"/>
+      <line x1="18" y1="18" x2="102" y2="18" stroke="#1B1813" stroke-width="5"/>
+      ${pose==='portal'?'':`<g>${EYE[eye]||EYE.idle}</g>`}
+      ${LEGS[pose]||LEGS.idle}
+      ${ARMS[pose]||''}
+      ${satchel}
+    </g>
+  </svg>`;
+}
+function headSVG(eye='idle'){
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <rect x="18" y="16" width="84" height="84" fill="#F3EBDD" stroke="#1B1813" stroke-width="5"/>
+    <rect x="20" y="18" width="20" height="20" fill="#B23A2A"/>
+    <rect x="20" y="18" width="5" height="5" fill="#F3EBDD"/>
+    <g transform="translate(0 2)">${EYE[eye]||EYE.idle}</g>
+    <path d="M40 100 L36 114 M76 100 L80 114" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>
+    <path d="M28 114 L44 114 M72 114 L88 114" stroke="#1B1813" stroke-width="4" stroke-linecap="square"/>
+  </svg>`;
+}
+document.getElementById('big-char').insertAdjacentHTML('beforeend', charSVG('idle','idle',{scale:1.0}));
+document.getElementById('big-char').querySelector('svg').style.position='absolute';
+
+const POSES = [
+  ['idle','IDLE / 待机','常驻'],
+  ['walk','WALK / 走','8 帧'],
+  ['run','RUN / 跑','4 帧'],
+  ['hop','HOP / 跳','0.3s'],
+  ['stamp','STAMP / 盖章','0.15s'],
+  ['climb','CLIMB / 爬','6 帧'],
+  ['portal','PORTAL / 展开成门','0.25s'],
+  ['seal','SEAL / 印章','0.5s']
+];
+document.getElementById('poses').innerHTML = POSES.map(([p,label,note]) => `
+  <div class="pose">${charSVG(p, p==='seal'?'happy':'idle', {scale: p==='portal'?1.0:1.0})}
+    <span class="label">${label.split(' / ')[0]}</span>
+    <span class="cn">${label.split(' / ')[1]}</span>
+    <span class="note">${note}</span>
+  </div>`).join('');
+
+const EYES = [
+  ['idle','IDLE','常态'],
+  ['blink','BLINK','0.12s'],
+  ['look','LOOK','0.18s'],
+  ['surprise','SURPRISE','看到第 8 张卡'],
+  ['happy','HAPPY','被接住'],
+  ['dizzy','DIZZY','被卡片埋住']
+];
+document.getElementById('eyes').innerHTML = EYES.map(([e,en,cn]) => `
+  <div class="eye-cell">${headSVG(e)}
+    <span>${en}</span><b>${cn}</b>
+  </div>`).join('');
+
+const side = charSVG('idle','idle',{scale:1.0}).replace('<rect x="18" y="18" width="84" height="84" fill="#F3EBDD" stroke="#1B1813" stroke-width="5"/>','<rect x="30" y="18" width="56" height="84" fill="#F3EBDD" stroke="#1B1813" stroke-width="5"/><rect x="30" y="20" width="16" height="18" fill="#B23A2A"/>');
+document.querySelector('[data-view="side"]').insertAdjacentHTML('beforeend', side);
+document.querySelector('[data-view="back"]').insertAdjacentHTML('beforeend', charSVG('idle','idle',{scale:1.0}).replace(/<line x1="38" y1="62"[\s\S]*?<rect x="56" y="60" width="8" height="5" fill="#B23A2A"\/>/,''));
+
+const redMark = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="20" width="80" height="80" fill="#F3EBDD" stroke="#1B1813" stroke-width="4"/>
+  <rect x="22" y="22" width="20" height="20" fill="#B23A2A"/>
+  <path d="M42 22 L42 42 M22 42 L42 42" stroke="#B23A2A" stroke-width="2"/>
+</svg>`;
+const peek = `<div style="position:relative"><div style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%) rotate(-5deg)"><svg width="86" height="86" viewBox="0 0 86 86"><rect x="5" y="5" width="76" height="76" fill="#B23A2A"/><text x="43" y="39" text-anchor="middle" font-family="Songti SC,serif" font-size="20" fill="#F3EBDD">张栋栋</text><text x="43" y="62" text-anchor="middle" font-family="Songti SC,serif" font-size="20" fill="#F3EBDD">北省</text></svg></div>${charSVG('idle','happy',{scale:.9}).replace('<svg','<svg style="position:relative;left:28px;top:14px"')}</div>`;
+const ARC = [
+  [redMark,'01','记号','0:02 / 封面'],
+  [charSVG('idle','idle'),'02','读片员','0:04 / 醒来'],
+  [charSVG('portal','idle'),'03','门','0:07 / 转场'],
+  [charSVG('seal','happy'),'04','印章','0:50 / 签发'],
+  [peek,'05','片尾','0:56 / 挥手']
+];
+document.getElementById('arc-row').innerHTML = ARC.map(([svg,no,cn,tm],i) => `
+  ${i? '<div class="arc-arrow">→</div>':''}
+  <div class="arc-item"><b>${no}</b>${svg}<span class="cn">${cn}</span><span class="tm">${tm}</span></div>
+`).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>《一份报告的旅行》· 60s 分镜表</title>
+<style>
+  :root{
+    --paper:#F3EBDD;--paper2:#FBF6EA;--ink:#1B1813;--ink2:#4A4238;--muted:#7B7060;
+    --line:#D8CCB6;--line2:#B7A78C;--red:#B23A2A;--red2:#D4633F;--graphite:#12100D;--bone:#EDE4D3;
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;
+    --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+    --mono:"JetBrains Mono","Cascadia Mono","Consolas",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink)}
+  body{font-family:var(--sans)}
+  #sheet{width:2400px;padding:54px 64px 40px;position:relative;
+    background:
+      linear-gradient(rgba(27,24,19,.03) 1px,transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg,rgba(27,24,19,.03) 1px,transparent 1px) 0 0/48px 48px,
+      radial-gradient(1200px 700px at 18% 0%,#FBF6EA 0%,transparent 60%),var(--paper)}
+  #sheet:before{content:"";position:absolute;inset:24px;border:1px solid var(--line);pointer-events:none}
+  header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:22px}
+  h1{font-family:var(--serif);font-size:58px;line-height:.95;margin:0;letter-spacing:-.03em}
+  h1 small{display:block;font:11px/1.6 var(--mono);letter-spacing:.18em;color:var(--muted);margin-top:9px}
+  .meta{text-align:right;font:10px/1.7 var(--mono);letter-spacing:.1em;color:var(--muted)}
+  .meta b{display:block;font-family:var(--serif);font-size:24px;letter-spacing:.02em;color:var(--ink);font-weight:600}
+  .red-rule{height:5px;background:var(--red);margin-top:8px}
+  .grid{display:grid;grid-template-columns:repeat(3,720px);gap:26px 26px;justify-content:space-between;margin-top:24px}
+  .f{position:relative;width:720px;height:405px;background:var(--paper2);border:1px solid var(--ink);overflow:hidden}
+  .f.dark{background:var(--graphite);color:var(--bone)}
+  .f.dark .m{color:#B7A78C}
+  .f .slabel{position:absolute;left:11px;top:9px;font:8px/1 var(--mono);letter-spacing:.12em;color:var(--red);z-index:9}
+  .f .cam{position:absolute;right:11px;bottom:9px;font:7px/1.4 var(--mono);letter-spacing:.08em;color:var(--muted);text-align:right;z-index:9}
+  .f.dark .cam{color:#9C8F7A}
+  .f .m{font-family:var(--mono);letter-spacing:.1em;line-height:1.55;font-size:9px;color:var(--muted)}
+  .f .t{font-family:var(--serif);font-weight:700;letter-spacing:-.03em;line-height:.94}
+  .f .red{color:var(--red)}
+  .f .rule{position:absolute;height:1px;background:var(--ink);opacity:.3}
+  .f.dark .rule{background:var(--bone);opacity:.25}
+  .f .card{position:absolute;border:1px solid var(--ink);background:var(--paper2)}
+  .f .stamp{position:absolute;border:2px solid var(--red);color:var(--red);font-family:var(--serif);display:grid;place-items:center;transform:rotate(-6deg);line-height:1.05;text-align:center}
+  .f .thread{position:absolute;height:1px;background:var(--red);transform-origin:0 0;opacity:.85}
+  .f .char{position:absolute;width:38px;height:44px;border:3px solid var(--ink);background:var(--paper);z-index:5}
+  .f .char:before{content:"";position:absolute;left:-3px;top:-3px;width:11px;height:11px;background:var(--red)}
+  .f .char:after{content:"";position:absolute;left:8px;top:19px;width:19px;height:2px;background:var(--red)}
+  .f .char i{position:absolute;left:7px;bottom:-11px;width:2px;height:10px;background:var(--ink);box-shadow:22px 0 0 var(--ink)}
+  .f .char b{position:absolute;left:29px;top:22px;width:14px;height:19px;border:1px solid var(--ink);background:var(--paper2)}
+  .f .char.portal{width:74px;height:74px;border-style:dashed;background:transparent}
+  .f .char.portal i,.f .char.portal b{display:none}
+  .f .seal{position:absolute;width:56px;height:56px;background:var(--red);color:var(--paper);display:grid;place-items:center;font-family:var(--serif);font-size:17px;line-height:1.05;text-align:center;transform:rotate(-6deg);z-index:5}
+  .f .dots{position:absolute;background-image:radial-gradient(#1B1813 1.2px,transparent 1.3px);background-size:9px 9px;opacity:.55}
+  .f.dark .dots{background-image:radial-gradient(#EDE4D3 1.2px,transparent 1.3px);opacity:.35}
+  .f .glow{position:absolute;background:radial-gradient(circle,#FBF6EA 0%,#D8CCB6 40%,transparent 70%);opacity:.7}
+  .cap{padding:9px 2px 0;border-bottom:1px solid var(--line);min-height:88px}
+  .cap .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .cap b{font-family:var(--serif);font-size:17px;font-weight:600}
+  .cap span{font:8px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+  .cap p{margin:5px 0 6px;font-size:10px;line-height:1.55;color:var(--ink2)}
+  .cap .tr{color:var(--red);font:8px/1.4 var(--mono);letter-spacing:.04em}
+  .notes{border:1px solid var(--line2);background:var(--paper2);padding:18px 20px;position:relative}
+  .notes h3{font-family:var(--serif);font-size:22px;margin:0 0 8px;font-weight:600}
+  .notes p{font-size:11px;line-height:1.7;color:var(--ink2);margin:0 0 10px}
+  .notes .mono{font:9px/1.7 var(--mono);color:var(--muted);letter-spacing:.06em}
+  footer{display:flex;justify-content:space-between;margin-top:18px;border-top:1px solid var(--line2);padding-top:9px;font:8px/1.6 var(--mono);letter-spacing:.08em;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="sheet">
+  <header>
+    <h1>分镜表 / 60s<small>STORYBOARD / 《一份报告的旅行》/ 60s / 14 SHOTS / 一镜到底 / 无旁白</small></h1>
+    <div class="meta"><b>0:00 – 1:00</b>14 个镜头节拍 · 0 个剪辑点 · 10 个空间<br>封面 → 读片台 → 检查所见 → 能力链 → 文献索引 → 文章 → 简历 → 自述 → 签发 → 片尾</div>
+  </header>
+  <div class="red-rule"></div>
+
+  <div class="grid">
+    <!-- S00 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S00 / 0:00</span><span class="cam">俯拍 90° · 50mm · macro-drift</span>
+        <div class="m" style="position:absolute;left:32px;top:28px">PERSONAL READING REPORT / VOL.07 / BS-2026-10</div>
+        <div class="t" style="position:absolute;left:32px;top:74px;font-size:56px;width:520px">个人读片报告</div>
+        <div class="m" style="position:absolute;left:32px;top:230px">受检者：—　　方向：全栈开发 · AI 应用</div>
+        <div class="rule" style="left:32px;top:214px;width:410px"></div>
+        <div class="rule" style="left:32px;top:258px;width:410px"></div>
+        <div class="m" style="position:absolute;left:32px;top:274px">检查项目：找到他。</div>
+        <div class="stamp" style="left:500px;top:238px;width:150px;height:54px;font-size:16px">INCOMPLETE<br>待补全</div>
+        <div class="m" style="position:absolute;right:30px;bottom:28px;text-align:right">REPORT / 01<br>LIGHTBOX ON</div>
+      </div>
+      <div class="cap"><div class="top"><b>S00 · 封面 / 灯箱</b><span>0:00–0:04 · 4s</span></div><p>灯箱亮起，报告封面。受检者一栏是空的；红角在右下角脉冲一下。</p><div class="tr">无转场 · 长镜头起点</div></div>
+    </div>
+
+    <!-- S01 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S01 / 0:04</span><span class="cam">50mm · dolly-in + orbit 8° · 穿框 +90°</span>
+        <div class="m" style="position:absolute;left:32px;top:26px">受检者：—</div>
+        <div class="t" style="position:absolute;left:32px;top:70px;font-size:40px">一份报告的旅行</div>
+        <div class="m" style="position:absolute;left:32px;top:128px">检查项目：找到他。</div>
+        <div class="t red" style="position:absolute;left:420px;top:60px;font-size:150px;line-height:1">?</div>
+        <div class="char" style="left:300px;top:196px"><i></i><b></b></div>
+        <div class="thread" style="left:318px;top:206px;width:180px;transform:rotate(-18deg)"></div>
+        <div class="char portal" style="left:540px;top:150px;width:96px;height:96px"></div>
+        <div class="stamp" style="left:56px;top:260px;width:92px;height:44px;font-size:12px">INCOMPLETE</div>
+        <div class="m" style="position:absolute;right:30px;bottom:28px;text-align:right">小片从红角爬出<br>画「?」→ 红线 → 门</div>
+      </div>
+      <div class="cap"><div class="top"><b>S01 · 空白受检者 / 小片醒来</b><span>0:04–0:08 · 4s</span></div><p>小片从切片框里爬出，读报告，画一个「?」；「?」变成红线；它展开成门。</p><div class="tr">穿过切片框 · +90° · 12 帧</div></div>
+    </div>
+
+    <!-- S02 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S02 / 0:08</span><span class="cam">24→50mm · 坠落 + 跟拍 + 穿屏</span>
+        <div class="t" style="position:absolute;left:34px;top:46px;font-size:54px;width:420px">让模型，<br>在<span class="red">真实系统</span>里<br>跑起来。</div>
+        <div class="m" style="position:absolute;left:36px;top:226px">从一张切片，到一条产线。</div>
+        <div class="m" style="position:absolute;left:36px;top:262px">7 / 2 / 30 / 5</div>
+        <div class="card" style="right:30px;top:44px;width:250px;height:150px;background:#12100D;border-color:#12100D"></div>
+        <div class="m" style="position:absolute;right:46px;top:58px;color:#B7A78C">P-00 · INTRO FILM</div>
+        <div class="t" style="position:absolute;right:50px;top:96px;font-size:26px;color:#EDE4D3">个人读片报告</div>
+        <div class="card" style="left:36px;top:304px;width:210px;height:46px;background:var(--red);border-color:var(--red)"></div>
+        <div class="m" style="position:absolute;left:52px;top:320px;color:var(--paper);font-size:11px">▶ 播放介绍片 0:48</div>
+        <div class="char" style="left:300px;top:238px;transform:scale(.85)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;right:30px;bottom:28px;text-align:right">标题跑酷 → 按播放<br>屏幕变成门</div>
+      </div>
+      <div class="cap"><div class="top"><b>S02 · 读片台 / 标题 / 播放</b><span>0:08–0:15 · 7s</span></div><p>镜头坠入标题；小片滑下逗号、把句号当蹦床、按下播放，钻进屏幕。</p><div class="tr">穿过播放器屏幕 · +90° · 10 帧</div></div>
+    </div>
+
+    <!-- S03 -->
+    <div>
+      <div class="f dark">
+        <span class="slabel">S03 / 0:15</span><span class="cam">24mm · lead / follow · 走廊</span>
+        <div class="m" style="position:absolute;left:28px;top:26px">02 / 检查所见</div>
+        <div class="t" style="position:absolute;left:28px;top:58px;font-size:36px;color:#EDE4D3">七项工程，一条能力链路</div>
+        <div style="position:absolute;left:28px;top:132px;width:610px;height:1px;background:#5A4A36"></div>
+        <div class="card" style="left:36px;top:170px;width:70px;height:120px"></div>
+        <div class="card" style="left:120px;top:170px;width:70px;height:120px"></div>
+        <div class="card" style="left:204px;top:170px;width:70px;height:120px"></div>
+        <div class="card" style="left:288px;top:170px;width:70px;height:120px"></div>
+        <div class="card" style="left:372px;top:170px;width:70px;height:120px"></div>
+        <div class="card" style="left:456px;top:170px;width:70px;height:120px"></div>
+        <div class="card" style="left:540px;top:170px;width:70px;height:120px;transform:rotate(-4deg)"></div>
+        <div class="m" style="position:absolute;left:40px;top:182px;color:#B7A78C">P-01</div>
+        <div class="m" style="position:absolute;left:124px;top:182px;color:#B7A78C">P-02</div>
+        <div class="m" style="position:absolute;left:208px;top:182px;color:#B7A78C">P-03</div>
+        <div class="m" style="position:absolute;left:292px;top:182px;color:#B7A78C">P-04</div>
+        <div class="m" style="position:absolute;left:376px;top:182px;color:#B7A78C">P-05</div>
+        <div class="m" style="position:absolute;left:460px;top:182px;color:#B7A78C">P-06</div>
+        <div class="m" style="position:absolute;left:544px;top:182px;color:#B7A78C">P-07</div>
+        <div class="char" style="left:320px;top:228px;transform:scale(.8)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;right:28px;bottom:26px;text-align:right">七枚章飞进挎包<br>第八张卡一闪</div>
+      </div>
+      <div class="cap"><div class="top"><b>S03 · 检查所见 / 七个项目</b><span>0:15–0:20 · 5s</span></div><p>小片沿着红线滑过七块灯箱板，逐一盖章；回头发现第 8 张卡写着「8 项（含本站）」。</p><div class="tr">走廊 · 24mm · 跟拍</div></div>
+    </div>
+
+    <!-- S04 -->
+    <div>
+      <div class="f dark">
+        <span class="slabel">S04 / 0:20</span><span class="cam">35→24mm · 拉开 + 穿图 + 片门</span>
+        <div class="card" style="left:30px;top:53px;width:280px;height:145px;background:#FBF6EA;border-color:#B7A78C"></div>
+        <div class="m" style="position:absolute;left:44px;top:66px;color:#4A4238">合同预审 / 三单比对</div>
+        <div class="rule" style="left:44px;top:92px;width:250px;background:#B7A78C"></div>
+        <div class="m" style="position:absolute;left:44px;top:104px;color:#4A4238">金额　¥5,000,000　一致</div>
+        <div class="m" style="position:absolute;left:44px;top:122px;color:#4A4238">税率　13%　　　一致</div>
+        <div class="m" style="position:absolute;left:44px;top:140px;color:#4A4238">交货　60 天　　差 5 天</div>
+        <div class="stamp" style="left:250px;top:158px;width:80px;height:34px;font-size:11px;background:#B23A2A;color:#F3EBDD;border-color:#B23A2A">100%</div>
+        <div style="position:absolute;left:330px;top:210px;width:330px;height:54px;background:#1B1712;border:1px solid #5A4A36"></div>
+        <div class="m" style="position:absolute;left:344px;top:224px;color:#B7A78C">胶片 / 感知 → 理解 → 决策 → 执行 → 交付</div>
+        <div style="position:absolute;left:344px;top:242px;width:300px;height:2px;background:#B23A2A"></div>
+        <div class="char" style="left:500px;top:204px;transform:scale(.65)"><i></i><b></b></div>
+        <div class="glow" style="right:18px;top:70px;width:90px;height:180px"></div>
+        <div class="m" style="position:absolute;right:30px;bottom:26px;text-align:right">第七张卡展开 → 五章<br>片门光</div>
+      </div>
+      <div class="cap"><div class="top"><b>S04 · 第七张卡 / 五章 / 片门</b><span>0:20–0:24 · 4s</span></div><p>卡片展开成合同报告；小片跌进表格，影院银幕亮起；它跑过五章，穿过片门。</p><div class="tr">穿图 +180° · 片门 +90°</div></div>
+    </div>
+
+    <!-- S05 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S05 / 0:24</span><span class="cam">24–35mm · crane-up + top-down</span>
+        <div class="m" style="position:absolute;left:30px;top:26px">04 / 文献索引</div>
+        <div class="t" style="position:absolute;left:30px;top:58px;font-size:40px">30 篇，四层</div>
+        <div class="m" style="position:absolute;left:30px;top:108px">理论 10 / 选型 2 / 方法 16 / 规范 2</div>
+        <div class="card" style="left:30px;top:150px;width:120px;height:70px;transform:rotate(-4deg)"></div>
+        <div class="card" style="left:166px;top:144px;width:120px;height:70px;transform:rotate(3deg)"></div>
+        <div class="card" style="left:302px;top:152px;width:120px;height:70px;transform:rotate(-2deg)"></div>
+        <div class="card" style="left:438px;top:146px;width:120px;height:70px;transform:rotate(5deg)"></div>
+        <div class="card" style="left:574px;top:154px;width:110px;height:70px;transform:rotate(-5deg)"></div>
+        <div class="card" style="left:120px;top:250px;width:140px;height:60px;transform:rotate(4deg)"></div>
+        <div class="card" style="left:300px;top:260px;width:150px;height:60px;transform:rotate(-3deg)"></div>
+        <div class="card" style="left:490px;top:248px;width:130px;height:60px;transform:rotate(6deg)"></div>
+        <div class="t red" style="position:absolute;right:28px;bottom:22px;font-size:64px;line-height:1">30</div>
+        <div class="char" style="left:320px;top:330px;transform:rotate(80deg) scale(.8)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;left:30px;bottom:26px">卡片雪崩 · 留白 0.6s</div>
+      </div>
+      <div class="cap"><div class="top"><b>S05 · 文献索引 / 卡片雪崩</b><span>0:24–0:27 · 3s</span></div><p>30 张索引卡悬浮；小片想读，卡片雪崩把它埋住，只露出一只脚。</p><div class="tr">升降 + 俯拍 · 雪崩后静默</div></div>
+    </div>
+
+    <!-- S06 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S06 / 0:27</span><span class="cam">35–50mm · low-angle + crane-up</span>
+        <div class="card" style="left:30px;top:250px;width:210px;height:70px;transform:rotate(-4deg)"></div>
+        <div class="card" style="left:90px;top:190px;width:210px;height:70px;transform:rotate(3deg)"></div>
+        <div class="card" style="left:40px;top:130px;width:210px;height:70px;transform:rotate(-2deg)"></div>
+        <div class="card" style="left:100px;top:70px;width:210px;height:70px;transform:rotate(4deg)"></div>
+        <div class="card" style="right:60px;top:100px;width:230px;height:110px;background:var(--paper2);border-color:var(--ink);transform:rotate(-3deg)"></div>
+        <div class="t" style="position:absolute;right:104px;top:130px;font-size:34px">作者?</div>
+        <div class="char" style="left:170px;top:212px;transform:rotate(-8deg) scale(.8)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;left:30px;top:26px">30 / 30</div>
+        <div class="m" style="position:absolute;right:30px;bottom:26px;text-align:right">小片看镜头 0.3s<br>折卡 → 纸飞机</div>
+      </div>
+      <div class="cap"><div class="top"><b>S06 · 爬出 / 作者? / 纸飞机</b><span>0:27–0:31 · 4s</span></div><p>小片顶着一张卡爬出，打喷嚏；卡片叠成楼梯。顶端是空白卡「作者?」。它看向镜头，折成纸飞机飞走。</p><div class="tr">穿过卡片 · +15° · 14 帧</div></div>
+    </div>
+
+    <!-- S07 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S07 / 0:31</span><span class="cam">35mm · side-track · 浅景深</span>
+        <div class="m" style="position:absolute;left:30px;top:26px">05 / 文章</div>
+        <div class="t" style="position:absolute;left:30px;top:58px;font-size:34px">七篇，从问题开始</div>
+        <div class="card" style="left:30px;top:118px;width:190px;height:120px;transform:rotate(-2deg)"></div>
+        <div class="card" style="left:250px;top:108px;width:190px;height:140px;transform:rotate(2deg)"></div>
+        <div class="card" style="left:470px;top:120px;width:190px;height:120px;transform:rotate(-3deg)"></div>
+        <div class="m" style="position:absolute;left:44px;top:132px;font-size:8px">合同预审智能体<br>Dify + 规则引擎</div>
+        <div class="m" style="position:absolute;left:264px;top:122px;font-size:8px">从 PHP 单体<br>到低代码平台</div>
+        <div class="m" style="position:absolute;left:484px;top:134px;font-size:8px">用 U-Net 做<br>肺部 CT 分割</div>
+        <div class="thread" style="left:36px;top:282px;width:640px;transform:rotate(-1deg)"></div>
+        <div class="char" style="left:330px;top:248px;transform:scale(.8)"><i></i><b></b></div>
+        <div class="card" style="right:54px;top:300px;width:78px;height:44px;border-radius:50%;transform:rotate(6deg)"></div>
+        <div class="m" style="position:absolute;right:66px;top:316px;font-size:8px">评论 0</div>
+        <div class="m" style="position:absolute;left:30px;bottom:26px">阅读进度条 = 钢丝</div>
+      </div>
+      <div class="cap"><div class="top"><b>S07 · 文章 / 走钢丝 / 划线 / 撕页</b><span>0:31–0:36 · 5s</span></div><p>小片在阅读进度条上走钢丝，停在文章前，用扫描线划下一句；评论气泡带它穿过撕页。</p><div class="tr">侧跟 + 浅景深 · 撕页 +90°</div></div>
+    </div>
+
+    <!-- S08 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S08 / 0:36</span><span class="cam">24–100mm · crane-up + orbit + macro</span>
+        <div class="m" style="position:absolute;left:30px;top:26px">06 / 简历</div>
+        <div class="t" style="position:absolute;left:30px;top:58px;font-size:34px">一页，2027 届</div>
+        <div class="card" style="left:30px;top:118px;width:300px;height:230px;background:var(--paper2)"></div>
+        <div class="rule" style="left:48px;top:146px;width:260px"></div>
+        <div class="rule" style="left:48px;top:176px;width:240px"></div>
+        <div class="rule" style="left:48px;top:206px;width:250px"></div>
+        <div class="rule" style="left:48px;top:236px;width:220px"></div>
+        <div class="rule" style="left:48px;top:266px;width:250px"></div>
+        <div class="m" style="position:absolute;left:48px;top:124px;font-size:8px">摘要 / 技能 / 实习 / 项目</div>
+        <div style="position:absolute;right:44px;top:94px;width:230px;height:290px;background:var(--paper2);border:1px solid var(--ink)"></div>
+        <div class="dots" style="right:54px;top:104px;width:210px;height:170px"></div>
+        <div class="t" style="position:absolute;right:84px;top:290px;font-size:22px">SUBJECT</div>
+        <div class="char" style="left:280px;top:236px;transform:scale(.8)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;right:34px;bottom:26px;text-align:right">7 / 2 / 30 / 1<br>空白肖像 vs 真肖像</div>
+      </div>
+      <div class="cap"><div class="top"><b>S08 · 简历 / 攀爬 / 肖像 / 网点</b><span>0:36–0:41 · 5s</span></div><p>小片像攀岩一样爬上 A4 简历，逐段盖章；顶部是真正的半调肖像，它掏出空白肖像对比，跳进网点。</p><div class="tr">仰拍 + 环绕 · 网点 +90°</div></div>
+    </div>
+
+    <!-- S09 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S09 / 0:41</span><span class="cam">35mm · very slow dolly · 0.3x</span>
+        <div class="m" style="position:absolute;left:30px;top:26px">07 / 自述</div>
+        <div class="t" style="position:absolute;left:30px;top:58px;font-size:34px">把证据做进系统的人</div>
+        <div class="thread" style="left:30px;top:150px;width:660px;transform:rotate(-1deg)"></div>
+        <div class="thread" style="left:30px;top:188px;width:660px;transform:rotate(1deg)"></div>
+        <div class="thread" style="left:30px;top:226px;width:660px;transform:rotate(-1deg)"></div>
+        <div class="thread" style="left:30px;top:264px;width:660px;transform:rotate(1deg)"></div>
+        <div class="thread" style="left:30px;top:302px;width:660px;transform:rotate(-1deg)"></div>
+        <div class="m" style="position:absolute;left:40px;top:136px;font-size:8px">先算账，再优化</div>
+        <div class="m" style="position:absolute;left:40px;top:174px;font-size:8px">判定与解释分离</div>
+        <div class="m" style="position:absolute;left:40px;top:212px;font-size:8px">低置信度转人工</div>
+        <div class="m" style="position:absolute;left:40px;top:250px;font-size:8px">把未做之事写下来</div>
+        <div class="m" style="position:absolute;left:40px;top:288px;font-size:8px">交付要能回滚</div>
+        <div style="position:absolute;right:40px;top:90px;width:150px;height:230px;border:1px solid var(--ink);background:var(--paper2)"></div>
+        <div class="dots" style="right:48px;top:98px;width:134px;height:150px;opacity:.5"></div>
+        <div class="char" style="left:330px;top:236px;transform:scale(.8)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;right:30px;bottom:26px;text-align:right">安静 4 秒<br>等宽批注收尾</div>
+      </div>
+      <div class="cap"><div class="top"><b>S09 · 自述 / 五条原则</b><span>0:41–0:45 · 4s</span></div><p>自述室几乎无声。小片走过五条红色原则线，停在闭着眼的肖像前，伸手；等宽批注出现「它以为……」。</p><div class="tr">极慢推近 · 0.3x · 无音乐</div></div>
+    </div>
+
+    <!-- S10 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S10 / 0:45</span><span class="cam">50mm · orbit 30° + pull-back</span>
+        <div style="position:absolute;left:120px;top:36px;width:220px;height:320px;border:1px solid var(--ink);background:var(--paper2)"></div>
+        <div class="dots" style="left:130px;top:46px;width:200px;height:190px;opacity:.55"></div>
+        <div style="position:absolute;left:210px;top:150px;width:36px;height:2px;background:var(--ink)"></div>
+        <div style="position:absolute;left:210px;top:150px;width:36px;height:2px;background:var(--ink);transform:rotate(-4deg)"></div>
+        <div class="t" style="position:absolute;left:150px;top:250px;font-size:30px">张栋栋</div>
+        <div style="position:absolute;right:96px;top:190px;width:170px;height:110px;border:2px solid var(--ink);background:var(--paper2);transform:rotate(-12deg)"></div>
+        <div class="char" style="right:174px;top:206px;transform:scale(.8)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;right:30px;top:30px;text-align:right">受检者：<br>张栋栋 / 北省</div>
+        <div class="m red" style="position:absolute;left:30px;bottom:26px;font-family:var(--serif);font-size:16px;font-style:italic">别找了。我在这儿。</div>
+      </div>
+      <div class="cap"><div class="top"><b>S10 · 肖像睁眼 / 手接住 / 手写</b><span>0:45–0:48 · 3s</span></div><p>肖像睁眼，插画纸手接住小片；等宽批注停止，手写「别找了。我在这儿。」出现。</p><div class="tr">全片情绪高点 · 笔尖声 · hold 0.3s</div></div>
+    </div>
+
+    <!-- S11 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S11 / 0:48</span><span class="cam">50–100mm · top-down 60° · macro</span>
+        <div class="card" style="left:40px;top:60px;width:350px;height:250px;background:var(--paper2)"></div>
+        <div class="rule" style="left:64px;top:250px;width:300px"></div>
+        <div class="t" style="position:absolute;left:64px;top:270px;font-size:28px;transform:rotate(-4deg)">张栋栋</div>
+        <div class="seal" style="right:96px;top:160px;width:90px;height:90px;font-size:22px">张栋栋<br>北省</div>
+        <div class="char" style="left:380px;top:140px;transform:scale(.85)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;left:44px;top:30px">报告签发 / SIGN-OFF</div>
+        <div class="m" style="position:absolute;right:30px;bottom:26px;text-align:right">签名 → 折叠 → 盖章<br>墨迹推入</div>
+      </div>
+      <div class="cap"><div class="top"><b>S11 · 签名 / 小片变印章</b><span>0:48–0:52 · 4s</span></div><p>手把小片放在报告上，签下名字；小片折叠成朱砂印章；手按下，墨迹晕开。</p><div class="tr">穿过印章墨迹 · 18 帧</div></div>
+    </div>
+
+    <!-- S12 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S12 / 0:52</span><span class="cam">24mm · pull-back-through</span>
+        <div class="card" style="left:54px;top:54px;width:600px;height:280px;background:var(--paper2)"></div>
+        <div class="m" style="position:absolute;left:76px;top:76px">张栋栋 / 北省</div>
+        <div class="m" style="position:absolute;left:76px;top:94px">FDE / 软件开发工程师</div>
+        <div class="t" style="position:absolute;left:76px;top:128px;font-size:30px">7 · 2 · 30 · 1</div>
+        <div class="seal" style="right:110px;bottom:80px;width:76px;height:76px;font-size:18px">张栋栋<br>北省</div>
+        <div class="m" style="position:absolute;left:76px;bottom:60px">报告完成 / 从 3D 回到平面</div>
+        <div class="m" style="position:absolute;right:110px;top:76px;text-align:right">7 项工程<br>2 套企业系统<br>30 篇知识<br>1 篇论文</div>
+      </div>
+      <div class="cap"><div class="top"><b>S12 · 拉远 / 报告完成</b><span>0:52–0:55 · 3s</span></div><p>镜头从墨迹里拉出：印章、签名、整份报告、书桌；七枚标签被摆成 7/2/30/1。</p><div class="tr">拉远穿透 · 无切点</div></div>
+    </div>
+
+    <!-- S13 -->
+    <div>
+      <div class="f">
+        <span class="slabel">S13 / 0:55</span><span class="cam">35mm · slow pull-back 2% · fade</span>
+        <div class="m" style="position:absolute;left:40px;top:30px">报告看完了。接下来，读我。</div>
+        <div class="t" style="position:absolute;left:40px;top:64px;font-size:40px">张栋栋 / 北省</div>
+        <div class="m" style="position:absolute;left:40px;top:116px">FDE / 软件开发工程师 · 医学影像 AI · 全栈交付</div>
+        <div class="m" style="position:absolute;left:40px;top:136px;font-size:8px">“这个网站，是我给自己写的一份读片报告。” — 张栋栋</div>
+        <div class="m" style="position:absolute;left:40px;top:160px">智能医学工程 2027 届 · 可实习 · 武汉 / 远程可谈</div>
+        <div class="m" style="position:absolute;left:40px;top:196px">7 项工程作品 · 2 套企业系统 · 30 篇知识文档 · 1 篇国际会议论文</div>
+        <div class="m" style="position:absolute;left:40px;bottom:46px">1611045292@qq.com · github.com/beishengI</div>
+        <div class="m" style="position:absolute;left:40px;bottom:28px">beishengi.github.io/Blog</div>
+        <div class="seal" style="right:86px;top:120px;width:90px;height:90px;font-size:22px">张栋栋<br>北省</div>
+        <div class="char" style="right:130px;top:226px;transform:scale(.85)"><i></i><b></b></div>
+        <div class="m" style="position:absolute;right:30px;bottom:26px;text-align:right">挥手 → 盖「欢迎来读」<br>眨眼 → fade</div>
+      </div>
+      <div class="cap"><div class="top"><b>S13 · 片尾卡 / 挥手</b><span>0:55–1:00 · 5s</span></div><p>片尾卡：姓名、角色、数字、联系方式、墨色二维码；小片从印章后探头，挥手，盖下「欢迎来读」。</p><div class="tr">全片唯一 fade · 淡出到纸色</div></div>
+    </div>
+
+    <!-- notes -->
+    <div class="notes">
+      <h3>一镜到底 / 14 镜</h3>
+      <p>90 秒版已归档；60 秒版把「能力链」压进 S04，把「知识库」压成 S05–S06，把「文章」压成 S07。每一间房只保留一个故事动作。</p>
+      <p class="mono">0 cuts · 10 rooms · 14 beats<br>24fps · 1920×1080<br>no voice-over · zh/en subtitles</p>
+      <p class="mono">镜头 / 动作 / 文字 / 声音的完整参数见 SHOOTING-SCRIPT.md；相机路径见 camera-map-60s.png。</p>
+    </div>
+  </div>
+
+  <footer>
+    <span>《一份报告的旅行》/ 60s 分镜 / v2.0 / 2026-10-23</span>
+    <span>分镜为示意，不是最终画面；以 SHOOTING-SCRIPT.md 为准</span>
+  </footer>
+</div>
+</body>
+</html>

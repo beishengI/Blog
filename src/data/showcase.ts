@@ -220,26 +220,29 @@ export interface FilmMeta {
 }
 
 export const film: FilmMeta = {
-  title: '博客开机自检',
-  subtitle: 'BLOG SELF-TEST / 48s / NO VO',
-  src: '/showcase/profile-film.mp4',
+  title: '一份报告的旅行',
+  subtitle: "A REPORT'S JOURNEY / 1:15 / 中英硬字幕",
+  src: '/showcase/report-journey-75s.mp4',
   poster: '/showcase/poster.jpg',
-  duration: '0:48',
+  transcript: '/showcase/transcript.md',
+  duration: '1:15',
   available: true,
+  // 75s 版为 60s 时间线等比例 ×1.25；以下为关键节拍
   chapters: [
-    { time: '00:00', label: '开机' },
-    { time: '00:04', label: '读片台' },
-    { time: '00:09', label: '七张项目卡' },
-    { time: '00:15', label: '知识库' },
-    { time: '00:20', label: '简历' },
-    { time: '00:25', label: '文章' },
-    { time: '00:30', label: '影片' },
-    { time: '00:35', label: '故障' },
-    { time: '00:40', label: '汇总' },
-    { time: '00:45', label: '签发' },
+    { time: '00:00', label: '封面' },
+    { time: '00:05', label: '问号' },
+    { time: '00:10', label: '读片台' },
+    { time: '00:18', label: '检查所见' },
+    { time: '00:25', label: '能力链' },
+    { time: '00:30', label: '文献索引' },
+    { time: '00:38', label: '文章' },
+    { time: '00:45', label: '简历' },
+    { time: '00:56', label: '自述' },
+    { time: '01:02', label: '签发' },
+    { time: '01:10', label: '片尾' },
   ],
   summary:
-    '48 秒无旁白介绍片：把博客当成一台读片机开机自检——读片台、7 个项目、30 篇知识、简历、文章、影片，中途出一次「过度认真」的故障，最后汇总签发。',
+    '75 秒一镜到底：一份被退回的报告缺一个受检者。小片沿着网站读完读片台、检查所见、能力链、文献、文章与简历，最后发现——报告可以自证，签名只能由本人落下。中英双语硬字幕。',
 };
 
 export const awardItems = [

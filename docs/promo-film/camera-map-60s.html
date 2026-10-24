@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>《一份报告的旅行》· 一镜到底镜头图（60s）</title>
+<style>
+  :root{
+    --paper:#F3EBDD;--paper2:#FBF6EA;--ink:#1B1813;--ink2:#4A4238;--muted:#7B7060;
+    --line:#D8CCB6;--line2:#B7A78C;--red:#B23A2A;--red2:#D4633F;--graphite:#12100D;--bone:#EDE4D3;
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;
+    --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+    --mono:"JetBrains Mono","Cascadia Mono","Consolas",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink)}
+  body{font-family:var(--sans)}
+  #map{width:2400px;padding:64px 72px 46px;position:relative;
+    background:
+      linear-gradient(rgba(27,24,19,.03) 1px,transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg,rgba(27,24,19,.03) 1px,transparent 1px) 0 0/48px 48px,
+      radial-gradient(1400px 800px at 15% 0%,#FBF6EA 0%,transparent 60%),var(--paper)}
+  #map:before{content:"";position:absolute;inset:26px;border:1px solid var(--line);pointer-events:none}
+  header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:16px}
+  h1{font-family:var(--serif);font-size:64px;line-height:.95;margin:0;letter-spacing:-.03em}
+  h1 small{display:block;font:12px/1.6 var(--mono);letter-spacing:.18em;color:var(--muted);margin-top:10px}
+  .meta{text-align:right;font:11px/1.8 var(--mono);letter-spacing:.1em;color:var(--muted)}
+  .meta b{display:block;font-family:var(--serif);font-size:26px;letter-spacing:.02em;color:var(--ink);font-weight:600}
+  .red-rule{height:5px;background:var(--red);margin-top:10px}
+  .grid{display:grid;grid-template-columns:640px 1fr;gap:46px;margin-top:26px}
+  .panel-title{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line2);padding-bottom:7px;margin-bottom:10px}
+  .panel-title b{font-family:var(--serif);font-size:22px;font-weight:600}
+  .panel-title span{font:9px/1 var(--mono);letter-spacing:.14em;color:var(--muted)}
+  .panel-title em{margin-left:auto;font:9px/1 var(--mono);color:var(--muted);font-style:normal}
+  svg{display:block;width:100%;height:auto}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:18px;border-top:1px solid var(--line2);padding-top:12px;font:9px/1.6 var(--mono);color:var(--muted);letter-spacing:.05em}
+  .legend i{display:inline-block;width:16px;height:8px;margin-right:6px;vertical-align:middle}
+  footer{display:flex;justify-content:space-between;margin-top:22px;border-top:1px solid var(--line2);padding-top:9px;font:9px/1.6 var(--mono);letter-spacing:.08em;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="map">
+  <header>
+    <h1>一镜到底镜头图<small>ONE-TAKE CAMERA SCORE / 《一份报告的旅行》/ 60s / 14 SHOTS</small></h1>
+    <div class="meta"><b>从封面，到签名，再回到封面</b>14 个镜头节拍 · 0 个剪辑点 · 10 个空间<br>24fps · 1920×1080 · 无旁白 · 红线为轴</div>
+  </header>
+  <div class="red-rule"></div>
+  <div class="grid">
+    <div>
+      <div class="panel-title"><b>空间堆叠</b><span>SPACE STACK / SIDE VIEW</span><em>镜头向下的螺旋</em></div>
+      <svg id="stack" viewBox="0 0 640 920" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div>
+      <div class="panel-title"><b>时间轴</b><span>SCORE / 0–60s</span><em>房间 · 运镜 · 批注 · 声音 · 滚转</em></div>
+      <svg id="score" viewBox="0 0 1540 920" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+  <div class="legend">
+    <span><i style="background:#F3EBDD;border:1px solid #B7A78C"></i>纸房间</span>
+    <span><i style="background:#12100D"></i>石墨房间</span>
+    <span><i style="background:#B23A2A"></i>转场 / 红线</span>
+    <span><i style="background:#4F6F5E"></i>玉（仅一次）</span>
+    <span>滚转为转场中的相机旋转；进入房间后画面回正</span>
+  </div>
+  <footer>
+    <span>《一份报告的旅行》/ 一镜到底镜头图 v2.0 / 2026-10-23</span>
+    <span>14 镜 · 详见 DESIGN.md §7.4 / SHOOTING-SCRIPT.md</span>
+  </footer>
+</div>
+
+<script>
+const rooms = [
+  {no:'00', name:'封面 / 灯箱', en:'COVER', start:0, end:8, tone:'paper', note:'俯拍微距 · 空白受检者'},
+  {no:'01', name:'读片台', en:'HERO', start:8, end:15, tone:'paper', note:'坠落 / 低角度 · 标题跑酷'},
+  {no:'02', name:'检查所见', en:'WORKS', start:15, end:20, tone:'graphite', note:'走廊 / 滑索 · 七章'},
+  {no:'03', name:'能力链电影院', en:'CINEMA', start:20, end:24, tone:'graphite', note:'升降 / 横移 · 五章'},
+  {no:'04', name:'文献索引', en:'WIKI', start:24, end:31, tone:'paper', note:'升降 / 俯拍 · 雪崩'},
+  {no:'05', name:'文章', en:'POSTS', start:31, end:36, tone:'paper', note:'侧跟 / 钢丝 · 划线'},
+  {no:'06', name:'简历', en:'RESUME', start:36, end:41, tone:'paper', note:'仰拍 / 环绕 · 肖像'},
+  {no:'07', name:'自述', en:'ABOUT', start:41, end:48, tone:'paper', note:'极慢推近 · 睁眼'},
+  {no:'08', name:'签发', en:'SIGN-OFF', start:48, end:55, tone:'paper', note:'俯拍 / 微距 · 签名'},
+  {no:'09', name:'片尾', en:'END CARD', start:55, end:60, tone:'paper', note:'拉远 / 淡出'},
+];
+const transitions = [
+  {t:8,  label:'穿切片框', sub:'+90°'},
+  {t:15, label:'穿播放器屏幕', sub:'+90°'},
+  {t:20, label:'穿合同截图', sub:'+180°'},
+  {t:24, label:'穿放映机片门', sub:'+90°'},
+  {t:31, label:'纸飞机穿卡', sub:'+15°'},
+  {t:36, label:'穿撕页', sub:'+90°'},
+  {t:41, label:'穿半调网点', sub:'+90°'},
+  {t:48, label:'手放下 / 桌面', sub:'0°'},
+  {t:55, label:'穿印章墨迹', sub:'回正'},
+];
+const texts = [
+  {t0:3, t1:5, l:'检查项目：找到他。', row:0, hand:false},
+  {t0:5, t1:7, l:'一份报告的旅行', row:1, hand:false},
+  {t0:15, t1:17, l:'7 项工程 / 2 套企业系统', row:0, hand:false},
+  {t0:20, t1:21, l:'感知 → 理解 → 决策 → 执行 → 交付', row:1, hand:false},
+  {t0:24, t1:26, l:'30 篇 / 四层', row:0, hand:false},
+  {t0:28, t1:29, l:'作者?', row:1, hand:false},
+  {t0:31, t1:33, l:'7 篇 / 从问题开始', row:0, hand:false},
+  {t0:36, t1:38, l:'一页 / 2027 届', row:1, hand:false},
+  {t0:43, t1:44.8, l:'它以为，读完这些，就能找到他。', row:0, hand:false},
+  {t0:45, t1:47, l:'别找了。我在这儿。', row:1, hand:true},
+  {t0:48, t1:49.5, l:'受检者：张栋栋 / 北省', row:0, hand:false},
+  {t0:50, t1:52, l:'张栋栋 · FDE / 软件开发工程师', row:1, hand:false},
+  {t0:52, t1:54, l:'7 / 2 / 30 / 1', row:0, hand:false},
+  {t0:55, t1:57, l:'报告看完了。接下来，读我。', row:1, hand:true},
+];
+const sounds = [
+  {t:0,l:'灯箱'},{t:2,l:'纸页'},{t:4,l:'红角'},{t:5,l:'画?'},{t:7,l:'展开'},
+  {t:8,l:'落地'},{t:11,l:'按钮'},{t:13,l:'数字'},{t:15,l:'七章'},{t:20,l:'拉纸'},
+  {t:21,l:'放映机'},{t:24,l:'雪崩'},{t:27,l:'喷嚏'},{t:28,l:'心跳'},{t:31,l:'钢丝'},
+  {t:33,l:'气泡'},{t:35,l:'撕页'},{t:36,l:'攀爬'},{t:40,l:'网点'},{t:41,l:'静默'},
+  {t:45,l:'笔尖'},{t:47,l:'笔尖停'},{t:50,l:'印章'},{t:52,l:'boom'},{t:55,l:'解决'},{t:58,l:'小章'},
+];
+const roll = [
+  {t:0,v:90},{t:8,v:180},{t:15,v:270},{t:20,v:450},{t:24,v:540},{t:31,v:555},
+  {t:36,v:645},{t:41,v:735},{t:48,v:735},{t:55,v:720},{t:60,v:720},
+];
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs={}, text='') => {
+  const n = document.createElementNS(NS, tag);
+  for (const [k,v] of Object.entries(attrs)) n.setAttribute(k, v);
+  if (text) n.textContent = text;
+  return n;
+};
+const stack = document.getElementById('stack');
+const stackTop=36, rowH=82, left=88, boxW=360, boxH=48;
+stack.appendChild(el('text',{x:0,y:16,'font-family':'JetBrains Mono, monospace','font-size':10,fill:'#7B7060','letter-spacing':'0.12em'},'REPORT STACK / 10 PAGES'));
+stack.appendChild(el('line',{x1:left-18,y1:stackTop-16,x2:left-18,y2:stackTop+rooms.length*rowH-14,stroke:'#B7A78C','stroke-width':1,'stroke-dasharray':'2 5'}));
+rooms.forEach((r,i)=>{
+  const y = stackTop + i*rowH;
+  const fill = r.tone==='graphite' ? '#12100D' : '#FBF6EA';
+  const ink = r.tone==='graphite' ? '#EDE4D3' : '#1B1813';
+  stack.appendChild(el('rect',{x:left,y,width:boxW,height:boxH,fill,stroke:'#1B1813','stroke-width':1}));
+  stack.appendChild(el('rect',{x:left,y,width:5,height:boxH,fill:'#B23A2A'}));
+  stack.appendChild(el('text',{x:left+18,y:y+20,'font-family':'Songti SC, serif','font-size':18,fill:ink},r.name));
+  stack.appendChild(el('text',{x:left+18,y:y+37,'font-family':'JetBrains Mono, monospace','font-size':8,fill:r.tone==='graphite'?'#B7A78C':'#7B7060','letter-spacing':'0.1em'},r.en+' / '+String(r.start).padStart(2,'0')+':'+String(r.end).padStart(2,'0')));
+  stack.appendChild(el('text',{x:left-18,y:y+22,'text-anchor':'end','font-family':'JetBrains Mono, monospace','font-size':10,fill:'#B23A2A'},r.no));
+  stack.appendChild(el('text',{x:left-18,y:y+38,'text-anchor':'end','font-family':'JetBrains Mono, monospace','font-size':8,fill:'#7B7060'},r.note));
+  const cx = left+boxW+40, cy = y+boxH/2;
+  stack.appendChild(el('path',{d:`M${cx-12} ${cy-7} L${cx+8} ${cy} L${cx-12} ${cy+7} Z`,fill:'#B23A2A',opacity:'0.9'}));
+  stack.appendChild(el('text',{x:cx+16,y:cy+3,'font-family':'JetBrains Mono, monospace','font-size':8,fill:'#7B7060'},'CAM'));
+});
+const pts = rooms.map((r,i)=>{
+  const y = stackTop + i*rowH + boxH/2;
+  const x = i%2===0 ? left+120 : left+250;
+  return [x,y];
+});
+let d = `M${pts[0][0]} ${pts[0][1]-26}`;
+for (let i=1;i<pts.length;i++){
+  const [px,py]=pts[i-1], [x,y]=pts[i];
+  const mid = (py+y)/2;
+  d += ` C${px} ${mid}, ${x} ${mid}, ${x} ${y}`;
+}
+stack.appendChild(el('path',{d,fill:'none',stroke:'#B23A2A','stroke-width':2.4,'stroke-linecap':'round'}));
+transitions.forEach((tr,i)=>{
+  const y = stackTop + (i+1)*rowH - 20;
+  const x = 470;
+  stack.appendChild(el('circle',{cx:x,cy:y,r:3,fill:'#B23A2A'}));
+  stack.appendChild(el('text',{x:x+10,y:y+3,'font-family':'JetBrains Mono, monospace','font-size':8,fill:'#4A4238'},tr.label+' '+tr.sub));
+});
+stack.appendChild(el('text',{x:left,y:stackTop+rooms.length*rowH+18,'font-family':'Songti SC, serif','font-size':16,fill:'#1B1813'},'从封面坠到签名，再回到纸面。'));
+stack.appendChild(el('text',{x:left,y:stackTop+rooms.length*rowH+38,'font-family':'JetBrains Mono, monospace','font-size':8,fill:'#7B7060','letter-spacing':'0.08em'},'14 SHOTS / 10 ROOMS / 0 CUTS'));
+
+const score = document.getElementById('score');
+const sx0=104, sx1=1510, sy=112;
+const X = t => sx0 + (t/60)*(sx1-sx0);
+score.appendChild(el('text',{x:0,y:18,'font-family':'JetBrains Mono, monospace','font-size':10,fill:'#7B7060','letter-spacing':'0.12em'},'TIME / 0–60s'));
+for (let t=0;t<=60;t+=5){
+  score.appendChild(el('line',{x1:X(t),y1:40,x2:X(t),y2:880,stroke:'#D8CCB6','stroke-width':t%10===0?1:0.5,'stroke-dasharray':t%10===0?'':'2 6'}));
+  if (t%10===0) score.appendChild(el('text',{x:X(t),y:32,'text-anchor':'middle','font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060'},`${t}s`));
+}
+rooms.forEach(r=>{
+  const x0=X(r.start), x1=X(r.end);
+  const fill=r.tone==='graphite'?'#12100D':'#FBF6EA';
+  const ink=r.tone==='graphite'?'#EDE4D3':'#1B1813';
+  score.appendChild(el('rect',{x:x0+1,y:sy,width:Math.max(2,x1-x0-2),height:40,fill,stroke:'#1B1813','stroke-width':0.5}));
+  score.appendChild(el('text',{x:x0+7,y:sy+16,'font-family':'Songti SC, serif','font-size':13,fill:ink},r.name));
+  score.appendChild(el('text',{x:x0+7,y:sy+30,'font-family':'JetBrains Mono, monospace','font-size':7,fill:r.tone==='graphite'?'#B7A78C':'#7B7060'},r.en));
+});
+transitions.forEach(tr=>{
+  const x=X(tr.t);
+  score.appendChild(el('path',{d:`M${x} ${sy+40} l6 6 l-6 6 l-6 -6 Z`,fill:'#B23A2A'}));
+  score.appendChild(el('text',{x:x,y:sy+64,'text-anchor':'middle','font-family':'JetBrains Mono, monospace','font-size':7,fill:'#B23A2A'},tr.label));
+  score.appendChild(el('text',{x:x,y:sy+74,'text-anchor':'middle','font-family':'JetBrains Mono, monospace','font-size':7,fill:'#7B7060'},tr.sub));
+});
+score.appendChild(el('text',{x:0,y:244,'font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060','letter-spacing':'0.12em'},'CAMERA'));
+const keyMoves = [
+  {t:4,l:'macro-drift',row:0},
+  {t:11,l:'fall + track',row:1},
+  {t:16,l:'lead / follow',row:0},
+  {t:21,l:'push-through',row:1},
+  {t:25,l:'top-down',row:0},
+  {t:28,l:'crane-up',row:1},
+  {t:33,l:'side-track',row:0},
+  {t:37,l:'crane-up',row:1},
+  {t:40,l:'macro',row:0},
+  {t:43,l:'slow dolly',row:1},
+  {t:46,l:'orbit 30°',row:0},
+  {t:50,l:'hand / macro',row:1},
+  {t:52,l:'pull-back',row:0},
+  {t:57,l:'hold',row:1},
+];
+score.appendChild(el('line',{x1:X(0),y1:252,x2:X(60),y2:252,stroke:'#B23A2A','stroke-width':1,opacity:'0.28'}));
+keyMoves.forEach(m=>{
+  const x = X(m.t);
+  const y = m.row === 0 ? 268 : 292;
+  score.appendChild(el('circle',{cx:x,cy:252,r:2.5,fill:'#B23A2A'}));
+  score.appendChild(el('line',{x1:x,y1:252,x2:x,y2:y-10,stroke:'#B23A2A','stroke-width':0.6,opacity:'0.4'}));
+  score.appendChild(el('text',{x:x,y:y,'text-anchor':'middle','font-family':'JetBrains Mono, monospace','font-size':7.2,fill:'#1B1813'},m.l));
+});
+score.appendChild(el('text',{x:0,y:340,'font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060','letter-spacing':'0.12em'},'TEXT / 批注'));
+const shortText = {
+  '检查项目：找到他。':'找到他。',
+  '一份报告的旅行':'一份报告的旅行',
+  '7 项工程 / 2 套企业系统':'7 / 2',
+  '感知 → 理解 → 决策 → 执行 → 交付':'五章',
+  '30 篇 / 四层':'30 篇 / 4 层',
+  '作者?':'作者?',
+  '7 篇 / 从问题开始':'7 篇',
+  '一页 / 2027 届':'一页 / 2027',
+  '它以为，读完这些，就能找到他。':'它以为…',
+  '别找了。我在这儿。':'我在这儿',
+  '受检者：张栋栋 / 北省':'张栋栋',
+  '张栋栋 · FDE / 软件开发工程师':'FDE / 工程师',
+  '7 / 2 / 30 / 1':'7 / 2 / 30 / 1',
+  '报告看完了。接下来，读我。':'读我',
+};
+texts.forEach((v,i)=>{
+  const x0=X(v.t0), x1=X(v.t1);
+  const y = 365 + (i % 3) * 20;
+  score.appendChild(el('rect',{x:x0,y:348,width:Math.max(2,x1-x0),height:2,fill:v.hand?'#B23A2A':'#1B1813'}));
+  score.appendChild(el('text',{x:x0,y:y,'font-family':v.hand?'STXingkai, KaiTi, serif':'PingFang SC, sans-serif','font-size':v.hand?8.5:7.5,'font-style':v.hand?'italic':'normal','fill':v.hand?'#B23A2A':'#1B1813'},shortText[v.l]||v.l));
+});
+score.appendChild(el('text',{x:0,y:452,'font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060','letter-spacing':'0.12em'},'SOUND'));
+sounds.forEach(s=>{
+  const x=X(s.t);
+  score.appendChild(el('line',{x1:x,y1:460,x2:x,y2:470,stroke:'#4F6F5E','stroke-width':1}));
+  score.appendChild(el('text',{x:x,y:485,'text-anchor':'middle','font-family':'PingFang SC, sans-serif','font-size':6.5,fill:'#4F6F5E'},s.l));
+});
+score.appendChild(el('text',{x:0,y:548,'font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060','letter-spacing':'0.12em'},'ROLL / CUMULATIVE'));
+const rmin=90, rmax=735, ry0=590, ry1=760;
+const Y = v => ry1 - ((v-rmin)/(rmax-rmin))*(ry1-ry0);
+let rd = `M${X(0)} ${Y(90)}`;
+for (let i=1;i<roll.length;i++){
+  const p=roll[i-1], q=roll[i];
+  rd += ` L${X(q.t)} ${Y(p.v)} L${X(q.t)} ${Y(q.v)}`;
+}
+score.appendChild(el('path',{d:rd,fill:'none',stroke:'#B23A2A','stroke-width':2}));
+roll.forEach((r,i)=>{
+  const prev = roll[i-1];
+  const changed = !prev || prev.v !== r.v;
+  if (changed || i === roll.length-1) {
+    score.appendChild(el('text',{x:X(r.t)+4,y:Y(r.v)-4,'font-family':'JetBrains Mono, monospace','font-size':7,fill:'#B23A2A'},r.v+'°'));
+  }
+});
+score.appendChild(el('line',{x1:X(0),y1:Y(90),x2:X(60),y2:Y(90),stroke:'#D8CCB6','stroke-width':0.5}));
+score.appendChild(el('text',{x:0,y:800,'font-family':'JetBrains Mono, monospace','font-size':8,fill:'#7B7060'},'滚转在转场中完成；进入房间后画面回到该页的「上」。片尾以 720° 等价正面收束，不做反向旋转。'));
+const phases = [
+  {t0:0,t1:15,l:'ACT I / 缺人',c:'#B23A2A'},
+  {t0:15,t1:41,l:'ACT II / 读数',c:'#1B1813'},
+  {t0:41,t1:60,l:'ACT III / 见人',c:'#4F6F5E'},
+];
+phases.forEach(p=>{
+  score.appendChild(el('text',{x:X(p.t0)+4,y:860,'font-family':'Songti SC, serif','font-size':14,fill:p.c},p.l));
+});
+</script>
+</body>
+</html>

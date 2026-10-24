@@ -1,0 +1,91 @@
+1
+00:00:02,000 --> 00:00:04,000
+受检者：—
+Subject: —
+
+2
+00:00:04,000 --> 00:00:05,000
+检查项目：找到他。
+Task: find him.
+
+3
+00:00:05,000 --> 00:00:07,000
+一份报告的旅行
+A Report's Journey
+
+4
+00:00:08,000 --> 00:00:10,500
+让模型，在真实系统里跑起来。
+Let the model run—inside real systems.
+
+5
+00:00:15,000 --> 00:00:17,000
+7 项工程 / 2 套企业系统
+7 projects / 2 enterprise systems
+
+6
+00:00:20,000 --> 00:00:21,000
+感知 → 理解 → 决策 → 执行 → 交付
+Perceive → Understand → Decide → Execute → Deliver
+
+7
+00:00:24,000 --> 00:00:26,000
+30 篇 / 四层
+30 notes / four layers
+
+8
+00:00:28,000 --> 00:00:29,000
+作者?
+The author?
+
+9
+00:00:31,000 --> 00:00:33,000
+7 篇 / 从问题开始
+7 essays / each starts with a question
+
+10
+00:00:36,000 --> 00:00:38,000
+一页 / 2027 届
+One page / Class of 2027
+
+11
+00:00:43,000 --> 00:00:44,800
+它以为，读完这些，就能找到他。
+It thought reading all of this would find him.
+
+12
+00:00:46,000 --> 00:00:47,800
+别找了。我在这儿。
+Stop looking. I'm here.
+
+13
+00:00:48,000 --> 00:00:49,500
+受检者：张栋栋 / 北省
+Subject: Zhang Dongdong / Beisheng
+
+14
+00:00:50,000 --> 00:00:52,000
+张栋栋 · FDE / 软件开发工程师
+Zhang Dongdong · FDE / Software Engineer
+
+15
+00:00:52,000 --> 00:00:54,000
+7 项工程作品 · 2 套企业系统 · 30 篇知识文档 · 1 篇国际会议论文
+7 projects · 2 enterprise systems · 30 notes · 1 international paper
+
+16
+00:00:55,000 --> 00:00:57,000
+这个网站，是我给自己写的一份读片报告。
+报告看完了。接下来，读我。
+This site is a reading report I wrote for myself.
+The report is read. Now, read me.
+
+17
+00:00:57,000 --> 00:00:59,000
+1611045292@qq.com · github.com/beishengI · beishengi.github.io/Blog
+1611045292@qq.com · github.com/beishengI · beishengi.github.io/Blog
+
+18
+00:00:59,000 --> 00:01:00,000
+一份报告的旅行 / A REPORT'S JOURNEY
+A Report's Journey

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
 import { Seal } from '../components/report/primitives';
+import { film } from '../data/showcase';
 import { asset, HeroViewer } from './parts';
 import { playScanTone } from '../utils/sound';
 
@@ -66,7 +67,7 @@ export default function Hero({
 
               <div className="hero__actions">
                 <button type="button" className="btn btn--primary" onClick={playFilm}>
-                  <span aria-hidden="true">▶</span> 播放介绍片 0:48
+                  <span aria-hidden="true">▶</span> 播放介绍片 {film.duration}
                 </button>
                 <a className="btn btn--ghost" href={asset(site.resumePdf)} download>
                   下载简历 PDF <span className="btn__arrow">↓</span>
@@ -82,11 +83,11 @@ export default function Hero({
               </div>
 
               <button type="button" className="hero__mobile-plate" onClick={playFilm} aria-label="播放介绍片">
-                <img src={asset('/showcase/poster.jpg')} alt="介绍片海报：博客开机自检" width={1600} height={900} />
+                <img src={asset('/showcase/poster.jpg')} alt={`介绍片海报：${film.title}`} width={1600} height={900} />
                 <span className="hero__mobile-plate__overlay">
                   <span className="hero__mobile-plate__play">▶</span>
-                  <span>播放介绍片 0:48</span>
-                  <small>博客开机自检 / 48s</small>
+                  <span>播放介绍片 {film.duration}</span>
+                  <small>{film.title} / {film.duration}</small>
                 </span>
               </button>
 

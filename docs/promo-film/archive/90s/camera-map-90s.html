@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>《报告在找你》· 一镜到底镜头图</title>
+<style>
+  :root{
+    --paper:#F3EBDD;--paper2:#FBF6EA;--ink:#1B1813;--ink2:#4A4238;--muted:#7B7060;
+    --line:#D8CCB6;--line2:#B7A78C;--red:#B23A2A;--red2:#D4633F;--graphite:#12100D;--bone:#EDE4D3;
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;
+    --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+    --mono:"JetBrains Mono","Cascadia Mono","Consolas",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink)}
+  body{font-family:var(--sans)}
+  #map{width:2400px;padding:64px 72px 46px;position:relative;
+    background:
+      linear-gradient(rgba(27,24,19,.03) 1px,transparent 1px) 0 0/48px 48px,
+      linear-gradient(90deg,rgba(27,24,19,.03) 1px,transparent 1px) 0 0/48px 48px,
+      radial-gradient(1400px 800px at 15% 0%,#FBF6EA 0%,transparent 60%),var(--paper)}
+  #map:before{content:"";position:absolute;inset:26px;border:1px solid var(--line);pointer-events:none}
+  header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding-bottom:16px}
+  h1{font-family:var(--serif);font-size:64px;line-height:.95;margin:0;letter-spacing:-.03em}
+  h1 small{display:block;font:12px/1.6 var(--mono);letter-spacing:.18em;color:var(--muted);margin-top:10px}
+  .meta{text-align:right;font:11px/1.8 var(--mono);letter-spacing:.1em;color:var(--muted)}
+  .meta b{display:block;font-family:var(--serif);font-size:26px;letter-spacing:.02em;color:var(--ink);font-weight:600}
+  .red-rule{height:5px;background:var(--red);margin-top:10px}
+  .grid{display:grid;grid-template-columns:640px 1fr;gap:46px;margin-top:26px}
+  .panel-title{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line2);padding-bottom:7px;margin-bottom:10px}
+  .panel-title b{font-family:var(--serif);font-size:22px;font-weight:600}
+  .panel-title span{font:9px/1 var(--mono);letter-spacing:.14em;color:var(--muted)}
+  .panel-title em{margin-left:auto;font:9px/1 var(--mono);color:var(--muted);font-style:normal}
+  svg{display:block;width:100%;height:auto}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:18px;border-top:1px solid var(--line2);padding-top:12px;font:9px/1.6 var(--mono);color:var(--muted);letter-spacing:.05em}
+  .legend i{display:inline-block;width:16px;height:8px;margin-right:6px;vertical-align:middle}
+  footer{display:flex;justify-content:space-between;margin-top:22px;border-top:1px solid var(--line2);padding-top:9px;font:9px/1.6 var(--mono);letter-spacing:.08em;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="map">
+  <header>
+    <h1>一镜到底镜头图<small>ONE-TAKE CAMERA SCORE / 《报告在找你》/ 90s / 19 SHOTS</small></h1>
+    <div class="meta"><b>从封面，到签名，再回到封面</b>19 个镜头节拍 · 0 个剪辑点 · 10 个空间<br>24fps · 1920×1080 · 主光左上 · 红线为轴</div>
+  </header>
+  <div class="red-rule"></div>
+  <div class="grid">
+    <div>
+      <div class="panel-title"><b>空间堆叠</b><span>SPACE STACK / SIDE VIEW</span><em>镜头向下的螺旋</em></div>
+      <svg id="stack" viewBox="0 0 640 920" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div>
+      <div class="panel-title"><b>时间轴</b><span>SCORE / 0–90s</span><em>房间 · 运镜 · 旁白 · 声音 · 滚转</em></div>
+      <svg id="score" viewBox="0 0 1540 920" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+  <div class="legend">
+    <span><i style="background:#F3EBDD;border:1px solid #B7A78C"></i>纸房间</span>
+    <span><i style="background:#12100D"></i>石墨房间</span>
+    <span><i style="background:#B23A2A"></i>转场 / 红线</span>
+    <span><i style="background:#4F6F5E"></i>玉（仅一次）</span>
+    <span>滚转为转场中的相机旋转；进入房间后画面回正</span>
+  </div>
+  <footer>
+    <span>《报告在找你》/ 一镜到底镜头图 v1.0 / 2026-10-23</span>
+    <span>K0–K31 · 详见 DESIGN.md §7.4 / SHOOTING-SCRIPT.md</span>
+  </footer>
+</div>
+
+<script>
+const rooms = [
+  {no:'00', name:'封面 / 灯箱', en:'COVER', start:0, end:8, tone:'paper', note:'俯拍微距 · 空白受检者'},
+  {no:'01', name:'读片台', en:'HERO', start:8, end:18, tone:'paper', note:'坠落 / 低角度 · 标题跑酷'},
+  {no:'02', name:'检查所见', en:'WORKS', start:18, end:29, tone:'graphite', note:'走廊 / 滑索 · 七章'},
+  {no:'03', name:'能力链电影院', en:'CINEMA', start:29, end:38, tone:'graphite', note:'升降 / 横移 · 胶片'},
+  {no:'04', name:'文献索引', en:'WIKI', start:38, end:48, tone:'paper', note:'升降 / 俯拍 · 雪崩'},
+  {no:'05', name:'文章', en:'POSTS', start:48, end:57, tone:'paper', note:'侧跟 / 钢丝 · 划线'},
+  {no:'06', name:'简历', en:'RESUME', start:57, end:66, tone:'paper', note:'仰拍 / 环绕 · 肖像'},
+  {no:'07', name:'自述', en:'ABOUT', start:66, end:77, tone:'paper', note:'极慢推近 · 睁眼'},
+  {no:'08', name:'签发', en:'SIGN-OFF', start:77, end:84, tone:'paper', note:'俯拍 / 微距 · 签名'},
+  {no:'09', name:'片尾', en:'END CARD', start:84, end:90, tone:'paper', note:'拉远 / 淡出'},
+];
+const transitions = [
+  {t:8,  label:'穿切片框', sub:'+90°'},
+  {t:18, label:'穿播放器屏幕', sub:'+90°'},
+  {t:29, label:'穿合同截图', sub:'+180°'},
+  {t:38, label:'穿放映机片门', sub:'+90°'},
+  {t:48, label:'纸飞机穿卡', sub:'+15°'},
+  {t:57, label:'穿撕页', sub:'+90°'},
+  {t:66, label:'穿半调网点', sub:'+90°'},
+  {t:77, label:'手放下 / 桌面', sub:'0°'},
+  {t:84, label:'穿印章墨迹', sub:'回正'},
+];
+const moves = [
+  {t0:0,t1:8,label:'macro-drift',detail:'俯拍 90° · 50mm'},
+  {t0:8,t1:12,label:'crane-down / track',detail:'低角度 30° · 24mm'},
+  {t0:12,t1:18,label:'dolly-in / push-through',detail:'按钮 → 屏幕'},
+  {t0:18,t1:24,label:'lead / follow',detail:'走廊 24mm'},
+  {t0:24,t1:29,label:'orbit 15° / push',detail:'第七张卡'},
+  {t0:29,t1:34,label:'crane-up / track',detail:'影院 24mm'},
+  {t0:34,t1:38,label:'push-through',detail:'片门 35mm'},
+  {t0:38,t1:43,label:'crane-up / top-down',detail:'四层卡片'},
+  {t0:43,t1:48,label:'low-angle / crane-up',detail:'卡片楼梯'},
+  {t0:48,t1:53,label:'side-track / dolly-in',detail:'钢丝 35mm'},
+  {t0:53,t1:57,label:'push-through',detail:'撕页 35mm'},
+  {t0:57,t1:62,label:'crane-up / orbit 15°',detail:'A4 墙 24mm'},
+  {t0:62,t1:66,label:'macro push',detail:'网点 100mm'},
+  {t0:66,t1:71,label:'very slow dolly',detail:'自述 35mm'},
+  {t0:71,t1:77,label:'orbit 30° / pull-back',detail:'肖像 50mm'},
+  {t0:77,t1:81,label:'follow hand / macro',detail:'签名 50–100mm'},
+  {t0:81,t1:84,label:'push-in ink',detail:'印章 100mm'},
+  {t0:84,t1:90,label:'pull-back / hold',detail:'片尾 35mm'},
+];
+const vo = [
+  {t0:4,t1:8,text:'一份报告，在找一个不在场的人。'},
+  {t0:39,t1:43,text:'它读完了三十篇知识，四层。'},
+  {t0:66,t1:70,text:'它以为，读完这些，就能找到那个人。'},
+  {t0:73,t1:76,text:'别找了。我在这儿。'},
+  {t0:77,t1:83,text:'我叫张栋栋，智能医学工程 2027 届。这个网站，是我给自己写的一份读片报告。'},
+  {t0:84,t1:89,text:'如果下一件事，需要一个能把模型送进真实系统的人——我们可以聊聊。'},
+];
+const sounds = [
+  {t:0,l:'灯箱'},{t:3,l:'纸页'},{t:5,l:'880Hz'},{t:6,l:'画?'},{t:7,l:'章'},
+  {t:8,l:'展开'},{t:13,l:'按钮'},{t:16,l:'扫描'},{t:18,l:'七章'},{t:24,l:'拉纸'},
+  {t:29,l:'放映机'},{t:34,l:'片门'},{t:38,l:'雪崩'},{t:43,l:'喷嚏'},{t:46,l:'心跳'},
+  {t:48,l:'钢丝'},{t:53,l:'撕页'},{t:57,l:'攀爬'},{t:62,l:'网点'},{t:66,l:'静默'},
+  {t:73,l:'人声'},{t:81,l:'印章'},{t:84,l:'解决'},{t:89,l:'880Hz'},
+];
+const roll = [
+  {t:0,v:90},{t:8,v:180},{t:18,v:270},{t:29,v:450},{t:38,v:540},{t:48,v:555},
+  {t:57,v:645},{t:66,v:735},{t:77,v:735},{t:84,v:720},{t:90,v:720},
+];
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs={}, text='') => {
+  const n = document.createElementNS(NS, tag);
+  for (const [k,v] of Object.entries(attrs)) n.setAttribute(k, v);
+  if (text) n.textContent = text;
+  return n;
+};
+const stack = document.getElementById('stack');
+const stackTop=36, rowH=82, left=88, boxW=360, boxH=48;
+stack.appendChild(el('text',{x:0,y:16,'font-family':'JetBrains Mono, monospace','font-size':10,fill:'#7B7060','letter-spacing':'0.12em'},'REPORT STACK / 10 PAGES'));
+stack.appendChild(el('line',{x1:left-18,y1:stackTop-16,x2:left-18,y2:stackTop+rooms.length*rowH-14,stroke:'#B7A78C','stroke-width':1,'stroke-dasharray':'2 5'}));
+rooms.forEach((r,i)=>{
+  const y = stackTop + i*rowH;
+  const fill = r.tone==='graphite' ? '#12100D' : '#FBF6EA';
+  const ink = r.tone==='graphite' ? '#EDE4D3' : '#1B1813';
+  stack.appendChild(el('rect',{x:left,y,width:boxW,height:boxH,fill,stroke:'#1B1813','stroke-width':1}));
+  stack.appendChild(el('rect',{x:left,y,width:5,height:boxH,fill:'#B23A2A'}));
+  stack.appendChild(el('text',{x:left+18,y:y+20,'font-family':'Songti SC, serif','font-size':18,fill:ink},r.name));
+  stack.appendChild(el('text',{x:left+18,y:y+37,'font-family':'JetBrains Mono, monospace','font-size':8,fill:r.tone==='graphite'?'#B7A78C':'#7B7060','letter-spacing':'0.1em'},r.en+' / '+String(r.start).padStart(2,'0')+':'+String(r.end).padStart(2,'0')));
+  stack.appendChild(el('text',{x:left-18,y:y+22,'text-anchor':'end','font-family':'JetBrains Mono, monospace','font-size':10,fill:'#B23A2A'},r.no));
+  stack.appendChild(el('text',{x:left-18,y:y+38,'text-anchor':'end','font-family':'JetBrains Mono, monospace','font-size':8,fill:'#7B7060'},r.note));
+  const cx = left+boxW+40, cy = y+boxH/2;
+  stack.appendChild(el('path',{d:`M${cx-12} ${cy-7} L${cx+8} ${cy} L${cx-12} ${cy+7} Z`,fill:'#B23A2A',opacity:'0.9'}));
+  stack.appendChild(el('text',{x:cx+16,y:cy+3,'font-family':'JetBrains Mono, monospace','font-size':8,fill:'#7B7060'},'CAM'));
+});
+const pts = rooms.map((r,i)=>{
+  const y = stackTop + i*rowH + boxH/2;
+  const x = i%2===0 ? left+120 : left+250;
+  return [x,y];
+});
+let d = `M${pts[0][0]} ${pts[0][1]-26}`;
+for (let i=1;i<pts.length;i++){
+  const [px,py]=pts[i-1], [x,y]=pts[i];
+  const mid = (py+y)/2;
+  d += ` C${px} ${mid}, ${x} ${mid}, ${x} ${y}`;
+}
+stack.appendChild(el('path',{d,fill:'none',stroke:'#B23A2A','stroke-width':2.4,'stroke-linecap':'round'}));
+transitions.forEach((tr,i)=>{
+  const y = stackTop + (i+1)*rowH - 20;
+  const x = 470;
+  stack.appendChild(el('circle',{cx:x,cy:y,r:3,fill:'#B23A2A'}));
+  stack.appendChild(el('text',{x:x+10,y:y+3,'font-family':'JetBrains Mono, monospace','font-size':8,fill:'#4A4238'},tr.label+' '+tr.sub));
+});
+stack.appendChild(el('text',{x:left,y:stackTop+rooms.length*rowH+18,'font-family':'Songti SC, serif','font-size':16,fill:'#1B1813'},'从封面坠到签名，再回到纸面。'));
+stack.appendChild(el('text',{x:left,y:stackTop+rooms.length*rowH+38,'font-family':'JetBrains Mono, monospace','font-size':8,fill:'#7B7060','letter-spacing':'0.08em'},'K0 → K31 / 10 ROOMS / 0 CUTS'));
+
+const score = document.getElementById('score');
+const sx0=104, sx1=1510, sy=112;
+const X = t => sx0 + (t/90)*(sx1-sx0);
+score.appendChild(el('text',{x:0,y:18,'font-family':'JetBrains Mono, monospace','font-size':10,fill:'#7B7060','letter-spacing':'0.12em'},'TIME / 0–90s'));
+for (let t=0;t<=90;t+=5){
+  score.appendChild(el('line',{x1:X(t),y1:40,x2:X(t),y2:880,stroke:'#D8CCB6','stroke-width':t%10===0?1:0.5,'stroke-dasharray':t%10===0?'':'2 6'}));
+  if (t%10===0) score.appendChild(el('text',{x:X(t),y:32,'text-anchor':'middle','font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060'},`${t}s`));
+}
+rooms.forEach(r=>{
+  const x0=X(r.start), x1=X(r.end);
+  const fill=r.tone==='graphite'?'#12100D':'#FBF6EA';
+  const ink=r.tone==='graphite'?'#EDE4D3':'#1B1813';
+  score.appendChild(el('rect',{x:x0+1,y:sy,width:Math.max(2,x1-x0-2),height:40,fill,stroke:'#1B1813','stroke-width':0.5}));
+  score.appendChild(el('text',{x:x0+7,y:sy+16,'font-family':'Songti SC, serif','font-size':13,fill:ink},r.name));
+  score.appendChild(el('text',{x:x0+7,y:sy+30,'font-family':'JetBrains Mono, monospace','font-size':7,fill:r.tone==='graphite'?'#B7A78C':'#7B7060'},r.en));
+});
+transitions.forEach(tr=>{
+  const x=X(tr.t);
+  score.appendChild(el('path',{d:`M${x} ${sy+40} l6 6 l-6 6 l-6 -6 Z`,fill:'#B23A2A'}));
+  score.appendChild(el('text',{x:x,y:sy+64,'text-anchor':'middle','font-family':'JetBrains Mono, monospace','font-size':7,fill:'#B23A2A'},tr.label));
+  score.appendChild(el('text',{x:x,y:sy+74,'text-anchor':'middle','font-family':'JetBrains Mono, monospace','font-size':7,fill:'#7B7060'},tr.sub));
+});
+score.appendChild(el('text',{x:0,y:244,'font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060','letter-spacing':'0.12em'},'CAMERA'));
+const keyMoves = [
+  {t:4,l:'macro-drift',row:0},
+  {t:13,l:'fall + track',row:1},
+  {t:21,l:'lead / follow',row:0},
+  {t:31,l:'crane-up',row:1},
+  {t:36,l:'push-through',row:0},
+  {t:45,l:'top-down',row:1},
+  {t:50,l:'side-track',row:0},
+  {t:60,l:'crane-up',row:1},
+  {t:64,l:'macro',row:0},
+  {t:69,l:'slow dolly',row:1},
+  {t:74,l:'orbit 30°',row:0},
+  {t:79,l:'hand / macro',row:1},
+  {t:86,l:'pull-back',row:0},
+];
+score.appendChild(el('line',{x1:X(0),y1:252,x2:X(90),y2:252,stroke:'#B23A2A','stroke-width':1,opacity:'0.28'}));
+keyMoves.forEach(m=>{
+  const x = X(m.t);
+  const y = m.row === 0 ? 268 : 292;
+  score.appendChild(el('circle',{cx:x,cy:252,r:2.5,fill:'#B23A2A'}));
+  score.appendChild(el('line',{x1:x,y1:252,x2:x,y2:y-10,stroke:'#B23A2A','stroke-width':0.6,opacity:'0.4'}));
+  score.appendChild(el('text',{x:x,y:y,'text-anchor':'middle','font-family':'JetBrains Mono, monospace','font-size':7.2,fill:'#1B1813'},m.l));
+});
+score.appendChild(el('text',{x:0,y:340,'font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060','letter-spacing':'0.12em'},'VOICE'));
+const voShort = [
+  {t0:4,t1:8,l:'报告在找一个人',row:0},
+  {t0:39,t1:43,l:'三十篇，四层',row:1},
+  {t0:66,t1:70,l:'它以为读完了',row:0},
+  {t0:73,t1:76,l:'我在这儿',row:1},
+  {t0:77,t1:83,l:'我叫张栋栋',row:0},
+  {t0:84,t1:89,l:'我们可以聊聊',row:1},
+];
+voShort.forEach(v=>{
+  const x0=X(v.t0), x1=X(v.t1);
+  const y = v.row === 0 ? 365 : 385;
+  score.appendChild(el('rect',{x:x0,y:348,width:Math.max(2,x1-x0),height:2,fill:'#1B1813'}));
+  score.appendChild(el('text',{x:x0,y:y,'font-family':'PingFang SC, sans-serif','font-size':7.5,fill:'#1B1813'},v.l));
+});
+score.appendChild(el('text',{x:0,y:452,'font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060','letter-spacing':'0.12em'},'SOUND'));
+sounds.forEach(s=>{
+  const x=X(s.t);
+  score.appendChild(el('line',{x1:x,y1:460,x2:x,y2:470,stroke:'#4F6F5E','stroke-width':1}));
+  score.appendChild(el('text',{x:x,y:485,'text-anchor':'middle','font-family':'PingFang SC, sans-serif','font-size':6.5,fill:'#4F6F5E'},s.l));
+});
+score.appendChild(el('text',{x:0,y:548,'font-family':'JetBrains Mono, monospace','font-size':9,fill:'#7B7060','letter-spacing':'0.12em'},'ROLL / CUMULATIVE'));
+const rmin=90, rmax=735, ry0=590, ry1=760;
+const Y = v => ry1 - ((v-rmin)/(rmax-rmin))*(ry1-ry0);
+let rd = `M${X(0)} ${Y(90)}`;
+for (let i=1;i<roll.length;i++){
+  const p=roll[i-1], q=roll[i];
+  rd += ` L${X(q.t)} ${Y(p.v)} L${X(q.t)} ${Y(q.v)}`;
+}
+score.appendChild(el('path',{d:rd,fill:'none',stroke:'#B23A2A','stroke-width':2}));
+roll.forEach((r,i)=>{
+  const prev = roll[i-1];
+  const changed = !prev || prev.v !== r.v;
+  if (changed || i === roll.length-1) {
+    score.appendChild(el('text',{x:X(r.t)+4,y:Y(r.v)-4,'font-family':'JetBrains Mono, monospace','font-size':7,fill:'#B23A2A'},r.v+'°'));
+  }
+});
+score.appendChild(el('line',{x1:X(0),y1:Y(90),x2:X(90),y2:Y(90),stroke:'#D8CCB6','stroke-width':0.5}));
+score.appendChild(el('text',{x:0,y:800,'font-family':'JetBrains Mono, monospace','font-size':8,fill:'#7B7060'},'滚转在转场中完成；进入房间后画面回到该页的「上」。片尾以 720° 等价正面收束，不做反向旋转。'));
+const phases = [
+  {t0:0,t1:18,l:'ACT I / 缺人',c:'#B23A2A'},
+  {t0:18,t1:66,l:'ACT II / 读数',c:'#1B1813'},
+  {t0:66,t1:90,l:'ACT III / 见人',c:'#4F6F5E'},
+];
+phases.forEach(p=>{
+  score.appendChild(el('text',{x:X(p.t0)+4,y:860,'font-family':'Songti SC, serif','font-size':14,fill:p.c},p.l));
+});
+</script>
+</body>
+</html>
