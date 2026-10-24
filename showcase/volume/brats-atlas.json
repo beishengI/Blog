@@ -1,0 +1,26 @@
+{
+  "dataset": "ASNR-MICCAI BraTS 2023 GLI Challenge TrainingData（公开研究数据集，已脱敏）",
+  "case": "BraTS-GLI-00300-000",
+  "modality": "T1c",
+  "labels": "Lite-Mamba 预测（E016_sparsebn_lite_v2_ws075_adamw_lr1e4）",
+  "slices": 64,
+  "grid": 8,
+  "tile": 128,
+  "sourceShape": [
+    172,
+    172,
+    140
+  ],
+  "tumorSlices": 37,
+  "tumorRatio": 0.578,
+  "channels": {
+    "r": "T1c intensity uint8",
+    "g": "label * 80 (0/1/2/3)",
+    "a": "255"
+  },
+  "labelLegend": {
+    "1": "NET 非增强肿瘤",
+    "2": "ED 水肿",
+    "3": "ET 增强肿瘤"
+  }
+}
