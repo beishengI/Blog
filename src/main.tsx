@@ -11,6 +11,7 @@ import './styles/design/report.css';
 import './styles/design/editorial.css';
 import './styles/design/posts-editorial.css';
 import './styles/design/article-editorial.css';
+import './styles/design/interactive.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -153,6 +153,14 @@ export default function Header() {
           )}
 
           <div className="ed-band__utils">
+            <button
+              type="button"
+              className="ed-band__util ed-band__util--cmd"
+              aria-keyshortcuts="Control+K Meta+K"
+              onClick={() => window.dispatchEvent(new Event('bs-open-palette'))}
+            >
+              命令 <em>⌘K</em>
+            </button>
             {features.search && (
               <button
                 type="button"
@@ -264,6 +272,16 @@ export default function Header() {
             />
           </form>
           <div className="ed-menu__utils">
+            <button
+              type="button"
+              className="ed-menu__util"
+              onClick={() => {
+                setMenu(false);
+                window.dispatchEvent(new Event('bs-open-palette'));
+              }}
+            >
+              调阅面板 ⌘K
+            </button>
             <button
               type="button"
               className="ed-menu__util"

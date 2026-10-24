@@ -1,3 +1,5 @@
+import CountUp from '../components/CountUp';
+
 const NUMBERS = [
   { value: '−83.9', unit: '%', label: 'Lite-Mamba 参数量削减', meta: '67.7M → 10.9M · Dice 0.879' },
   { value: '100', unit: '%', label: '合同预审判定确定性', meta: '规则引擎 · 单字段 <100ms' },
@@ -18,7 +20,7 @@ export default function NumberBand() {
           <div className="number-band__item" key={item.label}>
             <span className="number-band__index">{String(index + 1).padStart(2, '0')}</span>
             <div className="number-band__value">
-              {item.value}
+              <CountUp value={item.value} />
               <small>{item.unit}</small>
             </div>
             <div className="number-band__label">{item.label}</div>

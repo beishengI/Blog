@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "gen:rss": "node scripts/gen-rss.mjs",
-    "build": "npm run gen:rss && tsc -b && vite build",
-    "build:pages": "npm run gen:rss && tsc -b && vite build --base=/Blog/",
+    "build": "npm run gen:rss && tsc -b && vite build && node scripts/check-bundle.mjs",
+    "build:pages": "npm run gen:rss && tsc -b && vite build --base=/Blog/ && node scripts/check-bundle.mjs",
     "deploy:pages": "npm run build:pages && node scripts/deploy-pages.mjs",
     "preview": "vite preview",
     "check:content": "node scripts/validate-content.mjs",
@@ -20,14 +20,17 @@
     "marked": "^12.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "esbuild": "^0.28.2",
+    "playwright": "^1.64.1",
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.4",

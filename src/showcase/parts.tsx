@@ -1,18 +1,16 @@
-import { useEffect, useId, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { lazy, Suspense, useEffect, useId, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { film, type FilmMeta } from '../data/showcase';
 import { projectWorks, type Work } from '../data/works';
 import { playScanTone } from '../utils/sound';
+import { asset } from '../utils/asset';
 import Icon from '../components/Icon';
 import { StatusStamp, Tag } from '../components/report/primitives';
 
-export function asset(path: string): string {
-  if (!path) return '';
-  if (/^(https?:|data:)/i.test(path)) return path;
-  const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
-  if (base && (path === base || path.startsWith(`${base}/`))) return path;
-  return `${base}${path.startsWith('/') ? path : `/${path}`}`;
-}
+// three 只在本组件首次挂载时经独立 chunk 下载，首屏零 WebGL 成本
+const VolumeSlicer = lazy(() => import('./VolumeSlicer'));
+
+export { asset };
 
 type CursorPos = { x: number; y: number } | null;
 
@@ -223,7 +221,11 @@ export function HeroViewer({
   onChange: (next: ActiveStudy) => void;
 }) {
   const baseId = useId();
-  const tabs = [{ id: 'film', label: 'P-00 介绍片' }, ...projectWorks.map(work => ({ id: work.slug, label: `${work.no} ${work.shortTitle ?? work.title}` }))];
+  const tabs = [
+    { id: 'volume', no: 'W', label: '体切片 / WEBGL' },
+    { id: 'film', no: '00', label: 'P-00 介绍片' },
+    ...projectWorks.map(work => ({ id: work.slug, no: work.no, label: `${work.no} ${work.shortTitle ?? work.title}` })),
+  ];
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const activeIndex = Math.max(0, tabs.findIndex(tab => tab.id === active));
   const work = projectWorks.find(item => item.slug === active);
@@ -271,7 +273,7 @@ export function HeroViewer({
             className="study-tab"
             onClick={() => select(index)}
           >
-            <span className="study-tab__no">{String(index).padStart(2, '0')}</span>
+            <span className="study-tab__no">{tab.no}</span>
             {tab.label}
           </button>
         ))}
@@ -283,7 +285,23 @@ export function HeroViewer({
         aria-labelledby={`${baseId}-tab-${activeIndex}`}
         className="hero__panel"
       >
-        {active === 'film' ? <FilmPlayer /> : work ? <StudyPlate work={work} /> : <FilmPlayer />}
+        {active === 'volume' ? (
+          <Suspense
+            fallback={
+              <div className="volume volume--loading" role="status">
+                <span className="mono-label">LOADING / 正在装载体数据</span>
+              </div>
+            }
+          >
+            <VolumeSlicer />
+          </Suspense>
+        ) : active === 'film' ? (
+          <FilmPlayer />
+        ) : work ? (
+          <StudyPlate work={work} />
+        ) : (
+          <FilmPlayer />
+        )}
       </div>
 
       {active === 'film' ? (
@@ -326,6 +344,28 @@ export function HeroViewer({
                 打开文字稿 →
               </a>
             )}
+          </div>
+        </div>
+      ) : active === 'volume' ? (
+        <div className="hero-findings">
+          <div className="hero-findings__top">
+            <h3 className="hero-findings__title">体切片扫描器</h3>
+            <span className="stamp stamp--red">WEBGL · 本站</span>
+          </div>
+          <p className="hero-findings__text">
+            真实 BraTS2023 T1c 切片与 Lite-Mamba 预测掩码，64 层堆成一块体积。滑杆切到哪一层，
+            就露出那一层的影像与肿瘤区——绿为 NET、黄为 ED、朱红为 ET。公开脱敏数据，无患者身份信息。
+          </p>
+          <div className="hero-findings__metrics">
+            <span className="metric"><span className="metric__value metric__value--sm">64</span><span className="metric__label">层真实切片</span></span>
+            <span className="metric"><span className="metric__value metric__value--sm">1</span><span className="metric__label">次实例化绘制</span></span>
+            <span className="metric"><span className="metric__value metric__value--sm">3</span><span className="metric__label">级降级</span></span>
+          </div>
+          <div className="hero-findings__foot">
+            <span className="mono-label">Three.js · GLSL · 按需分包</span>
+            <Link to="/work/lite-mamba" className="btn btn--sm">
+              调阅卷宗 <span className="btn__arrow">→</span>
+            </Link>
           </div>
         </div>
       ) : work ? (

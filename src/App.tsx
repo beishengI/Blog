@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import { useLocationTransition } from './hooks/useLocationTransition';
 import { SliceMark } from './components/report/primitives';
 
 const ArticleList = lazy(() => import('./pages/ArticleList'));
@@ -28,10 +29,12 @@ function PageFallback() {
 }
 
 export default function App() {
+  const displayLocation = useLocationTransition();
+
   return (
     <Layout>
       <Suspense fallback={<PageFallback />}>
-        <Routes>
+        <Routes location={displayLocation}>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<ArticleList />} />
           <Route path="/posts/:id" element={<ArticleDetailPage />} />

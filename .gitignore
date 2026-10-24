@@ -2,6 +2,7 @@ node_modules
 dist
 dev.log
 dev.err
+preview.log
 *.local
 .DS_Store
 .env

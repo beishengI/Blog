@@ -15,6 +15,7 @@ import { resumeEducation, resumeFacts } from '../data/resume';
 import { projectWorks, workLayerLabels, workStatusLabels, type Work } from '../data/works';
 import { publicPhone } from '../data/site';
 import { Metric, Reveal, SectionMark, Seal, SliceMark, Stamp, StatusStamp, Tag, TagRow } from '../components/report/primitives';
+import PipelineTrace from '../components/PipelineTrace';
 import { asset } from './parts';
 
 function ProjectThumb({ work }: { work: Work }) {
@@ -231,26 +232,28 @@ export function Positioning() {
             <p>先算账再优化 · 判定与解释分离 · 低置信度转人工 · 写下未做之事 · 交付可回滚</p>
           </div>
         </div>
-        <div className="pipeline" aria-label="从感知到交付的能力链路">
-          {pipeline.map(node => (
-            <div className="pipeline__node" key={node.no}>
-              <span className="pipeline__no">{node.no}</span>
-              <div>
-                <h3 className="pipeline__title">{node.title}</h3>
-                <div className="pipeline__sub">{node.subtitle}</div>
-                <div className="pipeline__points">
-                  {node.points.map(point => <span key={point}>{point}</span>)}
-                </div>
-                <div className="pipeline__works">
-                  {node.works.map(slug => {
-                    const work = projectWorks.find(item => item.slug === slug);
-                    return work ? <Link key={slug} to={`/work/${slug}`} className="tag">{work.shortTitle ?? work.title}</Link> : null;
-                  })}
+        <PipelineTrace>
+          <div className="pipeline" aria-label="从感知到交付的能力链路">
+            {pipeline.map((node, index) => (
+              <div className="pipeline__node" key={node.no} style={{ transitionDelay: `${index * 140}ms` }}>
+                <span className="pipeline__no">{node.no}</span>
+                <div>
+                  <h3 className="pipeline__title">{node.title}</h3>
+                  <div className="pipeline__sub">{node.subtitle}</div>
+                  <div className="pipeline__points">
+                    {node.points.map(point => <span key={point}>{point}</span>)}
+                  </div>
+                  <div className="pipeline__works">
+                    {node.works.map(slug => {
+                      const work = projectWorks.find(item => item.slug === slug);
+                      return work ? <Link key={slug} to={`/work/${slug}`} className="tag">{work.shortTitle ?? work.title}</Link> : null;
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </PipelineTrace>
       </div>
     </section>
   );

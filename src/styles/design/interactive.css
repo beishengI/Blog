@@ -1,0 +1,226 @@
+/* ============================================================
+   Interactive layer · 签名主视觉 / 调阅面板 / 原生转场 / 描画
+   所有颜色来自 tokens.css；明暗模式自动对称；减动效有独立分支。
+   ============================================================ */
+
+/* ---------- 体切片扫描器：与 lightbox 同一「医学灯箱」语言 ---------- */
+.volume {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--graphite);
+  border: 1px solid var(--graphite-3);
+  outline-offset: 3px;
+}
+.volume:focus-visible { outline: 1px solid var(--red); }
+.volume--on { cursor: grab; touch-action: pan-y; }
+.volume--on:active { cursor: grabbing; }
+.volume__canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  animation: volume-in 0.6s var(--ease);
+}
+@keyframes volume-in { from { opacity: 0; } to { opacity: 1; } }
+.volume--loading { display: grid; place-items: center; color: var(--bone); }
+
+.volume__hud {
+  position: absolute; left: 18px; right: 18px; bottom: 14px; z-index: 2;
+  display: flex; flex-direction: column; gap: 6px;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
+  color: var(--bone); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+.volume__note { opacity: 0.55; }
+.volume__hint { opacity: 0.65; }
+.volume__legend {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--bone); opacity: 0.75; letter-spacing: 0.12em;
+}
+.volume__legend i { margin-left: 8px; }
+.volume__legend i:first-child { margin-left: 0; }
+.volume__swatch {
+  display: inline-block; width: 7px; height: 7px; margin-right: 4px;
+  border: 1px solid rgba(237, 228, 211, 0.35);
+}
+.volume__swatch--net { background: var(--jade); }
+.volume__swatch--ed { background: var(--amber); }
+.volume__swatch--et { background: var(--red-2); }
+.volume__controls { display: flex; align-items: center; gap: 12px; pointer-events: auto; }
+.volume__scan { display: inline-flex; align-items: center; gap: 8px; color: var(--red-2); }
+.volume__scan input[type='range'] {
+  width: 130px; height: 2px; appearance: none;
+  background: var(--graphite-3); cursor: pointer;
+}
+.volume__scan input[type='range']::-webkit-slider-thumb {
+  appearance: none; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--red-2); border: 1px solid var(--bone);
+}
+.volume__scan input[type='range']::-moz-range-thumb {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--red-2); border: 1px solid var(--bone);
+}
+.volume__auto {
+  border: 1px solid var(--graphite-3); background: transparent; color: var(--bone);
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em;
+  padding: 3px 8px; cursor: pointer;
+  transition: border-color 0.18s var(--ease), color 0.18s var(--ease);
+}
+.volume__auto:hover,
+.volume__auto[aria-pressed='true'] { border-color: var(--red-2); color: var(--red-2); }
+
+/* 无 WebGL 的图版：CSS 层叠出切片观感 + 静态朱红扫描线，看起来仍是设计的一部分 */
+.volume__fallback { position: absolute; inset: 0; display: grid; place-items: center; }
+.volume__fallback span {
+  position: absolute; width: 46%; aspect-ratio: 1;
+  border: 1px solid rgba(237, 228, 211, 0.28);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(237, 228, 211, 0.1), rgba(237, 228, 211, 0.02) 70%, transparent);
+}
+.volume__fallback i {
+  position: absolute; width: 52%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+
+@media (max-width: 720px) {
+  .volume__hud { left: 14px; right: 14px; }
+  .volume__note,
+  .volume__hint { display: none; }
+  .volume__scan input[type='range'] { width: 110px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .volume__canvas { animation: none; }
+}
+
+/* ---------- 调阅面板：居中纸面卡片，移动端底部全宽 ---------- */
+.cmd {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 12vh var(--gutter) 0;
+  background: rgba(18, 16, 13, 0.42);
+  backdrop-filter: blur(3px);
+  animation: cmd-veil 0.18s var(--ease);
+}
+@keyframes cmd-veil { from { opacity: 0; } to { opacity: 1; } }
+.cmd__panel {
+  width: min(640px, 100%);
+  background: var(--paper-2);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 24px 70px rgba(18, 16, 13, 0.35);
+  color: var(--ink);
+  animation: cmd-panel 0.2s var(--ease);
+}
+@keyframes cmd-panel {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.cmd__head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+}
+.cmd__title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--muted); }
+.cmd__close {
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em;
+  padding: 3px 8px; cursor: pointer;
+  transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+.cmd__close:hover { color: var(--red); border-color: var(--red); }
+.cmd__field { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.cmd__prompt { font-family: var(--font-mono); font-size: 11px; color: var(--red); }
+.cmd__field input {
+  flex: 1; border: 0; background: transparent; outline: none; box-shadow: none;
+  font-family: var(--font-sans); font-size: 15px; color: var(--ink);
+}
+.cmd__field input::placeholder { color: var(--muted); }
+.cmd__list { max-height: 46vh; overflow-y: auto; padding: 6px; }
+.cmd__group { padding: 10px 10px 4px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; color: var(--muted); }
+.cmd__option {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  width: 100%; padding: 9px 10px;
+  border: 0; border-left: 2px solid transparent;
+  background: transparent; color: var(--ink); text-align: left; cursor: pointer;
+  font-family: var(--font-sans); font-size: 13px;
+  transition: background 0.12s var(--ease), border-color 0.12s var(--ease);
+}
+.cmd__option.is-active { background: var(--paper-3); border-left-color: var(--red); }
+.cmd__option-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmd__option-hint { flex: 0 0 auto; font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.06em; }
+.cmd__empty { padding: 18px 12px; color: var(--muted); font-size: 13px; }
+.cmd__foot {
+  display: flex; justify-content: space-between; gap: 10px;
+  padding: 10px 16px; border-top: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.06em; color: var(--muted);
+}
+.cmd__status b { color: var(--red); font-weight: 500; }
+
+@media (max-width: 960px) {
+  .ed-band__util--cmd { display: none; }
+}
+@media (max-width: 720px) {
+  .cmd { padding: 0; align-items: flex-end; }
+  .cmd__panel { width: 100%; border-left: 0; border-right: 0; border-bottom: 0; }
+  .cmd__list { max-height: 52vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cmd, .cmd__panel { animation: none; }
+}
+
+/* ---------- 原生路由转场：只对正文命名，报头/侧栏不闪烁 ---------- */
+@supports (view-transition-name: main) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* VT 接管页面交接后，关闭旧的 CSS 入场动画，避免双重动效 */
+    .page-main > * { animation: none; }
+
+    #main { view-transition-name: main; }
+    .report-rail { view-transition-name: report-rail; }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root),
+    ::view-transition-old(report-rail),
+    ::view-transition-new(report-rail) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
+    ::view-transition-old(main) { animation: vt-main-old 0.24s var(--ease) both; }
+    ::view-transition-new(main) { animation: vt-main-new 0.24s var(--ease) both; }
+  }
+}
+@keyframes vt-main-old {
+  to { opacity: 0; }
+}
+@keyframes vt-main-new {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- 能力链路描画：朱红脊线 + 节点错峰点亮 ---------- */
+.pipeline-trace { position: relative; }
+.pipeline-trace__spine { position: absolute; pointer-events: none; }
+.pipeline-trace__spine line {
+  stroke: var(--red);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 0.9s var(--ease);
+}
+.pipeline-trace.is-traced .pipeline-trace__spine line { stroke-dashoffset: 0; }
+.pipeline-trace__spine--h { display: none; }
+.pipeline-trace__spine--v { top: 0; left: 0; width: 2px; height: 100%; }
+
+@media (max-width: 899px) {
+  .pipeline-trace { padding-left: 12px; }
+}
+@media (min-width: 900px) {
+  .pipeline-trace__spine--h { display: block; top: -1px; left: 0; width: 100%; height: 2px; }
+  .pipeline-trace__spine--v { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pipeline-trace .pipeline__node {
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .pipeline-trace:not(.is-traced) .pipeline__node { opacity: 0.25; transform: translateY(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pipeline-trace__spine { display: none; }
+}

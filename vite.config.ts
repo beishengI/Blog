@@ -3,6 +3,17 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        // three 独立分包：只在 Hero 的「体切片 / WEBGL」tab 激活时按需下载，
+        // 首屏入口 chunk 不承担任何 WebGL 成本。
+        manualChunks: {
+          three: ['three'],
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     // 本地开发不在工具写文件时自动弹浏览器；QA 脚本/构建产物不参与 HMR watch，

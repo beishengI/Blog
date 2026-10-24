@@ -16,11 +16,17 @@ import {
 import ChapterCinema from './ChapterCinema';
 import NumberBand from './NumberBand';
 import ReportRail from './ReportRail';
+import { detectWebGL, hasFinePointer, prefersReducedMotion } from '../utils/webgl';
+
+/** 桌面且支持 WebGL 时默认展示签名主视觉；其余情况保持介绍片优先 */
+function initialStudy(): string {
+  return detectWebGL() && !prefersReducedMotion() && hasFinePointer() ? 'volume' : 'film';
+}
 
 export default function ShowcasePage() {
   const { config } = useConfig();
   const { site } = config;
-  const [active, setActive] = useState('film');
+  const [active, setActive] = useState(initialStudy);
 
   useSEO({
     description:
