@@ -13,10 +13,11 @@ interface VolumeMeta {
   slices: number;
   grid: number;
   tumorSlices: number;
+  files: { intensity: string; labels: string };
 }
 
-const ATLAS_URL = '/showcase/volume/brats-atlas.png';
-const META_URL = '/showcase/volume/brats-atlas.json';
+const VOLUME_DIR = '/showcase/volume';
+const META_URL = `${VOLUME_DIR}/brats-atlas.json`;
 
 const STATUS_TEXT: Record<Status, string> = {
   on: '拖拽旋转 · 聚焦后滚轮 / 方向键切换层面',
@@ -102,7 +103,13 @@ export default function VolumeSlicer() {
       scene = createVolumeScene(canvas, {
         slices: meta?.slices ?? 48,
         maxDpr: hasFinePointer() ? 2 : 1.5,
-        atlas: meta ? { url: asset(ATLAS_URL), grid: meta.grid } : undefined,
+        atlas: meta
+          ? {
+              intensityUrl: asset(`${VOLUME_DIR}/${meta.files.intensity}`),
+              labelsUrl: asset(`${VOLUME_DIR}/${meta.files.labels}`),
+              grid: meta.grid,
+            }
+          : undefined,
         onDataReady: () => setDataReady(true),
       });
       sceneRef.current = scene;

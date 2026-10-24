@@ -5,8 +5,9 @@
   prediction_results/<experiment>_labelmap/<case>.nii.gz
 
 输出（默认 public/showcase/volume）：
-  brats-atlas.png   8x8 瓦片图集：R = 归一化 T1c 强度，G = 标签 * 80，A = 255
-  brats-atlas.json  体数据元信息（层数 / 网格 / 标签图例 / 来源）
+  brats-intensity.jpg  8x8 瓦片图集，灰度 = 归一化 T1c 强度（体积小，慢链路也能快速上屏）
+  brats-labels.png     8x8 瓦片图集，灰度 = 标签 0/1/2/3（无损、NEAREST 采样）
+  brats-atlas.json     体数据元信息（层数 / 网格 / 标签图例 / 来源）
 
 约定：
   图集第 0 行第 0 列为第 0 层（最下层），切片沿轴向自下而上排列，
@@ -94,28 +95,29 @@ def main() -> None:
     scale = 255.0 / max(1e-5, high - low)
 
     z_index = np.linspace(0, depth - 1, SLICES).round().astype(int)
-    atlas = np.zeros((GRID * TILE, GRID * TILE, 4), dtype=np.uint8)
+    side = GRID * TILE
+    intensity_atlas = np.zeros((side, side), dtype=np.uint8)
+    label_atlas = np.zeros((side, side), dtype=np.uint8)
     tumor_slices = 0
 
     for index, z in enumerate(z_index):
         plane = np.clip((volume[:, :, z] - low) * scale, 0, 255)
         intensity = resize_plane(plane.astype(np.float32), TILE, nearest=False)
-        label_plane = resize_plane(labels[:, :, z], TILE, nearest=True)
-        label_plane = np.clip(label_plane, 0, 3)
+        label_plane = np.clip(resize_plane(labels[:, :, z], TILE, nearest=True), 0, 3)
 
         row, col = divmod(index, GRID)
-        tile = atlas[row * TILE:(row + 1) * TILE, col * TILE:(col + 1) * TILE]
-        tile[:, :, 0] = np.clip(intensity, 0, 255).astype(np.uint8)
-        tile[:, :, 1] = (label_plane * 80).astype(np.uint8)
-        tile[:, :, 2] = 0
-        tile[:, :, 3] = 255
+        rows = slice(row * TILE, (row + 1) * TILE)
+        cols = slice(col * TILE, (col + 1) * TILE)
+        intensity_atlas[rows, cols] = np.clip(intensity, 0, 255).astype(np.uint8)
+        label_atlas[rows, cols] = label_plane.astype(np.uint8)
         if label_plane.max() > 0:
             tumor_slices += 1
 
     args.out.mkdir(parents=True, exist_ok=True)
-    image = Image.fromarray(atlas, mode="RGBA")
-    png_path = args.out / "brats-atlas.png"
-    image.save(png_path, optimize=True)
+    intensity_path = args.out / "brats-intensity.jpg"
+    labels_path = args.out / "brats-labels.png"
+    Image.fromarray(intensity_atlas, mode="L").save(intensity_path, quality=88, subsampling=0, optimize=True)
+    Image.fromarray(label_atlas, mode="L").save(labels_path, optimize=True)
 
     meta = {
         "dataset": "ASNR-MICCAI BraTS 2023 GLI Challenge TrainingData（公开研究数据集，已脱敏）",
@@ -125,17 +127,18 @@ def main() -> None:
         "slices": SLICES,
         "grid": GRID,
         "tile": TILE,
+        "files": {"intensity": intensity_path.name, "labels": labels_path.name},
         "sourceShape": list(map(int, volume.shape)),
         "tumorSlices": tumor_slices,
         "tumorRatio": round(tumor_slices / SLICES, 3),
-        "channels": {"r": "T1c intensity uint8", "g": "label * 80 (0/1/2/3)", "a": "255"},
+        "channels": {"intensity": "T1c 强度 uint8（JPEG）", "labels": "标签 0/1/2/3（PNG，NEAREST）"},
         "labelLegend": {"1": "NET 非增强肿瘤", "2": "ED 水肿", "3": "ET 增强肿瘤"},
     }
     (args.out / "brats-atlas.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    size_kb = png_path.stat().st_size / 1024
+    size_kb = (intensity_path.stat().st_size + labels_path.stat().st_size) / 1024
     print(f"[volume] case={args.case} depth={depth} -> {SLICES} 层，含肿瘤切片 {tumor_slices} 层")
-    print(f"[volume] 图集 {GRID}x{GRID} · {TILE}px · {size_kb:.0f}KB -> {png_path}")
+    print(f"[volume] 图集 {GRID}x{GRID} · {TILE}px · 合计 {size_kb:.0f}KB -> {intensity_path.name} + {labels_path.name}")
 
 
 if __name__ == "__main__":

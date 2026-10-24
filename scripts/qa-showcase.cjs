@@ -33,7 +33,7 @@ function watch(page, tag) {
   watch(page, 'desktop');
   let atlasOk = false;
   page.on('response', response => {
-    if (response.url().includes('brats-atlas.png')) atlasOk = response.ok();
+    if (response.url().includes('brats-intensity.jpg')) atlasOk = response.ok();
   });
   await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1800);

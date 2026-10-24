@@ -29,6 +29,7 @@ export const sliceFragment = /* glsl */ `
   uniform float uScan;
   uniform float uOpacity;
   uniform sampler2D uAtlas;
+  uniform sampler2D uLabels;
   uniform float uHasData;
   uniform float uSlices;
   uniform float uGrid;
@@ -74,9 +75,9 @@ export const sliceFragment = /* glsl */ `
       float index = floor(vIndex * (uSlices - 1.0) + 0.5);
       vec2 cell = vec2(mod(index, uGrid), floor(index / uGrid));
       vec2 uv = (cell + clamp(vUv, 0.004, 0.996)) / uGrid;
-      vec4 texel = texture2D(uAtlas, uv);
-      float intensity = texel.r;
-      float label = floor(texel.g * 255.0 / 80.0 + 0.5);
+      float intensity = texture2D(uAtlas, uv).r;
+      // 标签图集为 0/1/2/3 的灰度 PNG，NEAREST 采样不会串层
+      float label = floor(texture2D(uLabels, uv).r * 255.0 + 0.5);
 
       float body = smoothstep(0.04, 0.16, intensity);
       if (body < 0.02) discard;

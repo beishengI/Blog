@@ -6,6 +6,10 @@
   "slices": 64,
   "grid": 8,
   "tile": 128,
+  "files": {
+    "intensity": "brats-intensity.jpg",
+    "labels": "brats-labels.png"
+  },
   "sourceShape": [
     172,
     172,
@@ -14,9 +18,8 @@
   "tumorSlices": 37,
   "tumorRatio": 0.578,
   "channels": {
-    "r": "T1c intensity uint8",
-    "g": "label * 80 (0/1/2/3)",
-    "a": "255"
+    "intensity": "T1c 强度 uint8（JPEG）",
+    "labels": "标签 0/1/2/3（PNG，NEAREST）"
   },
   "labelLegend": {
     "1": "NET 非增强肿瘤",

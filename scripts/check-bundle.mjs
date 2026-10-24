@@ -41,8 +41,10 @@ const failures = [];
 if (!lazyChunks.three) {
   failures.push('未找到 three 独立 chunk（检查 vite.config.ts 的 manualChunks）。');
 }
-if (!existsSync(path.join(dist, 'showcase', 'volume', 'brats-atlas.png'))) {
-  failures.push('缺少真实切片图集 dist/showcase/volume/brats-atlas.png（先运行 scripts/prepare-volume.py）。');
+for (const asset of ['brats-intensity.jpg', 'brats-labels.png', 'brats-atlas.json']) {
+  if (!existsSync(path.join(dist, 'showcase', 'volume', asset))) {
+    failures.push(`缺少真实切片资产 dist/showcase/volume/${asset}（先运行 scripts/prepare-volume.py）。`);
+  }
 }
 for (const [name, file] of Object.entries(lazyChunks)) {
   if (file && initial.includes(file)) {

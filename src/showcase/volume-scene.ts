@@ -12,8 +12,8 @@ export interface VolumeTheme {
 export interface VolumeSceneOptions {
   slices?: number;
   maxDpr?: number;
-  /** 真实切片图集；缺省或加载失败时退回程序化体数据 */
-  atlas?: { url: string; grid: number };
+  /** 真实切片图集（强度 + 标签两路）；缺省或加载失败时退回程序化体数据 */
+  atlas?: { intensityUrl: string; labelsUrl: string; grid: number };
   /** 图集解码完成、真实数据真正上屏时回调 */
   onDataReady?: () => void;
 }
@@ -68,6 +68,8 @@ export function createVolumeScene(
   // 1x1 占位纹理：图集加载完成前着色器也能安全采样（走程序化分支）
   const placeholder = new THREE.DataTexture(new Uint8Array([255, 255, 255, 255]), 1, 1);
   placeholder.needsUpdate = true;
+  const labelPlaceholder = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
+  labelPlaceholder.needsUpdate = true;
   const material = new THREE.ShaderMaterial({
     vertexShader: sliceVertex,
     fragmentShader: sliceFragment,
@@ -80,6 +82,7 @@ export function createVolumeScene(
       uScan: { value: 0.5 },
       uOpacity: { value: 1 },
       uAtlas: { value: placeholder },
+      uLabels: { value: labelPlaceholder },
       uHasData: { value: 0 },
       uSlices: { value: count },
       uGrid: { value: options.atlas?.grid ?? 8 },
@@ -131,31 +134,59 @@ export function createVolumeScene(
   );
   group.add(frame);
 
-  // 真实切片图集：异步加载，成功后切到 uHasData 分支；失败则保持程序化体数据
-  let atlasTexture: THREE.Texture | null = null;
+  // 真实切片图集（强度 JPEG + 标签 PNG）：两张都就绪才切到 uHasData 分支
+  let intensityTexture: THREE.Texture | null = null;
+  let labelTexture: THREE.Texture | null = null;
   let disposed = false;
+  let pending = 0;
+  const maybeReady = () => {
+    pending -= 1;
+    if (pending > 0) return;
+    material.uniforms.uHasData.value = 1;
+    options.onDataReady?.();
+  };
+  const configure = (texture: THREE.Texture, nearest: boolean) => {
+    texture.flipY = false; // 第 0 层在图片左上角，与实例 0（最下层）对齐
+    texture.minFilter = nearest ? THREE.NearestFilter : THREE.LinearFilter;
+    texture.magFilter = nearest ? THREE.NearestFilter : THREE.LinearFilter;
+    texture.generateMipmaps = false;
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
+  };
   if (options.atlas) {
-    new THREE.TextureLoader().load(
-      options.atlas.url,
+    pending = 2;
+    const loader = new THREE.TextureLoader();
+    loader.load(
+      options.atlas.intensityUrl,
       texture => {
         if (disposed) {
           texture.dispose();
           return;
         }
-        texture.flipY = false; // 第 0 层在图片左上角，与实例 0（最下层）对齐
-        texture.minFilter = THREE.LinearFilter;
-        texture.magFilter = THREE.LinearFilter;
-        texture.generateMipmaps = false;
-        texture.wrapS = THREE.ClampToEdgeWrapping;
-        texture.wrapT = THREE.ClampToEdgeWrapping;
+        configure(texture, false);
         material.uniforms.uAtlas.value = texture;
-        material.uniforms.uHasData.value = 1;
-        atlasTexture = texture;
+        intensityTexture = texture;
         placeholder.dispose();
-        options.onDataReady?.();
+        maybeReady();
       },
       undefined,
-      () => console.warn('[volume] 切片图集加载失败，回退程序化体数据')
+      () => console.warn('[volume] 强度图集加载失败，回退程序化体数据')
+    );
+    loader.load(
+      options.atlas.labelsUrl,
+      texture => {
+        if (disposed) {
+          texture.dispose();
+          return;
+        }
+        configure(texture, true);
+        material.uniforms.uLabels.value = texture;
+        labelTexture = texture;
+        labelPlaceholder.dispose();
+        maybeReady();
+      },
+      undefined,
+      () => console.warn('[volume] 标签图集加载失败，回退程序化体数据')
     );
   }
 
@@ -223,7 +254,9 @@ export function createVolumeScene(
       frame.geometry.dispose();
       (frame.material as THREE.Material).dispose();
       placeholder.dispose();
-      atlasTexture?.dispose();
+      labelPlaceholder.dispose();
+      intensityTexture?.dispose();
+      labelTexture?.dispose();
       renderer.dispose();
     },
   };
